@@ -1,0 +1,103 @@
+{% extends "core/plantilla2.html" %}
+{% load static %}
+
+{% block menu %}
+
+    <a href="{% url 'CLIENTE_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
+
+{% endblock menu %}
+
+{% block contenido %}
+
+    <!--CONTENIDO DEL LA PAGINA-->
+    <div class="container-fluid mt-3">
+        <div class="row px-xl-5">
+            
+            <div class="col-lg-4">
+                
+                <div class="bg-light p-10 mb-2 text-center">
+                    <h1 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Cliente</span></h1>
+                </div>
+                <div class="bg-light p-30 mb-5">
+                    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Información</span></h2>
+                    <h3><a href="{% url 'CLIENTE_DATOS' %}" class="color-links">DATOS</a></h3>
+                    <h3><a href="{% url 'CLIENTE_DOMICI' %}" class="color-links">DOMICILIO</a></h3>
+                    <h3><a href="{% url 'CLIENTE_PEDI' %}" class="color-links">PEDIDOS</a></h3>
+                </div>
+
+            </div>
+
+            <div class="col-lg-8 mx-auto">
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+
+                        <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
+                        <div class="col-12">
+                            <h3 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">DATOS DOMICILIO</span></h3>
+                        </div>
+                        <!-------------------SON DE 4 EN 4---------->
+                        <div class="col-md-6 form-group">
+                            <label>Dirección</label>
+                            <input class="form-control" type="text" placeholder="San Carlos 1340">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Comuna</label>
+                            <input class="form-control" type="text" placeholder="Puente Alto">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Región</label>
+                            <input class="form-control" type="text" placeholder="Metropolitana">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>País</label>
+                            <input class="form-control" type="text" placeholder="Chile">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label></label>
+                        </div>
+
+                        <div class="col-md-6 form-group text-center">
+                            <button type="button" class="btn btn-success btn-lg mb-1 w-50" data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio">
+                               Modificar
+                            </button>
+                        </div>
+                    </div>
+                </div>              
+            </div>  
+
+        </div>
+    </div>
+
+    <!--MODAL LOS DATOS DE SU DOMICILIO FUERON CAMBIADOS-->
+    <div class="modal fade" id="modal-modifi-domicilio" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-formu-contactoLabel">MENSAJE</h5>
+                </div>
+                <div class="modal-body">
+                    Los datos de su domicilio han sido modificados con éxito!
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnAceptar-modifi-domicilio" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+{% endblock contenido %}
+  
+{% block script %}
+
+    <!--Modal para recargar todo cuando se de en aceptar-->
+    <script>
+        document.getElementById("btnAceptar-modifi-domicilio").addEventListener("click", function() {
+            location.reload(); // Recargar la página cuando se hace clic en el botón "Aceptar"
+        });
+    </script>
+
+{% endblock script %}
+    
+  

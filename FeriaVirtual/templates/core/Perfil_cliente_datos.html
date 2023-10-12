@@ -1,0 +1,153 @@
+{% extends "core/plantilla2.html" %}
+{% load static %}
+
+{% block menu %}
+
+    <a href="{% url 'CLIENTE_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
+
+{% endblock menu %}
+                      
+{% block contenido %}
+
+    <!--CONTENIDO DEL LA PAGINA-->
+    <div class="container-fluid mt-3">
+        <div class="row px-xl-5">
+            
+            <div class="col-lg-4">
+                
+                <div class="bg-light p-10 mb-2 text-center">
+                    <h1 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Cliente</span></h1>
+                </div>
+                <div class="bg-light p-30 mb-5">
+                    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Información</span></h2>
+                    <h3><a href="{% url 'CLIENTE_DATOS' %}" class="color-links">DATOS</a></h3>
+                    <h3><a href="{% url 'CLIENTE_DOMICI' %}" class="color-links">DOMICILIO</a></h3>
+                    <h3><a href="{% url 'CLIENTE_PEDI' %}" class="color-links">PEDIDOS</a></h3>
+                </div>
+
+            </div>
+
+            <div class="col-lg-8 mx-auto">
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+
+                        <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
+                        <div class="col-12">
+                            <h3 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">DATOS PERSONALES</span></h3>
+                        </div>
+                        <!-------------------SON DE 4 EN 4---------->
+                        <div class="col-md-6 form-group">
+                            <label>Nombre</label>
+                            <input class="form-control" type="text" placeholder="Juan Pablo">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Apellido</label>
+                            <input class="form-control" type="text" placeholder="González Alonso">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Número de identificación</label>
+                            <input class="form-control" type="text" placeholder="12.345.678-9">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Fecha de nacimiento </label>
+                            <input class="form-control" type="date" placeholder="15/12/1999">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label></label>
+                        </div>
+
+                        <div class="col-md-6 form-group text-center">
+                            <button type="button" class="btn btn-success btn-lg mb-1 w-50" data-bs-toggle="modal" data-bs-target="#modal-modificar-cliente1">
+                               Modificar
+                            </button>
+                            <button type="button" class="btn btn-success btn-lg mb-1 w-65" data-bs-toggle="modal" data-bs-target="#modal-inhabilitar-cuenta">
+                                Inhabilitar cuenta
+                            </button>
+                        </div>
+                    </div>
+                </div>              
+            </div>  
+
+        </div>
+    </div>
+    <!------------------------------------->
+
+    <!--MODAL PARA MODIFICAR DATOS PERSONALES CLIENTE-->
+    <div class="modal fade" id="modal-modificar-cliente1" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-formu-contactoLabel">MENSAJE</h5>
+                </div>
+                <div class="modal-body">
+                    Sus datos personales han sido modificados!
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnAceptar-modificacion" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-------------MODAL PARA PREGUNTAR SI DESEA INHABILITAR SU CUENTA----------->
+    <div class="modal fade" id="modal-inhabilitar-cuenta" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro que inhabilitar su cuenta?
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnDeshabilitarSI" data-bs-target="#modal-aviso-inhabilitacion">Si</button>
+                    <button type="button" class="btn btn-danger" id="btnDeshabilitarNO" data-bs-dismiss="modal" aria-label="Close">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------------------MODAL PARA AVISAR QUE SU CUENTA FUE DESHABILITADA---------------------->
+    <div class="modal fade" id="modal-aviso-inhabilitacion" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                </div>
+                <div class="modal-body">
+                    Su cuenta ha sido Inhabilitada!!
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-danger" id="btnCuentaEliminada" data-bs-dismiss="modal" aria-label="Close">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock contenido %}
+ 
+{% block script %}
+
+    <!--Modal para recargar todo cuando se de en aceptar-->
+    <script>
+        document.getElementById("btnAceptar-modificacion").addEventListener("click", function() {
+            location.reload(); // Recargar la página cuando se hace clic en el botón "Aceptar"
+        });
+    </script>
+
+    <!----------AVISAR QUE LA CUENTA FUE INHABILITADA----->
+    <script>
+        document.getElementById('btnDeshabilitarSI').addEventListener('click', function () {
+            $('#modal-aviso-inhabilitacion').modal('show');
+        });
+    </script>
+    <!----------------------PARA VOLVER SALIR Y VOLVER AL INDICE------------------------->
+    <script>
+        document.getElementById('btnCuentaEliminada').addEventListener('click', function () {
+            window.location.href = '{% url 'INDEX' %}';
+        });
+    </script>
+
+{% endblock script %}

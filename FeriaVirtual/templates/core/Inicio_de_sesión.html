@@ -1,0 +1,68 @@
+{% extends "core/plantilla.html" %}
+{% load static %}
+
+
+
+{% block contenido %}
+<!--FORMULARIO DE INICIO DE SESIÓN-->
+<div class="container-fluid bg-dark mt-5 mb-5 custom-container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-9">
+            <form id="loginForm" class="mb-4" action="">
+                <h2 class="text-white text-center mb-3 mt-5">INICIAR SESIÓN</h2>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label text-white">Correo electrónico</label>
+                    <input type="text" class="form-control" id="inputCorreo" placeholder="correo@ejemplo.com" minlength="5" maxlength="20" required>
+                </div>
+                <div class="mb-4">
+                    <label for="inputPassword5" class="form-label text-white">Contraseña</label>
+                    <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock" placeholder="Ingresa tu contraseña" >
+                    <!-- El atributo minlength establece la longitud mínima -->
+                    <a href="#" class="nav-item nav-link text-success text-center mt-3">Olvidé mi contraseña</a>
+                </div>
+                <div class="mb-3">
+                    <button id="btnLogin" class="btn btn-success btn-block mb-5">Iniciar sesión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--------------------------------------------------------------------->
+{% endblock contenido %}
+
+{% block script %}
+    <!--VALIDACION DE FORMULARIO?--->
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtenemos el elemento del botón y el campo de correo
+            const btnLogin = document.getElementById('btnLogin');
+            const inputCorreo = document.getElementById('inputCorreo');
+        
+            // Agregamos un evento cuando se de click al botón de Login
+            btnLogin.addEventListener('click', function (event) {
+            const correoUsuario = inputCorreo.value;
+            console.log("Correo ingresado:", correoUsuario);
+
+            if (correoUsuario.includes('cliente')) {
+                console.log("Redirigiendo a Perfil-cliente.html");
+                window.location.href = "{% url 'CLIENTE_DATOS' %}"
+            } else if (correoUsuario.includes('productor')) {
+                console.log("Redirigiendo a perfil de productor");
+                window.location.href = 'Perfil_productor_datos.html';
+            } else if (correoUsuario.includes('transportista')) {
+                console.log("Redirigiendo a perfil de transportista");
+                window.location.href = 'Perfil_transportista_datos.html';
+            } else {
+                console.log("Hello world");
+            }
+            event.preventDefault();
+            });
+        });
+
+    </script>
+    <!----->
+{% endblock script %}
+
+    
+

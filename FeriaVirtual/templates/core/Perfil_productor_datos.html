@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Feria Virtual</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Icono de la pestaña de la pagina -->
+    <link href="img/logo_v3.png" rel="icon" type="image/x-icon">
+
+    <!-- Google Web Fonts -->
+    <!-- Para poder cargar las fuentes de Google Web Fonts en tu página web, lo que te permite utilizar la fuente
+     "Roboto" en varios pesos y asegurarte de que se muestre correctamente en tu sitio web.-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">  
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- LIBRERIAS DE ESTILO -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!--WEY YAAAA-->
+    <!-- Incluye los estilos de Bootstrap (CSS) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css">
+
+    <!-- Incluye el JavaScript de Bootstrap (JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
+
+
+    <!-- LINKEO A LA PAGINA DE ESTILOS CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="fondo-fruta">
+    <!-- Primera barra de navegación (con boton de busqueda) -->
+    <div class="container-fluid">
+        
+        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+            <div class="col-lg-4">
+                <a href="index.html" class="text-decoration-none">
+                    <span class="h1 text-uppercase text-white bg-success px-2">Feria</span>
+                    <span class="h1 text-uppercase text-success bg-dark px-2 ml-n1">Virtual</span>
+                </a>
+            </div>
+            <div class="col-lg-4 col-6 text-left">
+                <form action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Buscar productos">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent text-success">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4 col-6 text-right">
+                <p class="m-0">Contactenos</p>
+                <h5 class="m-0">+560 22334455</h5>
+            </div>
+        </div>
+    </div>
+    <!-- Fin de la primera barra de navegacion -->
+
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <div class="container-fluid bg-dark mb-30" style="margin-bottom: 0;">
+        <div class="row px-xl-5" >
+            
+            <div class="col-lg-9" >
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
+                    <a href="index.html" class="text-decoration-none d-block d-lg-none">
+                        <!--ACA SE REFIERE A CUANDO LA BARRA DE NAV SE CONTRAE-->
+                        <span class="h1 text-uppercase text-white bg-success px-2">Feria</span>
+                        <span class="h1 text-uppercase text-success bg-dark px-2 ml-n1">Virtual</span>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a href="index.html" class="nav-item nav-link text-light">Inicio</a>
+                            <a href="Productos.html" class="nav-item nav-link text-light">Productos</a>
+                            <a href="Nosotros.html" class="nav-item nav-link text-light">Nosotros</a>
+                            <a href="Formulario_contacto.html" class="nav-item nav-link text-light">Contacto</a>
+                            <a href="Perfil_productor_datos.html" class="nav-item nav-link text-light">Perfil</a>
+                        </div>
+
+                        <!--ICONO CARRITO DE COMPRAS-->
+                        <div class="navbar-nav ml-auto py-0 d-none d-lg-block mr-3">
+                            <a href="Carrito.html" class="btn px-0 ml-3">
+                                <i class="fas fa-shopping-cart text-success"></i>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            </a>
+                        </div>
+
+                        <!--Aca se pone el boton de inicio de sesion y de registro-->
+                        <button type="button" class="btn btn-danger px-3" data-bs-toggle="modal" data-bs-target="#modal-cierre-sesion">
+                            Cerrar Sesión
+                        </button>
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- FIN DE LA BARRA DE NAVEGACIÓN -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-cierre-sesion" tabindex="-1" aria-labelledby="modal-registroLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-registroLabel">ADVERTENCIA</h5>            
+                </div>
+                <div class="modal-body">
+                    ¿Desea cerrar su sesión?
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnCerrarSesion">Si</button>
+                    <button type="button" class="btn btn-danger" id="btnVolver" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>            
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!--CONTENIDO DEL LA PAGINA-->
+    <div class="container-fluid mt-3">
+        <div class="row px-xl-5">
+            
+            <div class="col-lg-4">
+                
+                <div class="bg-light p-10 mb-2 text-center">
+                    <h1 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Productor</span></h1>
+                </div>
+                <div class="bg-light p-30 mb-5">
+                    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Información</span></h2>
+                    <h3><a href="Perfil_productor_datos.html" class="color-links">DATOS</a></h3>
+                    <h3><a href="Perfil_productor_domicilio.html" class="color-links">DOMICILIO</a></h3>
+                    <h3><a href="Perfil_productor_productos.html" class="color-links">PRODUCTOS</a></h3>
+                    <h3><a href="Perfil_productor_envios.html" class="color-links">ENVÍOS</a></h3>
+                    <h3><a href="Perfil_productor_pedidos.html" class="color-links">PEDIDOS</a></h3>
+                </div>
+
+            </div>
+
+            <div class="col-lg-8 mx-auto">
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+
+                        <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
+                        <div class="col-12">
+                            <h3 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">DATOS PERSONALES</span></h3>
+                        </div>
+                        <!-------------------SON DE 4 EN 4---------->
+                        <div class="col-md-6 form-group">
+                            <label>Nombre</label>
+                            <input class="form-control" type="text" placeholder="Nombre Productor">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Apellido</label>
+                            <input class="form-control" type="text" placeholder="Apellido Productor">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Número de identificación</label>
+                            <input class="form-control" type="text" placeholder="12.345.678-9">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Fecha de nacimiento </label>
+                            <input class="form-control" type="date" placeholder="11-12-1998">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label></label>
+                        </div>
+
+                        <div class="col-md-6 form-group text-center">
+                            <button type="button" class="btn btn-success btn-lg mb-1 w-50" data-bs-toggle="modal" data-bs-target="#modal-modificar-productor1">
+                               Modificar
+                            </button>
+                            <button type="button" class="btn btn-success btn-lg mb-1 w-65" data-bs-toggle="modal" data-bs-target="#modal-inhabilitar-cuenta-prod">
+                                Inhabilitar cuenta
+                            </button>
+                        </div>
+                    </div>
+                </div>              
+            </div>  
+
+        </div>
+    </div>
+    <!------------------------------------->
+
+
+    <!--2DOS MODALES-->
+    <!--MODAL PARA MODIFICAR DATOS PERSONALES PRODUCTOR-->
+
+    <div class="modal fade" id="modal-modificar-productor1" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-formu-contactoLabel">MENSAJE</h5>
+                </div>
+                <div class="modal-body">
+                    Sus datos personales han sido modificados!
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnAceptar-modificacion" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-------------MODAL PARA PREGUNTAR SI DESEA INHABILITAR SU CUENTA DE PRODUCTOR----------->
+    <div class="modal fade" id="modal-inhabilitar-cuenta-prod" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro que inhabilitar su cuenta?
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnDeshabilitarSI" data-bs-target="#modal-aviso-inhabilitacion">Si</button>
+                    <button type="button" class="btn btn-danger" id="btnDeshabilitarNO" data-bs-dismiss="modal" aria-label="Close">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------------------MODAL PARA AVISAR QUE SU CUENTA FUE DESHABILITADA---------------------->
+    <div class="modal fade" id="modal-aviso-inhabilitacion-prod" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                </div>
+                <div class="modal-body">
+                    Su cuenta ha sido Inhabilitada!!
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-danger" id="btnCuentaEliminada" data-bs-dismiss="modal" aria-label="Close">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-------------------------------------------->
+
+    <!-- BOTON PARA VOLVER ARRIBA -->
+    <a href="#" class="btn btn-success back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!---NUEVOS MODALES-->
+    <!--Modal para recargar todo cuando se de en aceptar-->
+    <script>
+        document.getElementById("btnAceptar-modificacion").addEventListener("click", function() {
+            location.reload(); // Recargar la página cuando se hace clic en el botón "Aceptar"
+        });
+    </script>
+
+    <!--SCRIPT DE BOTON PARA CERRAR SESIÓN-->
+    <script>
+        document.getElementById('btnCerrarSesion').addEventListener('click', function () {
+            window.location.href = 'Inicio_de_sesión.html';
+        });
+    </script>
+
+    <!---------------->
+    <!----------MODAL PARA AVISAR QUE LA CUENTA FUE INHABILITADA----->
+    <script>
+        document.getElementById('btnDeshabilitarSI').addEventListener('click', function () {
+            $('#modal-aviso-inhabilitacion-prod').modal('show');
+        });
+    </script>
+    <!----------------------MODAL PARA VOLVER SALIR Y VOLVER AL INDICE------------------------->
+    <script>
+        document.getElementById('btnCuentaEliminada').addEventListener('click', function () {
+            window.location.href = 'index.html';
+        });
+    </script>
+
+    <!-- LIBRERIAS PARA PODER USAR BOOSTRAP -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+   
+    <!-- MODALES? -->
+    <script>
+    const myModal = document.getElementById('modal-registro');
+    const myInput = document.getElementById('myInput');
+    
+    
+  
+    
+    myModal.addEventListener('shown.bs.modal', () => {
+        myInput.focus();
+    });
+    </script>
+
+</body>
+
+<footer>
+    <div class="container-fluid bg-dark text-white pt-5 ">
+        <div class="row justify-content-center px-xl-5">
+            <a href="#" class="text-white mb-5">© 2004 Maipo Grande. Todos los Derechos Reservados. </a>
+        </div>
+    </div>
+</footer>
+
+
+
+</html>
