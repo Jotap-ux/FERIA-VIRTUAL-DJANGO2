@@ -44,17 +44,68 @@ def regis_transp(request):
 def regis_transp2(request):
     return render(request, "core/Registro_transportista2.html")
 
+#-----------------------------------------------------------------------------------------------!!
 #PERFILES DE CADA USUARIO
 #CLIENTE
 
-# falta!
+# lista
 def perfil_cli_datos(request):
     return render(request, "core/Perfil_cliente_datos.html")
 
-# falta!
+# lista
 def perfil_cli_domici(request):
     return render(request, "core/Perfil_cliente_domicilio.html")
 
-# falta!
+# lista
 def perfil_cli_pedi(request):
     return render(request, "core/Perfil_cliente_pedidos.html")
+
+#PRODUCTOR-------------------------------------------------------------------------------------
+# lista
+def perfil_pro_datos(request):
+    return render(request, "core/Perfil_productor_datos.html")
+
+# lista
+def perfil_pro_domici(request):
+    return render(request, "core/Perfil_productor_domicilio.html")
+
+# lista
+def perfil_pro_envios(request):
+    return render(request, "core/Perfil_productor_envios.html")
+
+# lista
+def perfil_pro_pedi(request):
+    return render(request, "core/Perfil_productor_pedidos.html")
+
+# lista
+def perfil_pro_productos(request):
+    return render(request, "core/Perfil_productor_productos.html")
+
+#TRANSPORTISTA
+# lista
+def perfil_transp_datos(request):
+    return render(request, "core/Perfil_transportista_datos.html")
+
+# lista
+def perfil_transp_domici(request):
+    return render(request, "core/Perfil_transportista_domicilio.html")
+
+# lista
+def perfil_transp_pedi(request):
+    return render(request, "core/Perfil_transportista_pedidos.html")
+
+# lista
+def perfil_transp_transpor(request):
+    return render(request, "core/Perfil_transportista_transportes.html")
+
+# lista
+def perfil_transp_vehi(request):
+    return render(request, "core/Perfil_transportista_vehiculos.html")
+
+#subasta---
+def subasta(request):
+    return render(request, "core/Subastas.html")
+
+#DETALLE DEL PRODUCTO
+def detalle_producto(request):
+    return render(request, "core/Producto_detalle.html")
