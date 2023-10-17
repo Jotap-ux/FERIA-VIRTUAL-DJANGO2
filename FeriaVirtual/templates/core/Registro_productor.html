@@ -15,89 +15,100 @@
         </div>
     </div>
 
+    <!--PROBANDO FORMULARIO-->
+  
+   
+    
+    
     <!--FORMULARIO DE REGISTRO-->
-    <div class="container-fluid">
-        <div class="row px-xl-5">
-            <div class="col-lg-8 mx-auto">
-                <h3 class="section-title position-relative text-uppercase mb-3 text-center"><span class="bg-secondary pr-3">Registro Productor</span></h3>
-                <div class="bg-light p-30 mb-5">
-                    <div class="row">
+    <form method="post" action="{% url 'REGIS_PROD' %}">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="row px-xl-5">
+                <div class="col-lg-8 mx-auto">
+                    <h3 class="section-title position-relative text-uppercase mb-3 text-center"><span class="bg-secondary pr-3">Registro Productor</span></h3>
+                    <div class="bg-light p-30 mb-5">
+                        <div class="row">
+                            
+                            <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
+                            <div class="col-12">
+                                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Personal</span></h5>
+                            </div>
+                            <!-------------------SON DE 4 EN 4---------->
+                            <div class="col-md-6 form-group">
+                                <label for="id_nombre">Nombre</label>
+                                <input name="nombre" id="id_nombre" required class="form-control" type="text" placeholder="Ingrese su nombre">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="id_apellidopat">Apellido Paterno</label>
+                                <input name="apellidopat" id="id_apellidopat" required class="form-control" type="text" placeholder="Ingrese su primer apellido">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="id_apellidomat">Apellido Materno</label>
+                                <input name="apellidomat" id="id_apellidomat" required class="form-control" type="text" placeholder="Ingrese su segundo apellido">
+                            </div>
+                            <div class="col-md-5 form-group">
+                                <label for="id_rut">Numero de identificación</label>
+                                <input name="rut" id="id_rut" required class="form-control" type="text" placeholder="00.000.000">
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label for="id_dv">DV</label>
+                                <input name="dv" id="id_dv" required class="form-control" type="text" placeholder="00.000.000-x">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="id_fechanacimiento">Fecha de Nacimiento</label>
+                                <input name="fechanacimiento" id="id_fechanacimiento" required class="form-control" type="text" placeholder="00-00-00">
+                            </div>
+                            <!--------------------------------------------------->
+                            <!--PALABRA PARA SEPARAR-->
+                            <div class="col-12">
+                                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Domicilio Tributario</span></h5>
+                            </div>
+                            <!------------------------------------------------------>
+                            <div class="col-md-6 form-group">
+                                <label for="id_direccion">Dirección</label>
+                                <input name="direccion" id="id_direccion" required class="form-control" type="text" placeholder="Ingrese la calle y el número">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="id_comuna_idcomuna">Comuna</label>
+                                <input name="comuna_idcomuna" id="id_comuna_idcomuna" required class="form-control" type="number" placeholder="Ingrese la comuna">
+                            </div>                        
+                          
+                            <!--PALABRA PARA SEPARAR-->
+                            <div class="col-12">
+                                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Correo</span></h5>
+                            </div>
+                            <!------------------------------------------------------>
+                            <div class="col-md-6 form-group">
+                                <label for="id_correoelectronico">Correo Electrónico</label>
+                                <input name="correoelectronico" id="id_correoelectronico" required class="form-control" type="email" placeholder="Ingrese su email">
+                            </div>
+                            
+                            <div class="col-md-6 form-group">
+                                <label for="id_contrasena">Contraseña</label>
+                                <input name="contrasena" id="id_contrasena" required class="form-control" type="password" placeholder="Ingrese su contraseña">
+                            </div>
+                            
 
-                        <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
-                        <div class="col-12">
-                            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Personal</span></h5>
-                        </div>
-                        <!-------------------SON DE 4 EN 4---------->
-                        <div class="col-md-6 form-group">
-                            <label>Nombre</label>
-                            <input class="form-control" type="text" placeholder="Ingrese su nombre">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Apellido</label>
-                            <input class="form-control" type="text" placeholder="Ingrese su apellido">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Numero de identificación</label>
-                            <input class="form-control" type="text" placeholder="00.000.000-x">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Fecha de Nacimiento</label>
-                            <input class="form-control" type="date" placeholder="00/00/00">
-                        </div>
-                        <!--------------------------------------------------->
-                        <!--PALABRA PARA SEPARAR-->
-                        <div class="col-12">
-                            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Domicilio Tributario</span></h5>
-                        </div>
-                        <!------------------------------------------------------>
-                        <div class="col-md-6 form-group">
-                            <label>Dirección</label>
-                            <input class="form-control" type="text" placeholder="Ingrese la calle y el número">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Comuna</label>
-                            <input class="form-control" type="text" placeholder="Ingrese la comuna">
-                        </div>                        
-                        <div class="col-md-6 form-group">
-                            <label>Región</label>
-                            <input class="form-control" type="text" placeholder="Ingrese la región">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>País</label>
-                            <input class="form-control" type="text" placeholder="Ingrese el país">
-                        </div>
-                        <!--PALABRA PARA SEPARAR-->
-                        <div class="col-12">
-                            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Correo</span></h5>
-                        </div>
-                        <!------------------------------------------------------>
-                        <div class="col-md-6 form-group">
-                            <label>Correo Electrónico</label>
-                            <input class="form-control" type="email" placeholder="Ingrese su email">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Confirme su Correo Electrónico</label>
-                            <input class="form-control" type="email" placeholder="Ingrese su email">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Contraseña</label>
-                            <input class="form-control" type="password" placeholder="Ingrese su contraseña">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Confirme su Contraseña</label>
-                            <input class="form-control" type="password" placeholder="Ingrese su contraseña">
-                        </div>
+                            <div class="col-12 text-center mt-4 mb-2">
+                               
+                                <button type="submit" class="btn btn-success btn-lg mb-1">
+                                    Registrarse
+                                </button>
 
-                        <div class="col-12 text-center mt-4 mb-2">
-                            <button type="button" class="btn btn-success btn-lg mb-1" data-bs-toggle="modal" data-bs-target="#modal-registro-productor">
-                                Registrarse
-                            </button>
+                                <!--- data-bs-toggle="modal" data-bs-target="#modal-registro-productor"--->
+                            </div>
                         </div>
-                    </div>
-                </div>              
-            </div>            
+                    </div>              
+                </div>            
+            </div>
         </div>
-    </div>
+    </form>
+
+
+    <!---------------------------------------->
+
+
 
     <!--MODAL PARA ACEPTAR TERMINOS Y CONDICIONES-->
     <div class="modal fade" id="modal-registro-productor" tabindex="-1" aria-labelledby="modal-registro-productorLabel" aria-hidden="true">
@@ -153,4 +164,20 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Obtén el botón "Si" por su id
+            var btnAceptarProductor = document.getElementById('btnAceptarProductor');
+        
+            // Agrega un evento de clic al botón "Si"
+            btnAceptarProductor.addEventListener('click', function () {
+                // Envía el formulario cuando se haga clic en "Si"
+                document.querySelector('form').submit();
+            });
+        });
+    </script>
+    
 {% endblock script %}
+
+
+

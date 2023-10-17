@@ -76,11 +76,14 @@ WSGI_APPLICATION = 'proyectoFeriaVirtual.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'orcl',  # Aca va el SID de la BD
+        'USER': 'feria_virtual',     # Tu nombre de usuario de Oracle
+        'PASSWORD': 'feria_virtual',  # Tu contraseña de Oracle
+        'HOST': 'localhost',      # Puede ser 'localhost' o la dirección IP del servidor Oracle
+        'PORT': '1521',           # Puerto de Oracle por defecto
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
