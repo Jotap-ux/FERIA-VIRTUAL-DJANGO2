@@ -30,4 +30,14 @@ def crear_clienteNormal(rut, dv, nombre, apellidopat, apellidomat, direccion, fe
 
     return response
 
+def crear_clienteEmpresa(direccion, correoelectronico, contrasena, identificadorempresa, razonsocial, comuna_idcomuna):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.agregarClienteEmp(direccion=direccion, correoelectronico=correoelectronico,contrasena=contrasena,
+                                                identificadorempresa=identificadorempresa,razonsocial=razonsocial, comuna_idcomuna=comuna_idcomuna)
+
+    return response
+
+#def listar_productos
 #client = zeep.Client(URL_WEBSERVICE)

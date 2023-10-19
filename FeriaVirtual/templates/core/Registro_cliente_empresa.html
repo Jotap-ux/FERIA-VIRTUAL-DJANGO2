@@ -17,85 +17,70 @@
     <!------------------------>
 
     <!--FORMULARIO DE REGISTRO-->
-    <div class="container-fluid">
-        <div class="row px-xl-5">
-            <div class="col-lg-8 mx-auto">
-                <h3 class="section-title position-relative text-uppercase mb-3 text-center"><span class="bg-secondary pr-3">Registro Empresa - Cliente</span></h3>
-                <div class="bg-light p-30 mb-5">
-                    <div class="row">
+    <form method="post" action="{% url 'REGIS_EMPRESA' %}">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="row px-xl-5">
+                <div class="col-lg-8 mx-auto">
+                    <h3 class="section-title position-relative text-uppercase mb-3 text-center"><span class="bg-secondary pr-3">Registro Empresa - Cliente</span></h3>
+                    <div class="bg-light p-30 mb-5">
+                        <div class="row">
 
-                        <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
-                        <div class="col-12">
-                            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Personal</span></h5>
-                        </div>
-                        <!-------------------SON DE 4 EN 4---------->
-                        <div class="col-12 form-group">
-                            <label>Razón Social</label>
-                            <input class="form-control" type="text" placeholder="Ingrese la razón social">
-                        </div>
-                        
-                        <div class="col-md-6 form-group">
-                            <label>Numero de identificación</label>
-                            <input class="form-control" type="text" placeholder="77.777.777-7">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Fecha de Constitución</label>
-                            <input class="form-control" type="date" placeholder="00/00/00">
-                        </div>
-                        <!--------------------------------------------------->
-                        <!--PALABRA PARA SEPARAR-->
-                        <div class="col-12">
-                            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Domicilio</span></h5>
-                        </div>
-                        <!------------------------------------------------------>
-                        <div class="col-md-6 form-group">
-                            <label>Dirección</label>
-                            <input class="form-control" type="text" placeholder="Ingrese la calle y el número">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Comuna</label>
-                            <input class="form-control" type="text" placeholder="Ingrese la comuna">
-                        </div>                        
-                        <div class="col-md-6 form-group">
-                            <label>Región</label>
-                            <input class="form-control" type="text" placeholder="Ingrese la región">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>País</label>
-                            <input class="form-control" type="text" placeholder="Ingrese el país">
-                        </div>
-                        <!--PALABRA PARA SEPARAR-->
-                        <div class="col-12">
-                            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Correo</span></h5>
-                        </div>
-                        <!------------------------------------------------------>
-                        <div class="col-md-6 form-group">
-                            <label>Correo Electrónico</label>
-                            <input class="form-control" type="email" placeholder="Ingrese su email">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Confirme su Correo Electrónico</label>
-                            <input class="form-control" type="email" placeholder="Ingrese su email">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Contraseña</label>
-                            <input class="form-control" type="password" placeholder="Ingrese su contraseña">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Confirme su Contraseña</label>
-                            <input class="form-control" type="password" placeholder="Ingrese su contraseña">
-                        </div>
+                            <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
+                            <div class="col-12">
+                                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Personal</span></h5>
+                            </div>
+                            <!-------------------SON DE 4 EN 4---------->
+                            <div class="col-12 form-group">
+                                <label for="id_razonsocial">Razón Social</label>
+                                <input name="razonsocial" id="id_razonsocial" required class="form-control" type="text" placeholder="Ingrese la razón social">
+                            </div>
+                            
+                            <div class="col-md-6 form-group">
+                                <label for="id_identificadorempresa">Numero de identificación</label>
+                                <input name="identificadorempresa" id="id_identificadorempresa" required class="form-control" type="text" placeholder="sin puntos ni guion">
+                            </div>
+                            <!--ACA VA LA FECHA DE CONSTITUCION DE LA EMPRESA-->                            
+                            <!--------------------------------------------------->
+                            <!--PALABRA PARA SEPARAR-->
+                            <div class="col-12">
+                                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Domicilio</span></h5>
+                            </div>
+                            <!------------------------------------------------------>
+                            <div class="col-md-6 form-group">
+                                <label for="id_direccion">Dirección</label>
+                                <input name="direccion" id="id_direccion" required class="form-control" type="text" placeholder="Ingrese la calle y el número">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="id_comuna_idcomuna">Comuna</label>
+                                <input name="comuna_idcomuna" id="id_comuna_idcomuna" required class="form-control" type="text" placeholder="Ingrese la comuna">
+                            </div>                                                    
+                            <!--PALABRA PARA SEPARAR-->
+                            <div class="col-12">
+                                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Correo</span></h5>
+                            </div>
+                            <!------------------------------------------------------>
+                            <div class="col-md-6 form-group">
+                                <label for="id_correoelectronico">Correo Electrónico</label>
+                                <input name="correoelectronico" id="id_correoelectronico" required class="form-control" type="email" placeholder="Ingrese su email">
+                            </div>                            
+                            <div class="col-md-6 form-group">
+                                <label for="id_contrasena">Contraseña</label>
+                                <input name="contrasena" id="id_contrasena" required class="form-control" type="password" placeholder="Ingrese su contraseña">
+                            </div>                            
+                            <div class="col-12 text-center mt-4 mb-2">
+                                <button type="submit" class="btn btn-success btn-lg mb-1">
+                                    Registrarse
+                                </button>
 
-                        <div class="col-12 text-center mt-4 mb-2">
-                            <button type="button" class="btn btn-success btn-lg mb-1" data-bs-toggle="modal" data-bs-target="#modal-registro-empresa">
-                                Registrarse
-                            </button>
+                                <!--- data-bs-toggle="modal" data-bs-target="#modal-registro-persona"--->
+                            </div>
                         </div>
-                    </div>
-                </div>              
-            </div>            
+                    </div>              
+                </div>            
+            </div>
         </div>
-    </div>
+    </form>
 
     <!--MODAL PARA ACEPTAR TERMINOS Y CONDICIONES-->
     <div class="modal fade" id="modal-registro-empresa" tabindex="-1" aria-labelledby="modal-registro-empresaLabel" aria-hidden="true">

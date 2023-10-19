@@ -1,16 +1,24 @@
 from django import forms
 from django.shortcuts import render, redirect
-from .conexionWebService import crear_productor, crear_clienteNormal
+from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa
 #from.models import Productor, Cliente
+from .models import Producto
 from django.http import HttpResponse
 
 # lista
 def index(request):
     return render(request, "core/index.html")
 
-# lista
+# LISTANDO TODOS LOS PRODUCTOS DISPONIBLES EN LA BD
 def productos(request):
-    return render(request, "core/Productos.html")
+
+    productos = Producto.objects.all()
+
+    data = {
+        'productos' : productos
+    }
+
+    return render(request, "core/Productos.html", data)
 
 # lista
 def nosotros(request):
@@ -28,11 +36,37 @@ def inicio_sesion(request):
 def carrito(request):
     return render(request, "core/Carrito.html")
 
-# lista
+# Formulario registro CLIENTE EMPRESA - USA LA API
 def regis_clien_em(request):
-    return render(request, "core/Registro_cliente_empresa.html")
+    if request.method == 'POST':        
+        direccion = request.POST.get('direccion')
+        #fechanacimiento = request.POST.get('fechanacimiento')        
+        correoelectronico = request.POST.get('correoelectronico')
+        contrasena = request.POST.get('contrasena')
+        identificadorempresa = request.POST.get('identificadorempresa')
+        razonsocial = request.POST.get('razonsocial')
+        comuna_idcomuna = request.POST.get('comuna_idcomuna')
+        
+        response = crear_clienteEmpresa(            
+            direccion,
+            #fechanacimiento,            
+            correoelectronico,
+            contrasena,
+            identificadorempresa,
+            razonsocial,
+            comuna_idcomuna
+        )
+         # Procesa la respuesta del servicio SOAP, si es necesario
 
-# lista
+        if response == 'OK':
+            return redirect('REGIS_EMPRESA')
+        else:
+            #return HttpResponse('Hello World')
+            return redirect('REGIS_EMPRESA')
+    else:
+        return render(request, "core/Registro_cliente_empresa.html")
+
+# Formulario registro CLIENTE PERSONA - USA LA API
 def regis_clien_per(request):
     if request.method == 'POST':
         rut = request.POST.get('rut')
@@ -68,9 +102,7 @@ def regis_clien_per(request):
     else:
         return render(request, "core/Registro_cliente_persona.html")
 
-
-
-
+# Formulario registro PRODUCTOR - USA LA API
 def regis_prod(request):
     if request.method == 'POST':
         rut = request.POST.get('rut')
@@ -109,10 +141,9 @@ def regis_prod(request):
         return render(request, 'core/Registro_productor.html')
     
 
-#De esta manera, tu archivo conexionWebService.py contiene la lógica para el servicio web SOAP,
-# y tu archivo views.py se encarga de manejar el formulario y llamar a la función correspondiente 
-# desde el archivo conexionWebService.py. Esto mantiene organizado tu código y separa las responsabilidades 
-# de manera adecuada.
+#Mi archivo conexionWebService.py contiene la lógica para el servicio web SOAP,
+# y el archivo views.py se encarga de manejar el formulario y llamar a la función correspondiente 
+# desde el archivo conexionWebService.py. 
 #------------------------------------------------------------------
 
 
