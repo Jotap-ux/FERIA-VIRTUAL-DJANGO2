@@ -1,4 +1,4 @@
-{% extends "core/plantilla.html" %}
+{% extends "core/plantilla2.html" %}
 {% load static %}
 
     
@@ -12,9 +12,26 @@
                     <img class="w-100" src="{% static 'img/carrusel-1.jpg' %}" alt="Image"> 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>
-                            <h1 class="display-3 text-white mb-md-4">En Feria Virtual</h1>
-                            <a href="" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a comprar</a>
+
+                            {% if request.session.user_info.tipo_usuario == 'PRODUCTOR' %}
+                                <h1 class="display-3 text-white mb-md-4">BIENVENIDO SEÑOR PRODUCTOR</h1>
+                                <h3 class="text-white text-uppercase mb-md-3">Esperamos que su estadia por la pagina web sea agradable!</h3>           
+                            {% elif request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
+                                <h4 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO CLIENTE</h4>
+                                <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>
+                                <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
+                                <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a comprar</a>
+                            {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
+                                <h4 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO CLIENTE EMPRESA</h4>
+                                <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>
+                                <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
+                                <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a comprar</a>
+                            {% else %}                                
+                                <h2 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h2>
+                                <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
+                                <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a comprar</a>
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>

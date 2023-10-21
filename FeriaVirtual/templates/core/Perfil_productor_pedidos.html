@@ -2,12 +2,6 @@
 {% load static %} 
 
 
-{% block menu %}
-
-    <a href="{% url 'PROD_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
-
-{% endblock menu %}
-
 {% block contenido %}
 
     <!--CONTENIDO DEL LA PAGINA-->
@@ -21,11 +15,11 @@
                 </div>
                 <div class="bg-light p-30 mb-5">
                     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Información</span></h2>
-                    <h3><a href="Perfil_productor_datos.html" class="color-links">DATOS</a></h3>
-                    <h3><a href="Perfil_productor_domicilio.html" class="color-links">DOMICILIO</a></h3>
-                    <h3><a href="Perfil_productor_productos.html" class="color-links">PRODUCTOS</a></h3>
-                    <h3><a href="Perfil_productor_envios.html" class="color-links">ENVÍOS</a></h3>
-                    <h3><a href="Perfil_productor_pedidos.html" class="color-links">PEDIDOS</a></h3>
+                    <h3><a href="{% url 'PROD_DATOS' %}" class="color-links">DATOS</a></h3>
+                    <h3><a href="{% url 'PROD_DOMICI' %}" class="color-links">DOMICILIO</a></h3>
+                    <h3><a href="{% url 'PROD_PRODUC' %}" class="color-links">PRODUCTOS</a></h3>
+                    <h3><a href="{% url 'PROD_ENVIOS' %}" class="color-links">ENVÍOS</a></h3>
+                    <h3><a href="{% url 'PROD_PEDI' %}" class="color-links">PEDIDOS</a></h3>
                 </div>
 
 

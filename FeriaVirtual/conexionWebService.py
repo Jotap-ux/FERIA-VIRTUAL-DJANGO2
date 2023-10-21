@@ -68,7 +68,26 @@ def obtener_productos_json():
     
     return json_data
 
-
+def autenticar_usuario(correoelectronico, contrasena):
+    
+    client = Client(URL_WEBSERVICE)
+    
+    peticion_login = client.service.listarlogin1(correoelectronico, contrasena)
+    
+    if peticion_login is None:
+        # El usuario no existe, devuelve un valor especial o mensaje de error
+        return json.dumps({'error': 'El usuario no existe'}, indent=4)
+    
+    
+    response_data = {
+        'Rut_usuario': peticion_login.identificador,
+        'Tipo_usuario': peticion_login.tipousuario
+    }
+    
+    # Convierte el diccionario a una cadena JSON
+    json_data = json.dumps(response_data, indent=4)
+    
+    return json_data
 
 
 #client = zeep.Client(URL_WEBSERVICE) -- listarProductos()

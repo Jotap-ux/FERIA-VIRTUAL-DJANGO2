@@ -9,6 +9,11 @@
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
 
+    <!------------------------------------------------------->
+    <meta http-equiv="cache-control" content="no-store">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
     <!-- Icono de la pestaña de la pagina -->
     <link href="{% static 'img/logo_v3.png' %}" rel="icon" type="image/x-icon">
 
@@ -23,7 +28,6 @@
 
     <!-- LIBRERIAS DE ESTILO -->
     <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
-    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
 
     <!--WEY YAAAA-->
     <!-- Incluye los estilos de Bootstrap (CSS) -->
@@ -73,7 +77,7 @@
     <div class="container-fluid bg-dark mb-30" style="margin-bottom: 0;">
         <div class="row px-xl-5" >
             
-            <div class="col-lg-9" >
+            <div class="col-lg-12" >
                 <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
                     <a href="index.html" class="text-decoration-none d-block d-lg-none">
                         <!--ACA SE REFIERE A CUANDO LA BARRA DE NAV SE CONTRAE-->
@@ -89,9 +93,20 @@
                             <a href="{% url 'PRODUCTOS' %}" class="nav-item nav-link text-light">Productos</a>
                             <a href="{% url 'NOSOTROS' %}" class="nav-item nav-link text-light">Nosotros</a>
                             <a href="{% url 'CONTACTO' %}" class="nav-item nav-link text-light">Contacto</a>
+
+                            {% if request.session.user_info.tipo_usuario == 'PRODUCTOR' %}
+                                <a href="{% url 'PROD_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
+                            {% elif request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
+                                <a href="{% url 'CLIENTE_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
+                            {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
+                                <a href="{% url 'CLIENTE_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
+                            {% endif %}
+
+
                             {% block menu %}
                             
                             {% endblock menu %}
+                                                                              
                         </div>
 
                         <!--ICONO CARRITO DE COMPRAS-->
@@ -102,10 +117,52 @@
                             </a>
                         </div>
 
-                         <!--Aca se pone el boton de inicio de sesion y de registro-->
-                        <button type="button" class="btn btn-danger px-3" data-bs-toggle="modal" data-bs-target="#modal-cierre-sesion">
-                            Cerrar Sesión
-                        </button>
+                        <!---DATOS DEL USUARIO CON LA SESIÓN INICIADA---->
+                        <a href="" class="nav-item nav-link text-light">{{ user_info.username }}</a> 
+
+                        {% if request.session.user_info.tipo_usuario == 'PRODUCTOR' %} 
+                            
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.NombreCompleto }}</a>
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a>  
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>
+                            
+                        
+                        {% elif request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
+                            
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.NombreCompleto }}</a> 
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a>   
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>
+                            
+
+                        {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
+
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.RazonSocial }}</a>
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.Rut_usuario }}</a>
+                            <a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>
+                                 
+                        {% endif %}
+                                                                         
+
+                        <!--OPCIONES QUE SE MUESTRAN CUANDO HAY USUARIO CON LA SESIÓN INICIADA--->
+                        {% if user_info %}
+                            
+                            <!-- Botón para cerrar sesión -->
+                            <button type="button" class="btn btn-danger px-3" data-bs-toggle="modal" data-bs-target="#modal-cierre-sesion">
+                                Cerrar Sesión
+                            </button>
+
+                            
+                        {% else %}
+                            <!-- Botones para inicio de sesión y registro -->
+                            <!-- Aquí colocas tus botones de inicio de sesión y registro si el usuario no ha iniciado sesión -->
+                            <!--Aca se pone el boton de inicio de sesion y de registro-->
+                            <button id="btnIniciosesion" class="btn btn-success px-3 mr-2">Iniciar Sesión</button>
+                            <button type="button" class="btn btn-success px-3" data-bs-toggle="modal" data-bs-target="#modal-registro">
+                                Registrarse
+                            </button>
+                        {% endif %}
+
+                        
 
                     </div>
                 </nav>
@@ -133,11 +190,53 @@
         </div>
     </div>
 
+    
+   
     <!--REGION QUE SERÁ EDITABLE-->
     {% block contenido %}
     
     {% endblock contenido %}
 
+    <!------------------------------>
+    <!-- 1ER MODAL (PARA ELEGIR QUE TIPO DE USUARIO)-->
+    <div class="modal fade" id="modal-registro" tabindex="-1" aria-labelledby="modal-registroLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-registroLabel">REGISTRO</h5>
+                    <button type="button" class="btn btn-danger ml-3" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
+                </div>
+                <div class="modal-body">
+                    Tipo de perfil solicitado
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnCliente">Cliente</button>
+                    <button type="button" class="btn btn-success" id="btnProductor">Productor</button>
+                    <button type="button" class="btn btn-success" id="btnTransportista">Transportista</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!--2DO MODAL (PARA TIPO DE CLIENTE)-->
+    <div class="modal fade" id="modal-cliente" tabindex="-1" aria-labelledby="modal-clienteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-clienteLabel">REGISTRO</h5>
+                    <button type="button" class="btn btn-danger ml-3" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
+                </div>
+                <div class="modal-body">
+                    ¿Qué tipo de cliente eres?
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-outline-success" id="btnClientePersona">Persona natural</button>
+                    <button type="button" class="btn btn-outline-success" id="btnClienteEmpresa">Empresa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
    
     <!-- BOTON PARA VOLVER ARRIBA -->
     <a href="#" class="btn btn-success back-to-top"><i class="fa fa-angle-double-up"></i></a>
@@ -149,16 +248,55 @@
     <!--SCRIPT DE BOTON PARA CERRAR SESIÓN-->
     <script>
         document.getElementById('btnCerrarSesion').addEventListener('click', function () {
-            window.location.href = '{% url 'INDEX' %}';
+            
+            window.location.href = "{% url 'CERRAR_SESION' %}";
         });
     </script>
 
+    <!--SCRIPTS DE BOTONES INICIO DE SESIÓN Y REGISTRO POR TIPOS DE USUARIO-->
+    <!------------------------------------------------------------------------->
+    <script>
+        document.getElementById('btnIniciosesion').addEventListener('click', function () {
+            window.location.href = '{% url 'INICIO_SESION' %}'    
+        });
+    </script>
+    
+    <script>
+        document.getElementById('btnProductor').addEventListener('click', function () {
+            window.location.href = '{% url 'REGIS_PROD' %}'    
+        });
+    
+        document.getElementById('btnTransportista').addEventListener('click', function () {
+            window.location.href = '{% url 'REGIS_TRANSP' %}'    
+        });
+    </script>
 
+    <!--SCRIPT DE BOTON REGISTRO DE CLIENTE-->
+    <script>
+        document.getElementById('btnCliente').addEventListener('click', function () {
+            $('#modal-cliente').modal('show');
+        });
+    </script>
+    
+    <!--BOTONES PARA IR A REGISTRO POR TIPO DE CLIENTE-->
+    <script>
+        document.getElementById('btnClientePersona').addEventListener('click', function () {
+            window.location.href = '{% url 'REGIS_PERSONA' %}'    
+        });
+    
+        document.getElementById('btnClienteEmpresa').addEventListener('click', function () {
+            window.location.href = '{% url 'REGIS_EMPRESA' %}'    
+        });
+    </script>
+
+ 
+    <!-------------------------------------------------->
+
+    <!--------------------------------------------------------------------->
     <!-- LIBRERIAS PARA PODER USAR BOOSTRAP -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
