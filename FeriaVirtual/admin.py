@@ -9,3 +9,4 @@ from .models import Seguro, Tipocliente, Tiposeguro, Transporte, Transportista
 
 #para ver las tablas desde django admin...
 admin.site.register(Productor)
+admin.site.register(ProductorProducto)

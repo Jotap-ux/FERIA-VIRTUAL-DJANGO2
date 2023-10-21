@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'FeriaVirtual', #---> AGREGAR LA APLICACIÓN WEB
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

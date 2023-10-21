@@ -1,24 +1,27 @@
 from django import forms
 from django.shortcuts import render, redirect
-from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa
+from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, obtener_productos_json
+#from .probandoapi import obtener_productos_json
 #from.models import Productor, Cliente
-from .models import Producto
+#from .models import Producto
 from django.http import HttpResponse
+import xml.etree.ElementTree as ET
+import json
 
 # lista
 def index(request):
     return render(request, "core/index.html")
 
-# LISTANDO TODOS LOS PRODUCTOS DISPONIBLES EN LA BD
+#para poder listar los PRODUCTOS 
 def productos(request):
 
-    productos = Producto.objects.all()
+    # Llama a la función para obtener la lista de productos en formato JSON
+    json_data = obtener_productos_json()
 
-    data = {
-        'productos' : productos
-    }
+    # Parsea la cadena JSON a una lista de diccionarios
+    lista_de_productos = json.loads(json_data)
 
-    return render(request, "core/Productos.html", data)
+    return render(request, "core/Productos.html", {"productos": lista_de_productos})
 
 # lista
 def nosotros(request):
