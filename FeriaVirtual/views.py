@@ -1,8 +1,7 @@
 from django import forms
 from django.shortcuts import render, redirect
-from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, obtener_productos_json, autenticar_usuario
-#from .probandoapi import obtener_productos_json
-#from .login import autenticar_usuario
+from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, obtener_productos_json, autenticar_usuario, agregar_productos
+#from .Apiproductos import agregar_productos
 from.models import Productor, Cliente
 #from .models import Producto
 from django.http import HttpResponse
@@ -12,6 +11,8 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.views.decorators.cache import never_cache
 #from django.contrib.auth.decorators import login_required
+from .decorators import user_info_required
+from django.utils import formats
 
 # lista
 def index(request):
@@ -72,17 +73,30 @@ def inicio_sesion(request):
                 # Busca el objeto Productor en la base de datos utilizando el campo 'rut'
                 productor = Productor.objects.get(rut=rut_usuario)
 
+                 # veriricando contraseña, aunque no funciona f
+                if productor.contrasena != contrasena:
+                    response = HttpResponse("Error, contraseña incorrecta!")
+                    return response
+                
                 # Concatena nombre y apellido y agrega el valor resultante a user_info
                 nombre_completo = f"{productor.nombre} {productor.apellidopat} {productor.apellidomat}"
 
                 rut_completo = f"{rut_usuario}-{productor.dv}"
+                
+                #nombre = {productor.nombre}
+                #apellido = {productor.apellidopat}
+                # Obtiene la fecha de nacimiento del modelo Productor
+                #fecha_nacimiento = productor.fechanacimiento.strftime("%Y-%m-%d")
 
                 request.session['user_info'] = {
                     'username': correoelectronico,
                     'tipo_usuario': tipo_usuario,
                     'Rut_usuario': rut_usuario,
                     'NombreCompleto': nombre_completo,
-                    'Rut_completo': rut_completo
+                    'Rut_completo': rut_completo,
+                    'Fecha_nacimiento': productor.fechanacimiento.strftime("%d-%m-%Y"),
+                    'Nombre': productor.nombre,
+                    'Apellido': productor.apellidopat
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
@@ -92,8 +106,8 @@ def inicio_sesion(request):
 
             except Productor.DoesNotExist:
 
-                error_message = 'El usuario no existe. Por favor, verifica tus credenciales.'
-                return HttpResponse(error_message)
+                response = HttpResponse("USUARIO NO EXISTE")
+                return response
 
                 # Aquí puedes manejar el caso en el que no se encuentre un Productor con el 'Rut_usuario' proporcionado
                 return render(request, "core/Inicio_de_sesión.html", {'resultado_json': resultado_json})
@@ -122,8 +136,8 @@ def inicio_sesion(request):
                 return render(request, 'core/Perfil_cliente_datos.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
             except Productor.DoesNotExist:
 
-                error_message = 'El usuario no existe. Por favor, verifica tus credenciales.'
-                return HttpResponse(error_message)
+                response = HttpResponse("USUARIO NO EXISTE")
+                return response
         
         elif tipo_usuario == 'CLIENTEEMP':
             try:
@@ -143,13 +157,18 @@ def inicio_sesion(request):
                 return render(request, 'core/Perfil_cliente_datos.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
             except Productor.DoesNotExist:
 
-                error_message = 'El usuario no existe. Por favor, verifica tus credenciales.'
-                return HttpResponse(error_message)
+                response = HttpResponse("USUARIO NO EXISTE")
+                return response
+        
         else:
+            response = HttpResponse("El usuario no existe!")
+            return response
             # Aquí puedes manejar otros tipos de usuarios o redirigir a páginas diferentes
-            return render(request, "core/Inicio_de_sesión.html", {'resultado_json': resultado_json})
+            #return render(request, "core/Inicio_de_sesión.html", {'resultado_json': resultado_json})
 
     return render(request, "core/Inicio_de_sesión.html")
+
+
 
 @never_cache
 def cerrar_sesion(request):
@@ -290,6 +309,7 @@ def regis_transp2(request):
 #CLIENTE
 
 # lista
+@user_info_required
 def perfil_cli_datos(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
@@ -297,6 +317,7 @@ def perfil_cli_datos(request):
     return render(request, "core/Perfil_cliente_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
+@user_info_required
 def perfil_cli_domici(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
@@ -304,6 +325,7 @@ def perfil_cli_domici(request):
     return render(request, "core/Perfil_cliente_domicilio.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
+@user_info_required
 def perfil_cli_pedi(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
@@ -312,6 +334,7 @@ def perfil_cli_pedi(request):
 
 #PRODUCTOR-------------------------------------------------------------------------------------
 # lista
+@user_info_required
 def perfil_pro_datos(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
@@ -319,6 +342,7 @@ def perfil_pro_datos(request):
     return render(request, "core/Perfil_productor_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
+@user_info_required
 def perfil_pro_domici(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
@@ -326,6 +350,7 @@ def perfil_pro_domici(request):
     return render(request, "core/Perfil_productor_domicilio.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
+@user_info_required
 def perfil_pro_envios(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
@@ -333,6 +358,7 @@ def perfil_pro_envios(request):
     return render(request, "core/Perfil_productor_envios.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
+@user_info_required
 def perfil_pro_pedi(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
@@ -340,10 +366,39 @@ def perfil_pro_pedi(request):
     return render(request, "core/Perfil_productor_pedidos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
+@user_info_required
 def perfil_pro_productos(request):
+
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
+
+    if request.method == 'POST':        
+        precio = request.POST.get('precio')     
+        stock = request.POST.get('stock')
+        calibre_idcalibre = request.POST.get('calibre_idcalibre')
+        producto_idproducto = request.POST.get('producto_idproducto')
+        productor_rut = user_info['Rut_usuario']
+        img = request.POST.get('img')
+        
+        response = agregar_productos(            
+           precio,
+           stock,
+           calibre_idcalibre,
+           producto_idproducto,
+           productor_rut,
+           img
+        )
+         # Procesa la respuesta del servicio SOAP, si es necesario
+
+        if response == 'OK':
+            return redirect('PROD_PRODUC')
+        else:
+            #return HttpResponse('Hello World')
+            return redirect('PROD_PRODUC')
+    else:
+        return render(request, "core/Perfil_productor_productos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    
     return render(request, "core/Perfil_productor_productos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 #TRANSPORTISTA

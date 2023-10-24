@@ -10,9 +10,10 @@
     <!--CONTENIDO DEL LA PAGINA-->
     <div class="container-fluid mt-3">
         <div class="row px-xl-5">
-            
+
+            <!---DATOS BASICOS DEL PRODUCTOR--->
             <div class="col-lg-4">
-                
+
                 <div class="bg-light p-10 mb-2 text-center">
                     <h1 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Productor</span></h1>
                 </div>
@@ -38,19 +39,19 @@
                         <!-------------------SON DE 4 EN 4---------->
                         <div class="col-md-6 form-group">
                             <label>Nombre</label>
-                            <input class="form-control" type="text" placeholder="Nombre Productor">
+                            <input class="form-control" type="text" placeholder="{{user_info.Nombre}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Apellido</label>
-                            <input class="form-control" type="text" placeholder="Apellido Productor">
+                            <input class="form-control" type="text" placeholder="{{user_info.Apellido}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Número de identificación</label>
-                            <input class="form-control" type="text" placeholder="12.345.678-9">
+                            <input class="form-control" type="text" placeholder="{{user_info.Rut_completo}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Fecha de nacimiento </label>
-                            <input class="form-control" type="date" placeholder="11-12-1998">
+                            <input class="form-control" type="text" placeholder="{{user_info.Fecha_nacimiento}}" readonly>
                         </div>
 
                         <div class="col-md-6 form-group">

@@ -89,5 +89,14 @@ def autenticar_usuario(correoelectronico, contrasena):
     
     return json_data
 
+def agregar_productos(precio, stock, calibre_idcalibre, producto_idproducto, productor_rut, img):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.agregarNuevoProducto(precio=precio, stock=stock, calibre_idcalibre=calibre_idcalibre,
+                                                   producto_idproducto=producto_idproducto, productor_rut=productor_rut, img=img)
+
+    return response   
+
 
 #client = zeep.Client(URL_WEBSERVICE) -- listarProductos()

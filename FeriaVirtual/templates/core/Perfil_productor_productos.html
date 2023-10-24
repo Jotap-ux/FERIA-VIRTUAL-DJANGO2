@@ -7,6 +7,7 @@
     <div class="container-fluid mt-3">
         <div class="row px-xl-5">
             
+            <!--MENU BASICO DEL PRODUCTOR---->
             <div class="col-lg-4">
                 
                 <div class="bg-light p-10 mb-2 text-center">
@@ -23,146 +24,134 @@
 
 
             </div>
-
+            
+            <!---FORMULARIO DE INGRESO DE PRODUCTOS--->
             <div class="col-lg-8 mx-auto">
                 <div class="bg-dark p-30 mb-5">
                     <div class="row">
-
-                        <!------------------------------------------------------------>
-                        <div class="col-12">
-                            <h2 class="section-title position-relative text-uppercase mb-3 mt-3 text-left text-light"><span class="bg-dark pr-3">PRODUCTOS</span></h2>
-                        </div>                  
-                        <!----------------DATOS-------------------------------------->
-                        <div class="col-lg-8">
-                            <div class="bg-light mb-5 border border-dark">
-                                <div class="border-bottom pb-2 separacion-detalles">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6>CATEGORÍA</h6>
-                                        <div class="col-md-6 form-group">                                            
-                                            <select class="custom-select">
-                                                <option selected>Fruta</option>
-                                                <option>categoria 1</option>
-                                                <option>categoria 2</option>
-                                                <option>categoria 3</option>
-                                            </select>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!------------------------------------------------------------>
+                            <div class="col-12">
+                                <h2 class="section-title position-relative text-uppercase mb-3 mt-3 text-left text-light"><span class="bg-dark pr-3">PRODUCTOS</span></h2>
+                            </div>                  
+                            <!----------------DATOS-------------------------------------->
+                            <div class="col-lg-12">
+                                <div class="bg-light mb-5 border border-dark">
+                                    <div class="border-bottom pb-2 separacion-detalles">
+                                        
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6>PRECIO</h6>
+                                            <div class="col-md-6 form-group">
+                                                <input class="form-control" type="text" name="precio" placeholder="$ 00000">
+                                            </div>
                                         </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6>CANTIDAD</h6>
+                                            <div class="col-md-6 form-group">
+                                                <input class="form-control" type="text" name="stock" placeholder="0000">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6>CALIBRE FRUTA/ del 1 al 6</h6>
+                                            <div class="col-md-6 form-group">
+                                                <input class="form-control" type="text" name="calibre_idcalibre" placeholder="1000">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6>NOMBRE PRODUCTO / codigo</h6>
+                                            <div class="col-md-6 form-group">
+                                                <input class="form-control" type="text" name="producto_idproducto" placeholder="1000">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6>RUT/productor</h6>
+                                            <div class="col-md-6 form-group">
+                                                <input class="form-control" type="text" placeholder="{{user_info.Rut_usuario}}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6>IMAGEN PRODUCTO/url</h6>
+                                            <div class="col-md-6 form-group">
+                                                <input class="form-control" type="text" name="img" placeholder="img\pera.jpg">
+                                            </div>
+                                        </div>                            
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6>NOMBRE</h6>
-                                        <div class="col-md-6 form-group">
-                                            <input class="form-control" type="text" placeholder="Manzana">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6>CALIBRE</h6>
-                                        <div class="col-md-6 form-group">                                            
-                                            <select class="custom-select">
-                                                <option selected>0</option>
-                                                <option>calibre 1</option>
-                                                <option>calibre 2</option>
-                                                <option>calibre 3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6>CANTIDAD</h6>
-                                        <div class="col-md-6 form-group">
-                                            <input class="form-control" type="text" placeholder="1000">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6>UNIDAD</h6>
-                                        <div class="col-md-6 form-group">                                            
-                                            <select class="custom-select">
-                                                <option selected>Kilogramo</option>
-                                                <option>unidad 1</option>
-                                                <option>unidad 2</option>
-                                                <option>unidad 3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6>PRECIO</h6>
-                                        <div class="col-md-6 form-group">
-                                            <input class="form-control" type="number" placeholder="990">
-                                        </div>
-                                    </div>                            
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-----------------BOTONES DEL CRUD DE PRODUCTOS------------------------>
-                        <div class="col-lg-4 mb-4">                        
-                            <div class="bg-dark mb-2 ">
-                                <div class="pb-2 separacion-detalles">
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-danger btn-lg mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio-prod">
-                                            ELIMINAR
-                                         </button>                                      
+                            
+                            <!-----------------BOTONES DEL CRUD DE PRODUCTOS------------------------>
+                            <div class="col-lg-12 mb-4">                        
+                                <div class="bg-dark mb-2 ">
+                                    <div class="pb-2 separacion-detalles">
+                                        <div class="d-flex justify-content-between">
+                                            <button type="button" class="btn btn-danger btn-lg mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio-prod">
+                                                ELIMINAR
+                                            </button>                                      
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <button type="submit" class="btn btn-success btn-lg mb-1 w-100 " data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio-prod">
+                                                AÑADIR
+                                            </button>                                      
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <button type="button" class="btn btn-primary btn-lg mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio-prod">
+                                                MODIFICAR
+                                            </button>                                      
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <button type="button" class="btn btn-info btn-lg mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio-prod">
+                                                GUARDAR
+                                            </button>                                      
+                                        </div>                                                                    
                                     </div>
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-success btn-lg mb-1 w-100 " data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio-prod">
-                                            AÑADIR
-                                         </button>                                      
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-primary btn-lg mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio-prod">
-                                            MODIFICAR
-                                         </button>                                      
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-info btn-lg mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modal-modifi-domicilio-prod">
-                                            GUARDAR
-                                         </button>                                      
-                                    </div>                                                                    
+                                    
                                 </div>
+                            </div>
+                            <!--------->
+                            <!-------------------TABLA DE HISTORIAL DE PRODUCTOS---------->
+                            <div class="col-md-12 form-group">
+                                <table class="table table-dark table-striped table-hover border border-light">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="d-none d-md-table-cell">CATEGORIA</th>
+                                            <th scope="col">NOMBRE</th>
+                                            <th scope="col" class="d-none d-md-table-cell">CALIBRE</th>
+                                            <th scope="col">CANTIDAD</th>
+                                            <th scope="col" class="d-none d-md-table-cell">UNIDAD</th>
+                                            <th scope="col">PRECIO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="d-none d-md-table-cell">FRUTA</th>
+                                            <td >MANZANA</td>
+                                            <td class="d-none d-md-table-cell">0</td>
+                                            <td>1000</td>
+                                            <td class="d-none d-md-table-cell">Kg</td>
+                                            <td>$ 990</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="d-none d-md-table-cell">FRUTA</th>
+                                            <td >PERA</td>
+                                            <td class="d-none d-md-table-cell">0</td>
+                                            <td>2000</td>
+                                            <td class="d-none d-md-table-cell">Kg</td>
+                                            <td>$ 4990</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="d-none d-md-table-cell">FRUTA</th>
+                                            <td >CEREZA</td>
+                                            <td class="d-none d-md-table-cell">0</td>
+                                            <td>5000</td>
+                                            <td class="d-none d-md-table-cell">Kg</td>
+                                            <td>$ 7990</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 
                             </div>
-                        </div>
-                        <!--------->
-                         <!-------------------TABLA DE HISTORIAL DE PRODUCTOS---------->
-                        <div class="col-md-12 form-group">
-                            <table class="table table-dark table-striped table-hover border border-light">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="d-none d-md-table-cell">CATEGORIA</th>
-                                        <th scope="col">NOMBRE</th>
-                                        <th scope="col" class="d-none d-md-table-cell">CALIBRE</th>
-                                        <th scope="col">CANTIDAD</th>
-                                        <th scope="col" class="d-none d-md-table-cell">UNIDAD</th>
-                                        <th scope="col">PRECIO</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row" class="d-none d-md-table-cell">FRUTA</th>
-                                        <td >MANZANA</td>
-                                        <td class="d-none d-md-table-cell">0</td>
-                                        <td>1000</td>
-                                        <td class="d-none d-md-table-cell">Kg</td>
-                                        <td>$ 990</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="d-none d-md-table-cell">FRUTA</th>
-                                        <td >PERA</td>
-                                        <td class="d-none d-md-table-cell">0</td>
-                                        <td>2000</td>
-                                        <td class="d-none d-md-table-cell">Kg</td>
-                                        <td>$ 4990</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="d-none d-md-table-cell">FRUTA</th>
-                                        <td >CEREZA</td>
-                                        <td class="d-none d-md-table-cell">0</td>
-                                        <td>5000</td>
-                                        <td class="d-none d-md-table-cell">Kg</td>
-                                        <td>$ 7990</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            
-                        </div>
-                        <!------------------------------------------------------------->
+                            <!------------------------------------------------------------->
                     </div>
                 </div>              
             </div>  
