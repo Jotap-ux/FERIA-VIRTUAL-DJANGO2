@@ -1,8 +1,8 @@
 from django import forms
 from django.shortcuts import render, redirect
-from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, obtener_productos_json, autenticar_usuario, agregar_productos
+from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox
 #from .Apiproductos import agregar_productos
-from.models import Productor, Cliente
+from.models import Productor, Cliente, Transportista
 #from .models import Producto
 from django.http import HttpResponse
 import xml.etree.ElementTree as ET
@@ -13,6 +13,7 @@ from django.views.decorators.cache import never_cache
 #from django.contrib.auth.decorators import login_required
 from .decorators import user_info_required
 from django.utils import formats
+#from .probandoapi import listar_calibres, listar_productos_combobox
 
 # lista
 def index(request):
@@ -96,7 +97,8 @@ def inicio_sesion(request):
                     'Rut_completo': rut_completo,
                     'Fecha_nacimiento': productor.fechanacimiento.strftime("%d-%m-%Y"),
                     'Nombre': productor.nombre,
-                    'Apellido': productor.apellidopat
+                    'Apellido': productor.apellidopat,
+                    'Direccion': productor.direccion
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
@@ -127,7 +129,11 @@ def inicio_sesion(request):
                     'tipo_usuario': tipo_usuario,
                     'Rut_usuario': rut_usuario,
                     'NombreCompleto': nombre_completo,
-                    'Rut_completo': rut_completo
+                    'Rut_completo': rut_completo,
+                    'Fecha_nacimiento': cliente.fechanacimiento.strftime("%d-%m-%Y"),
+                    'Nombre': cliente.nombre,
+                    'Apellido': cliente.apellidopat,
+                    'Direccion': cliente.direccion
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
@@ -148,13 +154,45 @@ def inicio_sesion(request):
                     'username': correoelectronico,
                     'tipo_usuario': tipo_usuario,
                     'Rut_usuario': rut_usuario,
-                    'RazonSocial': cliente.razonsocial
+                    'RazonSocial': cliente.razonsocial,
+                    'Direccion': cliente.direccion
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
 
                 # Redirige a la página de perfil del productor
                 return render(request, 'core/Perfil_cliente_datos.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
+            except Productor.DoesNotExist:
+
+                response = HttpResponse("USUARIO NO EXISTE")
+                return response
+        
+        elif tipo_usuario == 'TRANSPORTISTA':
+            try:
+                # Busca el objeto Productor en la base de datos utilizando el campo 'rut'
+                transportista = Transportista.objects.get(rut=rut_usuario)
+
+                 # Concatena nombre y apellido y agrega el valor resultante a user_info
+                nombre_completo = f"{transportista.nombre} {transportista.apellidopat} {transportista.apellidomat}"
+
+                rut_completo = f"{rut_usuario}-{transportista.dv}"
+
+                request.session['user_info'] = {
+                    'username': correoelectronico,
+                    'tipo_usuario': tipo_usuario,
+                    'Rut_usuario': rut_usuario,
+                    'NombreCompleto': nombre_completo,
+                    'Rut_completo': rut_completo,
+                    'Fecha_nacimiento': transportista.fechanacimiento.strftime("%d-%m-%Y"),
+                    'Nombre': transportista.nombre,
+                    'Apellido': transportista.apellidopat,
+                    'Direccion': transportista.direccion
+                }
+
+                request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
+
+                # Redirige a la página de perfil del productor
+                return render(request, 'core/Perfil_transportista_datos.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
             except Productor.DoesNotExist:
 
                 response = HttpResponse("USUARIO NO EXISTE")
@@ -296,9 +334,42 @@ def regis_prod(request):
 #------------------------------------------------------------------
 
 
-# lista
+# Formulario registro TRANSPORTISTA - USA LA API
 def regis_transp(request):
-    return render(request, "core/Registro_transportista.html")
+    if request.method == 'POST':
+        rut = request.POST.get('rut')
+        dv = request.POST.get('dv')
+        nombre = request.POST.get('nombre')
+        apellidopat = request.POST.get('apellidopat')
+        apellidomat = request.POST.get('apellidomat')
+        fechanacimiento = request.POST.get('fechanacimiento') 
+        direccion = request.POST.get('direccion')               
+        correoelectronico = request.POST.get('correoelectronico')
+        contrasena = request.POST.get('contrasena')
+        #comuna_idcomuna = request.POST.get('comuna_idcomuna')
+        
+        response = crear_transportista(
+            rut,
+            dv,
+            nombre,
+            apellidopat,
+            apellidomat,
+            fechanacimiento,
+            direccion,                        
+            correoelectronico,
+            contrasena,
+            #comuna_idcomuna
+        )
+         # Procesa la respuesta del servicio SOAP, si es necesario
+
+        if response == 'OK':
+            return redirect('REGIS_TRANSP')
+        else:
+            #return HttpResponse('Hello World')
+            return redirect('REGIS_TRANSP')
+    else:
+        
+        return render(request, "core/Registro_transportista.html")
 
 # lista
 def regis_transp2(request):
@@ -372,6 +443,19 @@ def perfil_pro_productos(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
+    # Obtener los datos de los calibres utilizando la función de la API
+    calibres_json = listar_calibres()
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    calibres_data = json.loads(calibres_json)
+
+    # Obtener los datos de los productos utilizando la función de la API
+    productos_json = listar_productos_combobox()
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    productos_data = json.loads(productos_json)
+
+    
 
     if request.method == 'POST':        
         precio = request.POST.get('precio')     
@@ -397,34 +481,56 @@ def perfil_pro_productos(request):
             #return HttpResponse('Hello World')
             return redirect('PROD_PRODUC')
     else:
-        return render(request, "core/Perfil_productor_productos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+        return render(request, "core/Perfil_productor_productos.html",{
+            'usuario_autenticado': usuario_autenticado, 
+            'user_info': user_info,
+            'calibres':calibres_data,
+            'productos': productos_data})
     
-    return render(request, "core/Perfil_productor_productos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    #return render(request, "core/Perfil_productor_productos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 #TRANSPORTISTA
 # lista
 def perfil_transp_datos(request):
-    return render(request, "core/Perfil_transportista_datos.html")
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+
+    return render(request, "core/Perfil_transportista_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
 def perfil_transp_domici(request):
-    return render(request, "core/Perfil_transportista_domicilio.html")
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+
+    return render(request, "core/Perfil_transportista_domicilio.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
 def perfil_transp_pedi(request):
-    return render(request, "core/Perfil_transportista_pedidos.html")
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+
+    return render(request, "core/Perfil_transportista_pedidos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
 def perfil_transp_transpor(request):
-    return render(request, "core/Perfil_transportista_transportes.html")
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+
+    return render(request, "core/Perfil_transportista_transportes.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
 def perfil_transp_vehi(request):
-    return render(request, "core/Perfil_transportista_vehiculos.html")
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+
+    return render(request, "core/Perfil_transportista_vehiculos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 #subasta---
 def subasta(request):
-    return render(request, "core/Subastas.html")
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+    
+    return render(request, "core/Subastas.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 #DETALLE DEL PRODUCTO
 def detalle_producto(request):

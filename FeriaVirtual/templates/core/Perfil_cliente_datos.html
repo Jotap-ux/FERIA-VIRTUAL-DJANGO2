@@ -30,23 +30,36 @@
                             <h3 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">DATOS PERSONALES</span></h3>
                         </div>
                         <!-------------------SON DE 4 EN 4---------->
-                        <div class="col-md-6 form-group">
-                            <label>Nombre</label>
-                            <input class="form-control" type="text" placeholder="Juan Pablo">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Apellido</label>
-                            <input class="form-control" type="text" placeholder="González Alonso">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Número de identificación</label>
-                            <input class="form-control" type="text" placeholder="12.345.678-9">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Fecha de nacimiento </label>
-                            <input class="form-control" type="date" placeholder="15/12/1999">
-                        </div>
+                    
+                        {% if request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
+                            <div class="col-md-6 form-group">
+                                <label>Nombre</label>
+                                <input class="form-control" type="text" placeholder="{{user_info.Nombre}}" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Apellido</label>
+                                <input class="form-control" type="text" placeholder="{{user_info.Apellido}}" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Número de identificación</label>
+                                <input class="form-control" type="text" placeholder="{{user_info.Rut_completo}}" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Fecha de nacimiento </label>
+                                <input class="form-control" type="text" placeholder="{{user_info.Fecha_nacimiento}}" readonly>
+                            </div>
 
+                        {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
+                            <div class="col-md-6 form-group">
+                                <label>Razón Social</label>
+                                <input class="form-control" type="text" placeholder="{{user_info.RazonSocial}}" readonly>
+                            </div> 
+                            <div class="col-md-6 form-group">
+                                <label>Número de identificación</label>
+                                <input class="form-control" type="text" placeholder="{{user_info.Rut_usuario}}" readonly>
+                            </div>                           
+                        {% endif %}
+                        
                         <div class="col-md-6 form-group">
                             <label></label>
                         </div>

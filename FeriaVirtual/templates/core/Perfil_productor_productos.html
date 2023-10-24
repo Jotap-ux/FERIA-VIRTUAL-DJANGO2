@@ -43,7 +43,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h6>PRECIO</h6>
                                             <div class="col-md-6 form-group">
-                                                <input class="form-control" type="text" name="precio" placeholder="$ 00000">
+                                                <input class="form-control" type="text" name="precio" placeholder="$ 0000">
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center">
@@ -53,16 +53,34 @@
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <h6>CALIBRE FRUTA/ del 1 al 6</h6>
-                                            <div class="col-md-6 form-group">
-                                                <input class="form-control" type="text" name="calibre_idcalibre" placeholder="1000">
+
+                                            <h6>CALIBRE FRUTA</h6>                                           
+                                            <!----COMBOBOX---CALIBRES----->
+                                            <div class="col-md-6 form-group">                                                
+                                                <select class="custom-select" name="calibre_idcalibre">
+                                                    <option value="">Seleccione Calibre</option>
+                                                    {% for c in calibres %}
+                                                    <option value="{{ c.id_calibre }}">{{ c.desc_calibre}}</option>                                                
+                                                    {% endfor %}
+                                                </select>
                                             </div>
+
                                         </div>
+
+                                        <!----------------------------->
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <h6>NOMBRE PRODUCTO / codigo</h6>
-                                            <div class="col-md-6 form-group">
-                                                <input class="form-control" type="text" name="producto_idproducto" placeholder="1000">
+
+                                            <h6>NOMBRE PRODUCTO</h6>                                            
+                                            <!----COMBOBOX---PRODUCTOS----->
+                                            <div class="col-md-6 form-group">                                                
+                                                <select class="custom-select" name="producto_idproducto">
+                                                    <option value="">Seleccione Producto</option>
+                                                    {% for p in productos %}
+                                                    <option value="{{ p.id_producto }}">{{ p.nombre_producto}}</option>                                                
+                                                    {% endfor %}
+                                                </select>
                                             </div>
+
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h6>RUT/productor</h6>
@@ -73,7 +91,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h6>IMAGEN PRODUCTO/url</h6>
                                             <div class="col-md-6 form-group">
-                                                <input class="form-control" type="text" name="img" placeholder="img\pera.jpg">
+                                                <input class="form-control" type="text" name="img" placeholder="img\fruta.jpg">
                                             </div>
                                         </div>                            
                                     </div>

@@ -2,19 +2,13 @@
 {% load static %} 
 
 
-{% block menu %}
-
-    <a href="{% url 'TRANSP_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
-    <a href="{% url 'SUBASTAS' %}" class="nav-item nav-link text-light">Subastas</a>
-    
-{% endblock menu %}
-
 {% block contenido %}
 
     <!--CONTENIDO DEL LA PAGINA-->
     <div class="container-fluid mt-3">
         <div class="row px-xl-5">
             
+            <!--DATOS BASICOS DEL TRANSPORTISTA-->
             <div class="col-lg-4">
                 
                 <div class="bg-light p-10 mb-2 text-center">
@@ -42,19 +36,19 @@
                         <!-------------------SON DE 4 EN 4---------->
                         <div class="col-md-6 form-group">
                             <label>Nombre</label>
-                            <input class="form-control" type="text" placeholder="Juan Pablo">
+                            <input class="form-control" type="text" placeholder="{{user_info.Nombre}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Apellido</label>
-                            <input class="form-control" type="text" placeholder="González Alonso">
+                            <input class="form-control" type="text" placeholder="{{user_info.Apellido}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Número de identificación</label>
-                            <input class="form-control" type="text" placeholder="12.345.678-9">
+                            <input class="form-control" type="text" placeholder="{{user_info.Rut_completo}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Fecha de nacimiento </label>
-                            <input class="form-control" type="date" placeholder="15/12/1999">
+                            <input class="form-control" type="text" placeholder="{{user_info.Fecha_nacimiento}}" readonly>
                         </div>
 
                         <div class="col-md-6 form-group">

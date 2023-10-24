@@ -8,7 +8,7 @@ import json
 
 URL_WEBSERVICE = 'http://localhost:8080/WSFERIAVIRTUAL/WSFERIAVIRTUAL?WSDL'
 
-
+#CREACIÓN DE USUARIOS --------------------------------------------------------------------------------------
 def crear_productor(rut, dv, nombre, apellidopat, apellidomat, fechanacimiento, direccion, correoelectronico, contrasena, comuna_idcomuna):
 
     client = Client(URL_WEBSERVICE)
@@ -18,7 +18,6 @@ def crear_productor(rut, dv, nombre, apellidopat, apellidomat, fechanacimiento, 
                                                contrasena=contrasena, comuna_idcomuna=comuna_idcomuna)
 
     return response
-
 
 def crear_clienteNormal(rut, dv, nombre, apellidopat, apellidomat, direccion, fechanacimiento, correoelectronico, contrasena, comuna_idcomuna):
 
@@ -39,6 +38,16 @@ def crear_clienteEmpresa(direccion, correoelectronico, contrasena, identificador
 
     return response
 
+def crear_transportista(rut, dv, nombre, apellidopat, apellidomat, fechanacimiento, direccion, correoelectronico, contrasena):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.agregarTransportista(rut=rut, dv=dv, nombre=nombre, apellidopat=apellidopat, apellidomat=apellidomat,
+                                               fechanacimiento=fechanacimiento, direccion=direccion, correoelectronico=correoelectronico,
+                                               contrasena=contrasena)
+
+    return response
+
+#--------------------------------------------------------------------------------------------------------
 def obtener_productos_json():
     
     # Crea un cliente SOAP con la URL del servicio web
@@ -98,5 +107,51 @@ def agregar_productos(precio, stock, calibre_idcalibre, producto_idproducto, pro
 
     return response   
 
+def listar_calibres():
+    
+    # Crea un cliente SOAP con la URL del servicio web
+    client = Client(URL_WEBSERVICE)
 
+    # Realizamos la petición al servicio web
+    peticion_listar_calibres = client.service.listarCalibre()
+
+    # Inicializa una lista para almacenar los datos de los calibres
+    calibres_data = []
+
+    # Itera a través de la lista de calibres en la respuesta
+    for calibre in peticion_listar_calibres:
+        calibre_data = {
+            'desc_calibre': calibre.desccalibre,
+            'id_calibre': calibre.idcalibre,
+        }
+        calibres_data.append(calibre_data)
+
+    # Convierte la lista de calibres a una cadena JSON
+    json_data = json.dumps(calibres_data, indent=4)
+
+    return json_data
+
+def listar_productos_combobox():
+    
+    # Crea un cliente SOAP con la URL del servicio web
+    client = Client(URL_WEBSERVICE)
+
+    # Realizamos la petición al servicio web
+    peticion_listar_productos_combobox = client.service.listarProductosxIdyNombre()
+
+    # Inicializa una lista para almacenar los datos de los productos
+    productos_data = []
+
+    # Itera a través de la lista de calibres en la respuesta
+    for productos in peticion_listar_productos_combobox:
+        producto_data = {
+            'id_producto': productos.idproducto,
+            'nombre_producto': productos.nombreproducto,
+        }
+        productos_data.append(producto_data)
+
+    # Convierte la lista de calibres a una cadena JSON
+    json_data = json.dumps(productos_data, indent=4)
+
+    return json_data
 #client = zeep.Client(URL_WEBSERVICE) -- listarProductos()
