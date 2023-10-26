@@ -116,7 +116,7 @@
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block mr-3">
                             <a href="{% url 'CARRITO' %}" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-success"></i>
-                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                                <span id="carrito-cantidad" class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
                             </a>
                         </div>
 
@@ -310,6 +310,8 @@
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
 
+    <!---SCRITP para carrito--->
+    <script src="{% static 'js/carrito.js' %}"></script>
    
     <!-- MODALES? -->
     <script>

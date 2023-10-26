@@ -49,21 +49,33 @@
                     
                     
                     <div class="d-flex align-items-center mb-4 pt-2">
-                        <div class="input-group quantity mr-3" style="width: 130px;">
+                        <div class="input-group quantity mr-3" style="width: 200px;">
                             <div class="input-group-btn">
                                 <button class="btn btn-success btn-minus">
                                     <i class="fa fa-minus"></i>
-                                </button>
+                                </button>                                
                             </div>
-                            <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
+                            
+                            <input type="number" id="cantidadProducto" class="form-control bg-secondary border-0 text-center" value="1">
+
                             <div class="input-group-btn">
                                 <button class="btn btn-success btn-plus">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <button class="btn btn-success px-3"><i class="fa fa-shopping-cart mr-1"></i> Añadir al
-                        Carrito    </button>
+                        <button class="btn btn-success px-3 add-to-cart"
+                            data-product="{{ producto.nombre_producto }}" 
+                            data-calibre="{{ producto.calibre }}" 
+                            data-precio="{{ producto.precio }}"
+                            data-img="{{ producto.img }}" 
+                            onclick="agregarAlCarrito()">
+                            <i class="fa fa-shopping-cart mr-1">
+                            </i> Añadir al Carrito
+                        </button>                                                                                                                
+
+                                         
+
                     </div>
                 </div>
             </div>
@@ -71,3 +83,4 @@
     </div>
 
 {% endblock contenido %}    
+

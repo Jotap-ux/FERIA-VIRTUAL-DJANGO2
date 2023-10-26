@@ -17,13 +17,16 @@
     </div>
     <!------------------------>
 
-    <!-- INICIO DEL CARRITO DE COMPRAS -->
+   <!-- INICIO DEL CARRITO DE COMPRAS -->
     <div class="container-fluid">
         <div class="row px-xl-5">
+
+            <!--LA TABLA CON LOS PRODUCTOS DEL CARRITO-->
             <div class="col-lg-8 table-responsive mb-5">
+
                 <table class="table table-light table-borderless table-hover text-center mb-0">
                     <thead class="thead-dark">
-                        <tr>
+                        <tr>                            
                             <th>Producto</th>
                             <th>Calibre</th>
                             <th>Precio</th>
@@ -32,9 +35,10 @@
                             <th>Eliminar producto</th>
                         </tr>
                     </thead>
-                    <tbody class="align-middle">
-                        <tr>
-                            <td class="align-middle"><img src="img/manzana.jpg" alt="" style="width: 50px;">Manzana (Kg)</td>
+
+                    <tbody id="carrito-table-body" class="align-middle">
+                        <tr>                            
+                            <td class="align-middle">>Manzana</td>
                             <td class="align-middle">Alto</td>
                             <td class="align-middle">$1.500</td>
                             <td class="align-middle">
@@ -54,123 +58,34 @@
                             </td>
                             <td class="align-middle">$1.500</td>
                             <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/pepino.jpg" alt="" style="width: 50px;">Pepino (Unidad)</td>
-                            <td class="align-middle">Bajo</td>
-                            <td class="align-middle">$1.000</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-success btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-success btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$1.000</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/platano.jpg" alt="" style="width: 50px;">Platano (Kg)</td>
-                            <td class="align-middle">Alto</td>
-                            <td class="align-middle">$1.350</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-success btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-success btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$1.350</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/pera.jpg" alt="" style="width: 50px;">Pera (Kg)</td>
-                            <td class="align-middle">Alto</td>
-                            <td class="align-middle">$1.000</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-success btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-success btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$1.000</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/frutilla.jpeg" alt="" style="width: 50px;">Frutilla (Kg)</td>
-                            <td class="align-middle">Alto</td>
-                            <td class="align-middle">$5.000</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-success btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-success btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$5.000</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
+                        </tr>                    
                     </tbody>
                 </table>
             </div>
-            <!--HASTA ACA LA TABLA CON LOS PRODUCTOS DEL CARRITO-->
+            
 
-            <!--ACA EMPIEZA EL SUBTOTAL-->
+            <!---TOTAL A PAGAR CHECK---->
             <div class="col-lg-4">
-                
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">COSTO TOTAL</span></h5>
                 <div class="bg-light p-30 mb-5">
                     <div class="border-bottom pb-2">
                         <div class="d-flex justify-content-between mb-3">
                             <h6>Subtotal</h6>
-                            <h6>$9.850</h6>
+                            <h6 id="subtotal">$0.00</h6>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Envio</h6>
-                            <h6 class="font-weight-medium">$0</h6>
+                            <h6 class="font-weight-medium">Envío</h6>
+                            <h6 id="envio">$0.00</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">IVA</h6>
-                            <h6 class="font-weight-medium">$1.300</h6>
+                            <h6 id="iva">$0.00</h6>
                         </div>
                     </div>
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Total</h5>
-                            <h5>$11.150</h5>
+                            <h5 id="total">$0.00</h5>
                         </div>
                         <button class="btn btn-block btn-success font-weight-bold my-3 py-3">Realizar pedido</button>
                     </div>
@@ -178,6 +93,11 @@
             </div>
         </div>
     </div>
+
     <!--FIN DEL CARRITO -->
-    
+
+
 {% endblock contenido %}
+
+
+            

@@ -4,7 +4,7 @@ from .conexionWebService import crear_productor, crear_clienteNormal, crear_clie
 #from .Apiproductos import agregar_productos
 from.models import Productor, Cliente, Transportista
 #from .models import Producto
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import xml.etree.ElementTree as ET
 import json
 from django.contrib.auth import logout
@@ -225,7 +225,10 @@ def cerrar_sesion(request):
 def carrito(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
-    return render(request, "core/Carrito.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info} )
+
+
+    return render(request, "core/Carrito.html", {'usuario_autenticado': usuario_autenticado, 
+                                                'user_info': user_info})
 
 # Formulario registro CLIENTE EMPRESA - USA LA API
 def regis_clien_em(request):
