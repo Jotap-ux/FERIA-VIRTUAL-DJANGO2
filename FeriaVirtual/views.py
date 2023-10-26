@@ -14,6 +14,10 @@ from django.views.decorators.cache import never_cache
 from .decorators import user_info_required
 from django.utils import formats
 #from .probandoapi import listar_calibres, listar_productos_combobox
+from urllib.parse import unquote
+import re
+
+
 
 # lista
 def index(request):
@@ -533,7 +537,46 @@ def subasta(request):
     return render(request, "core/Subastas.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 #DETALLE DEL PRODUCTO
-def detalle_producto(request):
+def detalle_producto(request, rut_productor, nombre_producto, calibre):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
-    return render(request, "core/Producto_detalle.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+
+
+    nombre_producto = unquote(nombre_producto)
+    calibre = unquote(calibre)
+
+    # Elimina espacios en blanco alrededor del nombre del producto
+    nombre_producto = nombre_producto.strip()
+
+    # Elimina espacios en blanco alrededor del calibre 
+    calibre = calibre.strip()
+
+    # Agregar impresiones para depuración
+    #print("Rut de productor :", rut_productor)
+    #print("Nombre de producto :", nombre_producto)
+    #print("El calibre :", calibre)
+
+    json_data = obtener_productos_json()
+    lista_de_productos = json.loads(json_data)
+
+    rut_productor = int(rut_productor)
+
+    #print(lista_de_productos)
+    # Buscar el producto por nombre
+    producto_seleccionado = None
+    for producto in lista_de_productos:
+
+        if (
+            producto['rut_productor'] == rut_productor
+            and producto['nombre_producto'].strip().lower() == nombre_producto.lower()
+            and producto['calibre'].strip().lower() == calibre.lower()
+                        
+        ):
+            print(producto)
+            producto_seleccionado = producto
+           
+            break
+           
+    return render(request, "core/Producto_detalle.html",{'usuario_autenticado': usuario_autenticado,
+                                                        'user_info': user_info,
+                                                        'producto': producto_seleccionado})

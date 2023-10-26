@@ -24,7 +24,7 @@
                 <div id="product-carousel"  data-ride="carousel">
                     <div class="carousel-inner bg-light">
                         <div class="carousel-item active">
-                            <img class="w-100 h-100" src="{% static 'img/platano.jpg' %}" alt="Image">
+                            <span><img class="img-fluid w-100" src="{% static producto.img %}" alt="Imagen de {{ p.nombre_producto }}" width="100" height="100"></span>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
             <div class="col-lg-7 h-auto mb-30">
                 <div class="h-100 bg-light p-30">
-                    <h3>Plátano</h3>
+                    <h3>{{ producto.nombre_producto }}</h3>
                     <div class="d-flex mb-3">
                         <div class="text-primary mr-2">
                             <small class="fas fa-star"></small>
@@ -42,23 +42,11 @@
                         </div>
                         <small class="pt-1">(Buenardo)</small>
                     </div>
-                    <h3 class="font-weight-semi-bold mb-4">$1.350 (Kg)</h3>
-                    <p class="mb-4">Platano dulce del mejor calibre, etc..
-                        Lleve del mejor producto casera.. Lorem itsum o algo asi..
-                    </p>
-                    <div class="d-flex mb-3">
-                        <strong class="text-dark mr-3">Calibre:</strong>
-                        <form>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-1" name="size">
-                                <label class="custom-control-label" for="size-1">Bajo</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-2" name="size">
-                                <label class="custom-control-label" for="size-2">Alto</label>
-                            </div>
-                        </form>
-                    </div>
+                   
+                    <h3 class="font-weight-semi-bold mb-4">Precio : ${{ producto.precio}}</h3>
+                    <h3 class="font-weight-semi-bold mb-4">Stock : {{ producto.stock }}</h3>
+                    <h3 class="font-weight-semi-bold mb-4">Calibre : {{ producto.calibre }}</h3>                    
+                    
                     
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px;">

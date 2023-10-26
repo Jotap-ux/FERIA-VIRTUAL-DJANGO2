@@ -28,7 +28,7 @@ urlpatterns = [
     path('perfil_transp_transpor', perfil_transp_transpor, name='TRANSP_TRANSPOR'),
     path('perfil_transp_vehi', perfil_transp_vehi, name='TRANSP_VEHI'),
     path('subasta', subasta, name='SUBASTAS'),
-    path('detalle_producto', detalle_producto, name='DETALLE_PRODUCTO'),
+    path('detalle_producto/<str:rut_productor>/<str:nombre_producto>/<str:calibre>/', detalle_producto, name='DETALLE_PRODUCTO'),
     path('cerrar_sesion/', cerrar_sesion, name='CERRAR_SESION'),
 
 
