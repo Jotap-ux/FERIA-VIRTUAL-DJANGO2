@@ -5,7 +5,8 @@ function agregarAlCarrito() {
     const producto = document.querySelector('.add-to-cart').getAttribute("data-product");
     const calibre = document.querySelector('.add-to-cart').getAttribute("data-calibre");
     const precio = document.querySelector('.add-to-cart').getAttribute("data-precio");
-    //const img = document.querySelector('.add-to-cart').getAttribute("data-img");
+    const rut_productor = document.querySelector('.add-to-cart').getAttribute("data-rut_productor");
+    const id_producto = document.querySelector('.add-to-cart').getAttribute("data-id_producto");
 
     // Verifica si la cantidad es un número válido
     if (!isNaN(cantidad) && cantidad > 0) {
@@ -19,9 +20,10 @@ function agregarAlCarrito() {
             // Agregar el producto al carrito con el campo 'total'
             carrito.push({
                 producto,
+                id_producto,
                 calibre,
                 precio: parseFloat(precio),
-                //img,
+                rut_productor,
                 cantidad: parseInt(cantidad),
                 total // Agregar el campo 'total'
             });
@@ -48,7 +50,9 @@ function mostrarCarrito() {
 
         let subtotal = 0;
         let envio = 0;
+        let comision = 0; // Declarada aquí
         let iva = 0;
+        let total = 0; // Declarada aquí
 
         // ...
 
@@ -117,22 +121,33 @@ function mostrarCarrito() {
             tableBody.appendChild(row);
 
             // Calcula subtotal, envío e IVA
-            subtotal += productoTotal;
-            // Puedes agregar lógica para calcular envío e IVA aquí si es necesario
+            subtotal += productoTotal;    
+
         });
 
+        // Calcula envío (puedes agregar la lógica aquí si es necesario)
+        envio = 0;
 
-// ...
+        // Calcula comisión (Maipo Grande)
+        comision = subtotal * 0.02; // 2% del subtotal
+
+        // Calcula el IVA
+        iva = subtotal * 0.19; // 19% del subtotal
+
+        // Calcula el total
+        total = subtotal + envio + comision + iva;
 
 
-        // Actualiza los valores de subtotal, envío e IVA (en tu HTML)
-        document.getElementById("subtotal").textContent = `$${subtotal.toFixed(2)}`;
-        document.getElementById("envio").textContent = `$${envio.toFixed(2)}`;
-        document.getElementById("iva").textContent = `$${iva.toFixed(2)}`;
+        // Actualiza los valores en el HTML
+        document.getElementById("subtotal").textContent = `$${subtotal.toLocaleString('es-CL', { maximumFractionDigits: 0 })}`;
+        document.getElementById("envio").textContent = `$${envio.toFixed(0)}`;
+        document.getElementById("iva").textContent = `$${iva.toLocaleString('es-CL', { maximumFractionDigits: 0 })}`;
+        document.getElementById("total").textContent = `$${total.toFixed(0)}`;
+        document.getElementById("comision").textContent = `$${comision.toFixed(0)}`;       
+        document.getElementById("total").textContent = `$${total.toLocaleString('es-CL', { maximumFractionDigits: 0 })}`;
 
-        // Calcula el total (en tu HTML)
-        const total = subtotal + envio + iva;
-        document.getElementById("total").textContent = `$${total.toFixed(2)}`;
+
+
     } catch (error) {
         console.error("Error al mostrar el carrito:", error);
     }
@@ -168,3 +183,66 @@ const cantidadProductosEnCarrito = contarProductosEnCarrito();
 document.getElementById("carrito-cantidad").textContent = cantidadProductosEnCarrito;
 
 console.log("Cantidad de productos en el carrito:", cantidadProductosEnCarrito);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Llama a la función para obtener los datos de la tabla
+//const datosDeTabla = obtenerDatosDeTabla();
+//console.log(datosDeTabla);
+
+// Obtiene los datos del carrito desde localStorage
+//Aquí, el código intenta obtener datos del carrito almacenados en el almacenamiento local del navegador 
+//bajo la clave 'carrito'. Esto supone que previamente has guardado los datos del carrito en el almacenamiento local.
+let carrito = JSON.parse(localStorage.getItem('carrito'));
+
+console.log(carrito)
+
+//Se verifica si la variable carrito es un array. 
+//Esto se hace para asegurarse de que los datos del carrito son válidos y existen en el almacenamiento local.
+if (Array.isArray(carrito)) {
+    // Recorre el carrito
+    // Realiza una solicitud POST al servidor para enviar los datos
+    // Obtén el token CSRF de las cookies(Se utiliza la función getCookie para obtener el token CSRF
+    // (Cross-Site Request Forgery) de las cookies del navegador. El token CSRF es una medida de seguridad para 
+    //proteger las solicitudes POST de falsificación.)
+    const csrfToken = getCookie('csrftoken');
+
+    //Aquí se realiza la solicitud POST al servidor. Se envían los datos del carrito como un JSON 
+    //serializado en el cuerpo de la solicitud.
+    fetch('/carrito/', {
+        method: 'POST',
+        body: JSON.stringify(carrito), // Serializa los datos del carrito como JSON
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken, // Agrega el token CSRF al encabezado
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Maneja la respuesta del servidor, si es necesario
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+} else {
+    console.error("El carrito no es un array válido en localStorage.");
+}
+
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Busca el nombre del token CSRF
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

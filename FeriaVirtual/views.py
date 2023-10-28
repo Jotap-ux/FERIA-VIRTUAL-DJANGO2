@@ -1,6 +1,6 @@
 from django import forms
 from django.shortcuts import render, redirect
-from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox
+from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido
 #from .Apiproductos import agregar_productos
 from.models import Productor, Cliente, Transportista
 #from .models import Producto
@@ -16,6 +16,8 @@ from django.utils import formats
 #from .probandoapi import listar_calibres, listar_productos_combobox
 from urllib.parse import unquote
 import re
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 
@@ -137,7 +139,8 @@ def inicio_sesion(request):
                     'Fecha_nacimiento': cliente.fechanacimiento.strftime("%d-%m-%Y"),
                     'Nombre': cliente.nombre,
                     'Apellido': cliente.apellidopat,
-                    'Direccion': cliente.direccion
+                    'Direccion': cliente.direccion,
+                    'id_cliente': cliente.id_cliente
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
@@ -159,7 +162,8 @@ def inicio_sesion(request):
                     'tipo_usuario': tipo_usuario,
                     'Rut_usuario': rut_usuario,
                     'RazonSocial': cliente.razonsocial,
-                    'Direccion': cliente.direccion
+                    'Direccion': cliente.direccion,
+                    'id_cliente': cliente.id_cliente
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
@@ -222,14 +226,54 @@ def cerrar_sesion(request):
 
 #--------------------------------------------------------------------
 # lista
+  # Esto es necesario si estás enviando datos desde un sitio web (para deshabilitar CSRF)
+
 def carrito(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
+    if request.method == 'POST':
+        # Verificar el encabezado Content-Type
+        if request.content_type == 'application/json':
+            try:
+                # Recibe los datos del carrito enviados desde el cliente
+                carrito_data = json.loads(request.body)
+                
+                for producto in carrito_data:
+                    print('Nombre del producto:', producto['producto'])
+                    print('Id del producto:', producto['id_producto'])
+                    print('Calibre del producto:', producto['calibre'])
+                    print('Cantidad :', producto['cantidad'])
+                    print('Precio del producto:', producto['precio'])
+                    print('Rut del productor:', producto['rut_productor'])
+                    print('Total:', producto['total'])
 
-    return render(request, "core/Carrito.html", {'usuario_autenticado': usuario_autenticado, 
-                                                'user_info': user_info})
+                #print(carrito_data)
+                # Obtén el id_cliente del usuario con sesión iniciada
+                id_cliente = user_info.get('id_cliente', None)
 
+                if id_cliente is not None:
+                    # Llama a la función que crea un pedido pasando id_cliente como parámetro
+                    # EN JSON
+                    response = crearPedido(id_cliente)
+
+                    print(response)
+
+                    if response == 'OK':
+                        return JsonResponse({'message': 'Pedido creado con éxito'})
+                    else:
+                        mensaje = 'Pedido creado con éxito, ahora debe esperar 1 hora hasta que finalice la subasta, por mientras siga viendo nuestros productos :)'
+                        return JsonResponse({'message': mensaje})
+                return JsonResponse({'success': False, 'message': 'No se pudo obtener el id del cliente'})
+            except json.JSONDecodeError as e:
+                return JsonResponse({'error': 'Error al decodificar JSON'}, status=400)
+        else:
+            return JsonResponse({'error': 'Tipo de contenido no admitido'}, status=415)
+
+    return render(request, "core/Carrito.html", {'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+
+#-----------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------
 # Formulario registro CLIENTE EMPRESA - USA LA API
 def regis_clien_em(request):
     if request.method == 'POST':        
@@ -583,3 +627,8 @@ def detalle_producto(request, rut_productor, nombre_producto, calibre):
     return render(request, "core/Producto_detalle.html",{'usuario_autenticado': usuario_autenticado,
                                                         'user_info': user_info,
                                                         'producto': producto_seleccionado})
+
+
+
+
+

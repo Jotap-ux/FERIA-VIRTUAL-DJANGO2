@@ -74,20 +74,43 @@
                             <h6 id="subtotal">$0.00</h6>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Envío</h6>
-                            <h6 id="envio">$0.00</h6>
-                        </div>
+                            <h6 class="font-weight-medium">Comisión - Maipo Grande (2%)</h6>
+                            <h6 id="comision">$0.00</h6>
+                        </div>                          
                         <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">IVA</h6>
+                            <h6 class="font-weight-medium">IVA (19%)</h6>
                             <h6 id="iva">$0.00</h6>
                         </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Envío <h7>(A espera de subasta)</h7></h6>
+                            <h6 id="envio">$0.00</h6>
+                        </div>                                                                      
                     </div>
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Total</h5>
                             <h5 id="total">$0.00</h5>
                         </div>
-                        <button class="btn btn-block btn-success font-weight-bold my-3 py-3">Realizar pedido</button>
+
+                        <!---MINI FORMULARIO POST(para poder crear el pedido en blanco!!)---->
+                        <form id="miFormulario" method="post" action="{% url 'CARRITO' %}">
+
+                            {% csrf_token %}
+                            <!-- Agrega un campo oculto para almacenar el id_cliente -->
+                            <input type="hidden" id="id_cliente" value="{{ user_info.id_cliente }}">
+                            <h2>¨{{ user_info.id_cliente}}</h2>
+
+                            <!---nuevos input ocultos para los datos del carrito localstorage-->
+                            <input type="hidden" name="cantidad" id="cantidad">
+                            <input type="hidden" name="idproducto" id="idproducto">
+                            <input type="hidden" name="productor_rut" id="productor_rut">
+                            <input type="hidden" name="calibre_idcalibre" id="calibre_idcalibre">
+                            <!------------------------------------------------------------------->
+
+                            <button type="submit" class="btn btn-block btn-success font-weight-bold my-3 py-3" id="realizar_pedido">Realizar pedido</button>
+
+                        </form>
+                        <!--- <button class="btn btn-block btn-success font-weight-bold my-3 py-3">Realizar pedido</button> --->
                     </div>
                 </div>
             </div>
@@ -98,6 +121,3 @@
 
 
 {% endblock contenido %}
-
-
-            

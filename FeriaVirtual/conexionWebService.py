@@ -65,8 +65,9 @@ def obtener_productos_json():
             'calibre': producto.calibre_idcalibre,
             'img': producto.img,
             'nombre_productor': producto.nombre_productor,
+            'nombre_producto': producto.nombreproducto,
             'precio': producto.precio,
-            'nombre_producto': producto.producto_idproducto,
+            'id_producto' : producto.producto_idproducto,            
             'rut_productor': producto.productor_rut,
             'stock': producto.stock   
         }
@@ -155,3 +156,26 @@ def listar_productos_combobox():
 
     return json_data
 #client = zeep.Client(URL_WEBSERVICE) -- listarProductos()
+#---------------------------------------------------
+def crearPedido(cliente_id_cliente):
+    
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.crearNuevoPedido(cliente_id_cliente=cliente_id_cliente)
+
+    id_pedido = int(response)  # Convierte la respuesta a un entero
+    id_pedido_str = str(id_pedido)  # Convierte el entero a una cadena
+
+    # Resto de tu lógica
+    #print(id_pedido_str)
+
+    return id_pedido_str
+
+def crearDetalle_pedido(cantidad, idproducto, productor_rut, pedido_idpedido, calibre_idcalibre):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.crearNuevoDetallePedido(cantidad=cantidad, idproducto=idproducto, productor_rut=productor_rut, pedido_idpedido=pedido_idpedido, calibre_idcalibre=calibre_idcalibre)
+
+    return response
+

@@ -159,6 +159,17 @@ class Modelo(models.Model):
         managed = False
         db_table = 'modelo'
 
+#se agrego despues tambien.
+class OfertarSubasta(models.Model):
+    montosubasta = models.BigIntegerField()
+    subasta_id_subasta = models.OneToOneField('Subasta', models.DO_NOTHING, db_column='subasta_id_subasta', primary_key=True)  # The composite primary key (subasta_id_subasta, transportista_rut) found, that is not supported. The first column is selected.
+    transportista_rut = models.ForeignKey('Transportista', models.DO_NOTHING, db_column='transportista_rut')
+
+    class Meta:
+        managed = False
+        db_table = 'ofertar_subasta'
+        unique_together = (('subasta_id_subasta', 'transportista_rut'),)
+
 
 class OrdenTransporte(models.Model):
     idordent = models.CharField(primary_key=True, max_length=30)
@@ -288,6 +299,20 @@ class Seguro(models.Model):
         db_table = 'seguro'
 
 
+#se agrego despues
+class Subasta(models.Model):
+    id_subasta = models.CharField(primary_key=True, max_length=50)
+    fechasubasta = models.DateField()
+    horainiciosubasta = models.DateTimeField()
+    horaterminosubasta = models.DateTimeField()
+    estadodelasubasta = models.CharField(max_length=1)
+    pedido_idpedido = models.OneToOneField(Pedido, models.DO_NOTHING, db_column='pedido_idpedido')
+
+    class Meta:
+        managed = False
+        db_table = 'subasta'
+
+
 class Tipocliente(models.Model):
     idcliente = models.CharField(primary_key=True, max_length=300)
     descripciontipo = models.CharField(max_length=300)
@@ -336,4 +361,4 @@ class Transportista(models.Model):
         managed = False
         db_table = 'transportista'
 
-#28 total
+#28 total------------------------------------------------------------------------------------------
