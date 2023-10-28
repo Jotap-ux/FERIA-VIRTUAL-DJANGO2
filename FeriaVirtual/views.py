@@ -248,7 +248,6 @@ def carrito(request):
                     print('Rut del productor:', producto['rut_productor'])
                     print('Total:', producto['total'])
 
-                #print(carrito_data)
                 # Obtén el id_cliente del usuario con sesión iniciada
                 id_cliente = user_info.get('id_cliente', None)
 
@@ -260,16 +259,16 @@ def carrito(request):
                     print(response)
 
                     if response == 'OK':
-                        return JsonResponse({'message': 'Pedido creado con éxito'})
+                        mensajesi = 'BUENARDO'
+                        return HttpResponse({mensajesi})
                     else:
                         mensaje = 'Pedido creado con éxito, ahora debe esperar 1 hora hasta que finalice la subasta, por mientras siga viendo nuestros productos :)'
-                        return JsonResponse({'message': mensaje})
+                        return HttpResponse(f'<meta http-equiv="refresh" content="6;url=/productos/"><p>{mensaje}</p>')
+                    
                 return JsonResponse({'success': False, 'message': 'No se pudo obtener el id del cliente'})
             except json.JSONDecodeError as e:
                 return JsonResponse({'error': 'Error al decodificar JSON'}, status=400)
-        else:
-            return JsonResponse({'error': 'Tipo de contenido no admitido'}, status=415)
-
+            
     return render(request, "core/Carrito.html", {'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 #-----------------------------------------------------------------------------------------------
