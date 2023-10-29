@@ -238,37 +238,49 @@ def carrito(request):
             try:
                 # Recibe los datos del carrito enviados desde el cliente
                 carrito_data = json.loads(request.body)
-                
-                for producto in carrito_data:
-                    print('Nombre del producto:', producto['producto'])
-                    print('Id del producto:', producto['id_producto'])
-                    print('Calibre del producto:', producto['calibre'])
-                    print('Cantidad :', producto['cantidad'])
-                    print('Precio del producto:', producto['precio'])
-                    print('Rut del productor:', producto['rut_productor'])
-                    print('Total:', producto['total'])
 
                 # Obtén el id_cliente del usuario con sesión iniciada
                 id_cliente = user_info.get('id_cliente', None)
 
                 if id_cliente is not None:
                     # Llama a la función que crea un pedido pasando id_cliente como parámetro
-                    # EN JSON
-                    response = crearPedido(id_cliente)
+                    response_pedido = crearPedido(id_cliente)
 
-                    print(response)
+                    #para ver si me trae el id_pedido
+                    print(response_pedido)
 
-                    if response == 'OK':
-                        mensajesi = 'BUENARDO'
-                        return HttpResponse({mensajesi})
+                    if response_pedido == 'OK':
+                        print('Hola sangre')
                     else:
+
+                        # El pedido se creó con éxito, ahora agreguemos detalles
+                        for producto in carrito_data:
+                            cantidad = producto['cantidad']
+                            print('cantidad:', cantidad)
+                            id_producto = producto['id_producto']
+                            print('id_producto:', id_producto)
+                            productor_rut = producto['rut_productor']
+                            print('productor_rut:', productor_rut)
+                            pedido_idpedido = response_pedido  # El ID del pedido que se creó anteriormente
+                            print('id_pedido:',pedido_idpedido)
+                            calibre_idcalibre = producto['calibreId']
+                            print('calibre id:', calibre_idcalibre)
+
+                            # Llama a la función que crea un detalle de pedido
+                            response_detalle = crearDetalle_pedido(cantidad, id_producto, productor_rut, pedido_idpedido, calibre_idcalibre)
+
+                            # Puedes manejar la respuesta del detalle aquí, por ejemplo, verificar si se creó con éxito
+
                         mensaje = 'Pedido creado con éxito, ahora debe esperar 1 hora hasta que finalice la subasta, por mientras siga viendo nuestros productos :)'
                         return HttpResponse(f'<meta http-equiv="refresh" content="6;url=/productos/"><p>{mensaje}</p>')
-                    
+
+                        mensaje = 'Error al crear el pedido'
+                        return HttpResponse(f'<p>{mensaje}</p>')
+
                 return JsonResponse({'success': False, 'message': 'No se pudo obtener el id del cliente'})
             except json.JSONDecodeError as e:
                 return JsonResponse({'error': 'Error al decodificar JSON'}, status=400)
-            
+
     return render(request, "core/Carrito.html", {'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 #-----------------------------------------------------------------------------------------------

@@ -4,6 +4,7 @@ function agregarAlCarrito() {
     const cantidad = document.getElementById("cantidadProducto").value;
     const producto = document.querySelector('.add-to-cart').getAttribute("data-product");
     const calibre = document.querySelector('.add-to-cart').getAttribute("data-calibre");
+    const calibreId = document.querySelector('.add-to-cart').getAttribute("data-calibre_id");
     const precio = document.querySelector('.add-to-cart').getAttribute("data-precio");
     const rut_productor = document.querySelector('.add-to-cart').getAttribute("data-rut_productor");
     const id_producto = document.querySelector('.add-to-cart').getAttribute("data-id_producto");
@@ -22,6 +23,7 @@ function agregarAlCarrito() {
                 producto,
                 id_producto,
                 calibre,
+                calibreId,
                 precio: parseFloat(precio),
                 rut_productor,
                 cantidad: parseInt(cantidad),
@@ -195,40 +197,42 @@ console.log("Cantidad de productos en el carrito:", cantidadProductosEnCarrito);
 // Obtiene los datos del carrito desde localStorage
 //Aquí, el código intenta obtener datos del carrito almacenados en el almacenamiento local del navegador 
 //bajo la clave 'carrito'. Esto supone que previamente has guardado los datos del carrito en el almacenamiento local.
-let carrito = JSON.parse(localStorage.getItem('carrito'));
+// Agrega un controlador de eventos para el clic en el botón
 
-console.log(carrito)
+// Hacemos referencia al botón "Realizar pedido"
+const realizarPedidoButton = document.getElementById('realizar_pedido');
 
-//Se verifica si la variable carrito es un array. 
-//Esto se hace para asegurarse de que los datos del carrito son válidos y existen en el almacenamiento local.
-if (Array.isArray(carrito)) {
-    // Recorre el carrito
-    // Realiza una solicitud POST al servidor para enviar los datos
-    // Obtén el token CSRF de las cookies(Se utiliza la función getCookie para obtener el token CSRF
-    // (Cross-Site Request Forgery) de las cookies del navegador. El token CSRF es una medida de seguridad para 
-    //proteger las solicitudes POST de falsificación.)
-    const csrfToken = getCookie('csrftoken');
 
-    //Aquí se realiza la solicitud POST al servidor. Se envían los datos del carrito como un JSON 
-    //serializado en el cuerpo de la solicitud.
-    fetch('/carrito/', {
-        method: 'POST',
-        body: JSON.stringify(carrito), // Serializa los datos del carrito como JSON
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken, // Agrega el token CSRF al encabezado
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Maneja la respuesta del servidor, si es necesario
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-} else {
-    console.error("El carrito no es un array válido en localStorage.");
-}
+realizarPedidoButton.addEventListener('click', function (event) {
+    // Evita la acción predeterminada del botón, que es enviar el formulario.
+    event.preventDefault();
+
+    // Obtén el carrito del almacenamiento local
+    let carrito = JSON.parse(localStorage.getItem('carrito'));
+
+    // Verifica si el carrito es un array válido
+    if (Array.isArray(carrito)) {
+        // Realiza la solicitud POST al servidor como lo estabas haciendo
+        const csrfToken = getCookie('csrftoken');
+        fetch('/carrito/', {
+            method: 'POST',
+            body: JSON.stringify(carrito),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Maneja la respuesta del servidor si es necesario
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    } else {
+        console.error("El carrito no es un array válido en localStorage.");
+    }
+});
 
 
 function getCookie(name) {

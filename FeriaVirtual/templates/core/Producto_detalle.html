@@ -46,7 +46,7 @@
                    
                     <h3 class="font-weight-semi-bold mb-4">Precio : ${{ producto.precio}}</h3>
                     <h3 class="font-weight-semi-bold mb-4">Stock : {{ producto.stock }}</h3>
-                    <h3 class="font-weight-semi-bold mb-4">Calibre : {{ producto.calibre }}</h3>                    
+                    <h3 class="font-weight-semi-bold mb-4">Calibre : {{ producto.calibre }} ({{ producto.calibre_id }})</h3>                    
                     
                     
                     <div class="d-flex align-items-center mb-4 pt-2">
@@ -67,7 +67,8 @@
                         </div>
                         <button class="btn btn-success px-3 add-to-cart"
                             data-product="{{ producto.nombre_producto }}" 
-                            data-calibre="{{ producto.calibre }}" 
+                            data-calibre="{{ producto.calibre }}"
+                            data-calibre_id="{{ producto.calibre_id }}" 
                             data-precio="{{ producto.precio }}"
                             data-rut_productor="{{ producto.rut_productor }}" 
                             data-id_producto="{{ producto.id_producto }}" 

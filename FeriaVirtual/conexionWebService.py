@@ -63,6 +63,7 @@ def obtener_productos_json():
     for producto in peticion_listar_productos:
         producto_data = {
             'calibre': producto.calibre_idcalibre,
+            'calibre_id': producto.idcalibre,
             'img': producto.img,
             'nombre_productor': producto.nombre_productor,
             'nombre_producto': producto.nombreproducto,
