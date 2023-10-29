@@ -13,7 +13,8 @@
             </div>
         </div>
 
-         <!--SUBASTA 1-->  
+        <!--SUBASTA 1-->
+        {% for s in subastas %}
         <div class="row px-xl-0">
 
             <!--IMAGEN-->
@@ -32,49 +33,45 @@
                     <div class="border-bottom pb-2 separacion-detalles">
                         <div class="d-flex justify-content-between align-items-center info-div">
                             <h6>NÚMERO DE PEDIDO :</h6>
-                            <h6>0001_0001</h6>
+                            <h6>{{s.id_pedido}}</h6>
                         </div>
                         <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>CANTIDAD :</h6>
-                            <h6>1000</h6>
+                            <h6>CANTIDAD DE PRODUCTOS :</h6>
+                            <h6>{{s.cantidad_productos}}</h6>
+                        </div>                        
+                        <div class="d-flex justify-content-between align-items-center info-div">
+                            <h6>DIRECCIÓN DE ORIGEN :</h6>
+                            <h6>{{s.direccion_origen}}</h6>
                         </div>
                         <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>UNIDAD :</h6>
-                            <h6>KG</h6>
+                            <h6>DIRECCIÓN DE DESTINO:</h6>
+                            <h6>{{s.direccion_destino}}</h6>
                         </div>
                         <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>ÚLTIMO OFERTADO :</h6>
-                            <h6>$ 10.990</h6>
+                            <h6>FECHA SUBASTA :</h6>
+                            <h6>{{s.fecha_subasta}}</h6>
                         </div>
                         <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>MI OFERTA :</h6>
-                            <h6>$ 12.500</h6>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>FECHA LÍMITE :</h6>
-                            <h6>07-09-2023</h6>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>TIEMPO RESTANTE :</h6>
-                            <h6>12:59 (HRS:MIN)</h6>
+                            <h6>HORA DE TERMINO :</h6>
+                            <h6>{{s.hora_termino}}</h6>
                         </div>
 
                         <!--MENSAJES DE PREVIZUALIZACIÓN-->
                         <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>ORIGEN :</h6>
+                            <h6>DIRECCIÓN DE ORIGEN :</h6>
                             <h6>
-                                SANTIAGO
+                                HOLA
                                 <a class="color-links custom-tooltip">
-                                  DETALLE  <span class="tooltip-text"> ORIGEN: AV. PADRE ALBERTO HURTADO 277</span>                                    
+                                  DETALLE  <span class="tooltip-text"> {{s.direccion_origen}} </span>                                    
                                 </a>                                
                             </h6>
                         </div>
                         <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>DESTINO :</h6>
+                            <h6>DIRECCIÓN DE DESTINO:</h6>
                             <h6>
-                                CONCEPCIÓN
+                                CHAO
                                 <a class="color-links custom-tooltip">
-                                  DETALLE  <span class="tooltip-text"> DESTINO: AV. LOS TOROS 7.200, SAN PEDRO DE LA PAZ</span>                                    
+                                  DETALLE  <span class="tooltip-text"> {{s.direccion_destino}} </span>                                    
                                 </a>                                
                             </h6>
                         </div>
@@ -104,6 +101,7 @@
             </div>
 
         </div>
+        {% endfor %}
     </div>
     <!------------------------------------->
 

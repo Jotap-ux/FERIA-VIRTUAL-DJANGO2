@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 #import zeep
 from zeep import Client
 import json
-
+from datetime import datetime
 
 
 URL_WEBSERVICE = 'http://localhost:8080/WSFERIAVIRTUAL/WSFERIAVIRTUAL?WSDL'
@@ -180,3 +180,32 @@ def crearDetalle_pedido(cantidad, idproducto, productor_rut, pedido_idpedido, ca
 
     return response
 
+def obtener_subastas_json():
+
+     # Crea un cliente SOAP con la URL del servicio web
+    client = Client(URL_WEBSERVICE)
+    
+    # Realizamos la petición al servicio web
+    peticion_listar_subastas = client.service.listarSubastas()
+    
+    # Inicializa una lista para almacenar los datos de las subastas
+    subastas_data = []
+    
+    # Itera a través de la lista de subastas
+    for subasta in peticion_listar_subastas:
+        subasta_data = {
+            'cantidad_productos': subasta.cantidadTotal,
+            'direccion_destino': subasta.direccionDestino,
+            'direccion_origen': subasta.direccionOrigen,
+            'fecha_subasta': datetime.strptime(subasta.fechaSubasta, "%Y-%m-%d %H:%M:%S.%f").strftime("%d-%m-%Y"),
+            'hora_termino': subasta.horarioTermino,
+            'id_pedido': subasta.idPedido,
+            'id_subasta' : subasta.idSubasta,            
+            'total_transporte': subasta.totalTransporte
+        }
+        subastas_data.append(subasta_data)
+    
+    # Convierte la lista de productos a una cadena JSON
+    json_data = json.dumps(subastas_data, indent=4)
+    
+    return json_data

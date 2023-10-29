@@ -1,6 +1,6 @@
 from django import forms
 from django.shortcuts import render, redirect
-from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido
+from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
 #from .Apiproductos import agregar_productos
 from.models import Productor, Cliente, Transportista
 #from .models import Producto
@@ -589,8 +589,18 @@ def perfil_transp_vehi(request):
 def subasta(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
+
+
+    # Llama a la función para obtener la lista de productos en formato JSON
+    json_data = obtener_subastas_json()
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    lista_de_subastas = json.loads(json_data)
+
     
-    return render(request, "core/Subastas.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    return render(request, "core/Subastas.html",{"subastas": lista_de_subastas,
+                                                'usuario_autenticado': usuario_autenticado,
+                                                'user_info': user_info})
 
 #DETALLE DEL PRODUCTO
 def detalle_producto(request, rut_productor, nombre_producto, calibre):
