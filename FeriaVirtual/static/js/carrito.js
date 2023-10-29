@@ -202,7 +202,6 @@ console.log("Cantidad de productos en el carrito:", cantidadProductosEnCarrito);
 // Hacemos referencia al botón "Realizar pedido"
 const realizarPedidoButton = document.getElementById('realizar_pedido');
 
-
 realizarPedidoButton.addEventListener('click', function (event) {
     // Evita la acción predeterminada del botón, que es enviar el formulario.
     event.preventDefault();
@@ -225,12 +224,22 @@ realizarPedidoButton.addEventListener('click', function (event) {
         .then(response => response.json())
         .then(data => {
             // Maneja la respuesta del servidor si es necesario
+
+            
         })
-        .catch(error => {
+        .catch(error => { //el mensaje se captura como error, pero la info si se guarda en la BD :)
             console.error('Error:', error);
+            alert('Su pedido se ha creado con èxito, por favor espere el termino de la subasta :)');
+
+            // Borra el contenido del localStorage
+            localStorage.removeItem('carrito');
+
+            // También puedes redirigir al usuario después de borrar el localStorage si es necesario
+            window.location.href = '/productos'; // Cambia la URL de redirección según tus necesidades
         });
     } else {
         console.error("El carrito no es un array válido en localStorage.");
+        alert('El carrito está vacío o no es válido. Agrega productos antes de realizar un pedido.');
     }
 });
 

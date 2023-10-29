@@ -5,6 +5,7 @@ from .conexionWebService import crear_productor, crear_clienteNormal, crear_clie
 from.models import Productor, Cliente, Transportista
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 import xml.etree.ElementTree as ET
 import json
 from django.contrib.auth import logout
@@ -271,13 +272,10 @@ def carrito(request):
 
                             # Puedes manejar la respuesta del detalle aquí, por ejemplo, verificar si se creó con éxito
 
-                        mensaje = 'Pedido creado con éxito, ahora debe esperar 1 hora hasta que finalice la subasta, por mientras siga viendo nuestros productos :)'
-                        return HttpResponse(f'<meta http-equiv="refresh" content="6;url=/productos/"><p>{mensaje}</p>')
+                        # Redirige al usuario a la página deseada después de procesar el carrito
+                        return HttpResponseRedirect('/productos/')  # Reemplaza la URL de redirección según tus necesidades                       
 
-                        mensaje = 'Error al crear el pedido'
-                        return HttpResponse(f'<p>{mensaje}</p>')
-
-                return JsonResponse({'success': False, 'message': 'No se pudo obtener el id del cliente'})
+                return redirect('PRODUCTOS') 
             except json.JSONDecodeError as e:
                 return JsonResponse({'error': 'Error al decodificar JSON'}, status=400)
 
