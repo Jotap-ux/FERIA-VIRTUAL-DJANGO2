@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import index, productos, nosotros, contacto, inicio_sesion, carrito, regis_clien_em, regis_clien_per, regis_prod, regis_transp, regis_transp2, perfil_cli_datos, perfil_cli_domici, perfil_cli_pedi, perfil_pro_datos, perfil_pro_domici,perfil_pro_envios,perfil_pro_pedi, perfil_pro_productos, perfil_transp_datos, perfil_transp_domici, perfil_transp_pedi, perfil_transp_transpor, perfil_transp_vehi, subasta, detalle_producto, cerrar_sesion
+from .views import index, productos, nosotros, contacto, inicio_sesion, carrito, regis_clien_em, regis_clien_per, regis_prod, regis_transp, regis_transp2, perfil_cli_datos, perfil_cli_domici, perfil_cli_pedi, perfil_pro_datos, perfil_pro_domici,perfil_pro_envios,perfil_pro_pedi, perfil_pro_productos, perfil_transp_datos, perfil_transp_domici, perfil_transp_pedi, perfil_transp_transpor, perfil_transp_vehi, subasta, detalle_producto, cerrar_sesion, regiones_por_pais, comunas_por_region
 
 urlpatterns = [
     path('',index, name='INDEX'),
@@ -30,6 +30,6 @@ urlpatterns = [
     path('subasta', subasta, name='SUBASTAS'),
     path('detalle_producto/<str:rut_productor>/<str:nombre_producto>/<str:calibre>/', detalle_producto, name='DETALLE_PRODUCTO'),
     path('cerrar_sesion/', cerrar_sesion, name='CERRAR_SESION'),
-
-
+    path('regiones/', regiones_por_pais, name='REGIONES'),
+    path('comunas/', comunas_por_region, name='COMUNAS'),
 ]

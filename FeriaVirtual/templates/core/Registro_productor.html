@@ -60,14 +60,40 @@
                                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Domicilio Tributario</span></h5>
                             </div>
                             <!------------------------------------------------------>
+
+                            <!-------------------------SECCION DE COMBOBOX---------------------------------->
+                            
+                            <!----COMBOBOX---PAIS----->
+                            <div class="col-md-6 form-group">       
+                                <label for="pais">Pais</label>                                      
+                                <select class="custom-select" id="pais" name="pais" onchange="cambiarRegion()">
+                                    <option value="">Seleccione Pais</option>
+                                    {% for p in paises %}
+                                    <option value="{{ p.id_pais }}">{{ p.nombre_pais}}</option>                                                
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!----COMBOBOX---REGION----->
+                            <div class="col-md-6 form-group">       
+                                <label for="region">Region</label>                                      
+                                <select class="custom-select" id="region" name="region" onchange="cambiarComuna()">
+                                    
+                                </select>
+                            </div>
+
+                            <!----COMBOBOX---COMUNA----->
+                            <div class="col-md-6 form-group">       
+                                <label for="comuna">Comuna</label>                                      
+                                <select class="custom-select" id="comuna" name="comuna">
+                                    
+                                </select>
+                            </div>      
+                            
                             <div class="col-md-6 form-group">
                                 <label for="id_direccion">Dirección</label>
                                 <input name="direccion" id="id_direccion" required class="form-control" type="text" placeholder="Ingrese la calle y el número">
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="id_comuna_idcomuna">Comuna</label>
-                                <input name="comuna_idcomuna" id="id_comuna_idcomuna" required class="form-control" type="number" placeholder="Ingrese la comuna">
-                            </div>                        
+                            </div>                                                       
                           
                             <!--PALABRA PARA SEPARAR-->
                             <div class="col-12">
@@ -185,6 +211,43 @@
             }
         });
     </script>
+
+    <!--SCRIPT PARA EL COMBO BOX REGION--->
+    <script>
+        function cambiarRegion() {
+            
+            let paisID = document.getElementById("pais").value;
+            //alert(paisID);
+            let url = '/regiones/?idpais='+ paisID;
+            //alert(url)
+            fetch(url)
+                .then(function(result){
+                    return result.text();
+                })
+                .then(function(result){
+                    document.getElementById("region").innerHTML = result;
+                });
+        }
+    </script>
+
+    <!--SCRIPT PARA EL COMBO BOX COMUNA--->
+    <script>
+        function cambiarComuna() {
+            
+            let regionID = document.getElementById("region").value;
+            //alert(regionID);
+            let url = '/comunas/?idregion='+ regionID;
+            //alert(url)
+            fetch(url)
+                .then(function(result){
+                    return result.text();
+                })
+                .then(function(result){
+                    document.getElementById("comuna").innerHTML = result;
+                });
+        }
+    </script>
+
     
 {% endblock script %}
 

@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import render, redirect
 from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
-#from .Apiproductos import agregar_productos
+from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor
 from.models import Productor, Cliente, Transportista
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -285,6 +285,15 @@ def carrito(request):
 #------------------------------------------------------------------------------------------------
 # Formulario registro CLIENTE EMPRESA - USA LA API
 def regis_clien_em(request):
+
+    # Obtener los datos de los productos utilizando la función de la API
+    paises_json = listar_pais_combobox()
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    paises_data = json.loads(paises_json)    
+
+
+
     if request.method == 'POST':        
         direccion = request.POST.get('direccion')
         #fechanacimiento = request.POST.get('fechanacimiento')        
@@ -292,7 +301,7 @@ def regis_clien_em(request):
         contrasena = request.POST.get('contrasena')
         identificadorempresa = request.POST.get('identificadorempresa')
         razonsocial = request.POST.get('razonsocial')
-        comuna_idcomuna = request.POST.get('comuna_idcomuna')
+        comuna_idcomuna = request.POST.get('comuna')
         
         response = crear_clienteEmpresa(            
             direccion,
@@ -311,10 +320,18 @@ def regis_clien_em(request):
             #return HttpResponse('Hello World')
             return redirect('REGIS_EMPRESA')
     else:
-        return render(request, "core/Registro_cliente_empresa.html")
+        return render(request, "core/Registro_cliente_empresa.html",
+                      {'paises': paises_data})
 
 # Formulario registro CLIENTE PERSONA - USA LA API
 def regis_clien_per(request):
+
+    # Obtener los datos de los productos utilizando la función de la API
+    paises_json = listar_pais_combobox()
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    paises_data = json.loads(paises_json)    
+
     if request.method == 'POST':
         rut = request.POST.get('rut')
         dv = request.POST.get('dv')
@@ -325,7 +342,7 @@ def regis_clien_per(request):
         fechanacimiento = request.POST.get('fechanacimiento')        
         correoelectronico = request.POST.get('correoelectronico')
         contrasena = request.POST.get('contrasena')
-        comuna_idcomuna = request.POST.get('comuna_idcomuna')
+        comuna_idcomuna = request.POST.get('comuna')
         
         response = crear_clienteNormal(
             rut,
@@ -347,10 +364,19 @@ def regis_clien_per(request):
             #return HttpResponse('Hello World')
             return redirect('REGIS_PERSONA')
     else:
-        return render(request, "core/Registro_cliente_persona.html")
+        return render(request, "core/Registro_cliente_persona.html",
+                      {'paises': paises_data})
 
 # Formulario registro PRODUCTOR - USA LA API
 def regis_prod(request):
+
+    # Obtener los datos de los productos utilizando la función de la API
+    paises_json = listar_pais_combobox()
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    paises_data = json.loads(paises_json) 
+
+
     if request.method == 'POST':
         rut = request.POST.get('rut')
         dv = request.POST.get('dv')
@@ -361,7 +387,7 @@ def regis_prod(request):
         direccion = request.POST.get('direccion')
         correoelectronico = request.POST.get('correoelectronico')
         contrasena = request.POST.get('contrasena')
-        comuna_idcomuna = request.POST.get('comuna_idcomuna')
+        comuna_idcomuna = request.POST.get('comuna')
 
         response = crear_productor(
             rut,
@@ -385,7 +411,8 @@ def regis_prod(request):
             return redirect('REGIS_PROD')
     else:
         # Cualquier otro código que necesites para la vista si no se envió un formulario POST
-        return render(request, 'core/Registro_productor.html')
+        return render(request, 'core/Registro_productor.html',
+                      {'paises': paises_data})
     
 
 #Mi archivo conexionWebService.py contiene la lógica para el servicio web SOAP,
@@ -396,6 +423,13 @@ def regis_prod(request):
 
 # Formulario registro TRANSPORTISTA - USA LA API
 def regis_transp(request):
+
+    # Obtener los datos de los productos utilizando la función de la API
+    paises_json = listar_pais_combobox()
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    paises_data = json.loads(paises_json) 
+
     if request.method == 'POST':
         rut = request.POST.get('rut')
         dv = request.POST.get('dv')
@@ -429,7 +463,8 @@ def regis_transp(request):
             return redirect('REGIS_TRANSP')
     else:
         
-        return render(request, "core/Registro_transportista.html")
+        return render(request, "core/Registro_transportista.html",
+                      {'paises': paises_data})
 
 # lista
 def regis_transp2(request):
@@ -515,7 +550,14 @@ def perfil_pro_productos(request):
     # Parsea la cadena JSON a una lista de diccionarios
     productos_data = json.loads(productos_json)
 
-    
+    #----------------------------seccion para listar los productos por productor----------------------------------------------
+
+    rut_productor = user_info['Rut_usuario']
+
+    lista_productos_productor = listarProductos_Productor(rut_productor)
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    productos_productor = json.loads(lista_productos_productor)
 
     if request.method == 'POST':        
         precio = request.POST.get('precio')     
@@ -545,7 +587,8 @@ def perfil_pro_productos(request):
             'usuario_autenticado': usuario_autenticado, 
             'user_info': user_info,
             'calibres':calibres_data,
-            'productos': productos_data})
+            'productos': productos_data,
+            'productos_productor': productos_productor})
     
     #return render(request, "core/Perfil_productor_productos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
@@ -647,7 +690,33 @@ def detalle_producto(request, rut_productor, nombre_producto, calibre):
                                                         'user_info': user_info,
                                                         'producto': producto_seleccionado})
 
+#--------------------------------------------------------------------------------------------------------
+#COMBO BOXXX REGION Y COMUNA
+def regiones_por_pais(request):
 
+    idpais = request.GET.get('idpais')
+
+    # Obtener los datos de las regiones utilizando la función de la API
+    regiones_json = listar_region_por_pais(idpais)
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    regiones_data = json.loads(regiones_json)
+
+    return render(request, 'core/combobox_regiones.html',{'regiones': regiones_data})
+
+def comunas_por_region(request):
+
+    idregion = request.GET.get('idregion')
+
+    # Obtener los datos de las regiones utilizando la función de la API
+    comunas_json = listar_comuna_por_region(idregion)
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    comunas_data = json.loads(comunas_json)
+
+    return render(request, 'core/combobox_comunas.html',{'comunas': comunas_data})
+
+#--------------------------------------------------------------------------------------------------------
 
 
 

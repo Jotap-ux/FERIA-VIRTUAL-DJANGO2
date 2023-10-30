@@ -1,0 +1,6 @@
+
+
+<option value="">Seleccione Comuna</option>
+{% for c in comunas %}
+<option value="{{ c.id_comuna }}">{{ c.nombre_comuna}}</option>                                                
+{% endfor %}
