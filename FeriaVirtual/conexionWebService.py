@@ -195,12 +195,16 @@ def obtener_subastas_json():
     for subasta in peticion_listar_subastas:
         subasta_data = {
             'cantidad_productos': subasta.cantidadTotal,
+            'comuna_destino': subasta.comunaDestino,
+            'comuna_origen': subasta.comunaOrigen,
             'direccion_destino': subasta.direccionDestino,
             'direccion_origen': subasta.direccionOrigen,
             'fecha_subasta': datetime.strptime(subasta.fechaSubasta, "%Y-%m-%d %H:%M:%S.%f").strftime("%d-%m-%Y"),
             'hora_termino': subasta.horarioTermino,
             'id_pedido': subasta.idPedido,
-            'id_subasta' : subasta.idSubasta,            
+            'id_subasta' : subasta.idSubasta,    
+            'nombre_cliente': subasta.nombreCliente,
+            'nombre_clienteEmpresa': subasta.nombreClienteEmp,        
             'total_transporte': subasta.totalTransporte
         }
         subastas_data.append(subasta_data)

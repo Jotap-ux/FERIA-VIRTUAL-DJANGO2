@@ -36,17 +36,18 @@
                             <h6>{{s.id_pedido}}</h6>
                         </div>
                         <div class="d-flex justify-content-between align-items-center info-div">
+                            <h6>NOMBRE CLIENTE :</h6>
+                            <h6>
+                                {{s.nombre_cliente}}
+                                {% if s.nombre_clienteEmpresa %}
+                                    {{s.nombre_clienteEmpresa}}
+                                {% endif %}                                                        
+                            </h6>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center info-div">
                             <h6>CANTIDAD DE PRODUCTOS :</h6>
                             <h6>{{s.cantidad_productos}}</h6>
-                        </div>                        
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>DIRECCIÓN DE ORIGEN :</h6>
-                            <h6>{{s.direccion_origen}}</h6>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>DIRECCIÓN DE DESTINO:</h6>
-                            <h6>{{s.direccion_destino}}</h6>
-                        </div>
+                        </div>                                               
                         <div class="d-flex justify-content-between align-items-center info-div">
                             <h6>FECHA SUBASTA :</h6>
                             <h6>{{s.fecha_subasta}}</h6>
@@ -60,7 +61,7 @@
                         <div class="d-flex justify-content-between align-items-center info-div">
                             <h6>DIRECCIÓN DE ORIGEN :</h6>
                             <h6>
-                                HOLA
+                                {{s.comuna_origen}}
                                 <a class="color-links custom-tooltip">
                                   DETALLE  <span class="tooltip-text"> {{s.direccion_origen}} </span>                                    
                                 </a>                                
@@ -69,7 +70,7 @@
                         <div class="d-flex justify-content-between align-items-center info-div">
                             <h6>DIRECCIÓN DE DESTINO:</h6>
                             <h6>
-                                CHAO
+                                {{s.comuna_destino}}
                                 <a class="color-links custom-tooltip">
                                   DETALLE  <span class="tooltip-text"> {{s.direccion_destino}} </span>                                    
                                 </a>                                
