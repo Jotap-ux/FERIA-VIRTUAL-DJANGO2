@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import render, redirect
 from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
-from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor
+from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta
 from.models import Productor, Cliente, Transportista
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -633,15 +633,33 @@ def subasta(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-
     # Llama a la función para obtener la lista de productos en formato JSON
     json_data = obtener_subastas_json()
 
     # Parsea la cadena JSON a una lista de diccionarios
     lista_de_subastas = json.loads(json_data)
 
-    
-    return render(request, "core/Subastas.html",{"subastas": lista_de_subastas,
+    if request.method == 'POST':        
+        montosubasta = request.POST.get('monto')              
+        subasta_id = request.POST.get('id_subasta')  
+        transportista_rut = user_info['Rut_usuario']
+        pedido_idpedido = request.POST.get('id_pedido')  
+
+        response = crearOfertaSubasta(            
+            montosubasta = montosubasta,
+            subasta_id_subasta = subasta_id,
+            transportista_rut = transportista_rut,
+            pedido_idpedido = pedido_idpedido
+        )
+         # Procesa la respuesta del servicio SOAP, si es necesario
+
+        if response == 'OK':
+            return redirect('SUBASTAS')
+        else:
+            #return HttpResponse('Hello World')
+            return redirect('SUBASTAS')
+    else:   
+        return render(request, "core/Subastas.html",{"subastas": lista_de_subastas,
                                                 'usuario_autenticado': usuario_autenticado,
                                                 'user_info': user_info})
 

@@ -328,3 +328,11 @@ def listarProductos_Productor(rut_productor):
     return json_data
 
 
+def crearOfertaSubasta(montosubasta, subasta_id_subasta, transportista_rut, pedido_idpedido):
+    
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.crearNuevaOfertaEnSubasta(montosubasta=montosubasta, subasta_id_subasta=subasta_id_subasta,
+                                                        transportista_rut=transportista_rut, pedido_idpedido=pedido_idpedido)
+
+    return response
