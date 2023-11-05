@@ -1,8 +1,8 @@
 from django import forms
 from django.shortcuts import render, redirect
 from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
-from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta
-from.models import Productor, Cliente, Transportista
+from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente
+from.models import Productor, Cliente, Transportista, OfertarSubasta
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
 from django.http import JsonResponse, HttpResponseRedirect
@@ -19,7 +19,7 @@ from urllib.parse import unquote
 import re
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from django.db.models import Min
 
 
 # lista
@@ -496,7 +496,20 @@ def perfil_cli_pedi(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-    return render(request, "core/Perfil_cliente_pedidos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    #----------------------------seccion para listar los productos por productor----------------------------------------------
+
+    id_cliente = user_info['id_cliente']
+
+    print(id_cliente)
+    lista_pedidos_cliente = listarPedidos_cliente(id_cliente)
+
+    print(lista_pedidos_cliente)
+    # Parsea la cadena JSON a una lista de diccionarios
+    pedidos_cliente = json.loads(lista_pedidos_cliente)
+
+    return render(request, "core/Perfil_cliente_pedidos.html",{'usuario_autenticado': usuario_autenticado,
+                                                                'user_info': user_info,
+                                                                'pedidos_cliente': pedidos_cliente})
 
 #PRODUCTOR-------------------------------------------------------------------------------------
 # lista
@@ -628,17 +641,51 @@ def perfil_transp_vehi(request):
 
     return render(request, "core/Perfil_transportista_vehiculos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
-#subasta---
+
+#subasta------------------------------------------------------------------------------------------------
 def subasta(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-    # Llama a la función para obtener la lista de productos en formato JSON
+    # Llama a la función para obtener la lista de subastas en formato JSON
     json_data = obtener_subastas_json()
 
     # Parsea la cadena JSON a una lista de diccionarios
     lista_de_subastas = json.loads(json_data)
 
+    #----------------------------------------------------------------------------------
+    # Realiza una consulta para obtener las ofertas del usuario actual
+    ofertas_usuario = OfertarSubasta.objects.filter(transportista_rut=user_info['Rut_usuario'])
+
+    # Crea un diccionario para almacenar las ofertas del usuario
+    ofertas_dict = {oferta.subasta_id_subasta_id: oferta.montosubasta for oferta in ofertas_usuario}
+
+    # Itera a través de las subastas
+    for subasta in lista_de_subastas:
+        subasta_id = subasta['id_subasta']
+
+        # Verifica si existe una oferta del usuario para esta subasta
+        if subasta_id in ofertas_dict:
+            subasta['monto_oferta'] = ofertas_dict[subasta_id]
+            #subasta['mensaje'] = 'WENA'
+        else:
+            subasta['monto_oferta'] = 0  # O cualquier valor que desees mostrar si no hay oferta
+            #subasta['mensaje'] = 'No hay oferta mi rey'
+    #----------------------------------------------------------------------------------
+    ofertas_minimas = OfertarSubasta.objects.values('subasta_id_subasta').annotate(min_oferta=Min('montosubasta'))
+
+    # Crea un diccionario para mapear subasta_id_subasta a la oferta mínima
+    ofertas_minimas_dict = {oferta['subasta_id_subasta']: oferta['min_oferta'] for oferta in ofertas_minimas}
+
+    # Itera a través de las subastas y agrega el monto de oferta mínima si está disponible 
+    for subasta in lista_de_subastas:
+        subasta_id = subasta['id_subasta']
+        
+        if subasta_id in ofertas_minimas_dict:
+            subasta['oferta_minima'] = ofertas_minimas_dict[subasta_id]
+        else:
+            subasta['oferta_minima'] = 'No hay oferta para esta subasta'
+    #------------------------------------------------------------------------------------
     if request.method == 'POST':        
         montosubasta = request.POST.get('monto')              
         subasta_id = request.POST.get('id_subasta')  
@@ -651,17 +698,16 @@ def subasta(request):
             transportista_rut = transportista_rut,
             pedido_idpedido = pedido_idpedido
         )
-         # Procesa la respuesta del servicio SOAP, si es necesario
 
         if response == 'OK':
             return redirect('SUBASTAS')
-        else:
-            #return HttpResponse('Hello World')
+        else:            
             return redirect('SUBASTAS')
     else:   
         return render(request, "core/Subastas.html",{"subastas": lista_de_subastas,
                                                 'usuario_autenticado': usuario_autenticado,
                                                 'user_info': user_info})
+
 
 #DETALLE DEL PRODUCTO
 def detalle_producto(request, rut_productor, nombre_producto, calibre):

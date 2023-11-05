@@ -9808,3 +9808,9 @@ a.text-dark:hover, a.text-dark:focus {
   visibility: visible;
   opacity: 1;
 }
+
+.custom-button {
+  width: 200px; /* Cambia el ancho del botón */
+  height: 60px; /* Cambia la altura del botón */
+  font-size: 24px; /* Cambia el tamaño del texto */
+}

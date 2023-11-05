@@ -7,24 +7,15 @@ URL_WEBSERVICE = 'http://localhost:8080/WSFERIAVIRTUAL/WSFERIAVIRTUAL?WSDL'
 
 client = Client(URL_WEBSERVICE)
 
-peticion_productos_productor = client.service.listarproductosporrutproductor(20279147)
+#def listarMontoSubasta(ruttransportista, idsubasta):
 
-# Inicializa una lista para almacenar los datos de los productos
-productos_data = []
+    #client = Client(URL_WEBSERVICE)
 
- # Itera a través de la lista de productos en la respuesta
-for producto in peticion_productos_productor:
-    producto_data = {
-        'calibre': producto.calibre_idcalibre,
-        'img': producto.img,
-        'precio': producto.precio,
-        'nombre_producto' : producto.producto_idproducto,                 
-        'stock': producto.stock   
-    }
-    productos_data.append(producto_data)
+response = client.service.listarMontoSubastas(12345678, 266)
 
-# Convierte la lista de productos a una cadena JSON
-json_data = json.dumps(productos_data, indent=4)
 
-print(json_data)
-#return json_data
+
+# Resto de tu lógica
+print(response)
+
+#return id_pedido_str

@@ -11,3 +11,4 @@ from .models import Seguro, Tipocliente, Tiposeguro, Transporte, Transportista, 
 admin.site.register(Productor)
 admin.site.register(ProductorProducto)
 admin.site.register(Subasta)
+admin.site.register(OfertarSubasta)

@@ -336,3 +336,64 @@ def crearOfertaSubasta(montosubasta, subasta_id_subasta, transportista_rut, pedi
                                                         transportista_rut=transportista_rut, pedido_idpedido=pedido_idpedido)
 
     return response
+
+#------AL FINAL NO LO USO XD---------------------------------------------------------------
+def listarMontoSubasta(ruttransportista, idsubasta):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.listarMontoSubastas(arg0=ruttransportista, arg1=idsubasta)
+
+    # Inicializa una lista para almacenar los datos de los productos
+    ofertas_data = []
+
+    # Itera a través de la lista de productos en la respuesta
+    for oferta in response:
+        oferta_data = {
+            'monto': oferta.montosubasta,              
+        }
+        ofertas_data.append(oferta_data)
+
+    # Convierte la lista de productos a una cadena JSON
+    json_data = json.dumps(ofertas_data, indent=4)
+
+    #print(json_data)
+    return json_data
+#---------------------------------------------------------------------------------------------
+
+def listarPedidos_cliente(idCliente):
+    client = Client(URL_WEBSERVICE)
+
+    peticion_pedidos_cliente = client.service.listarPedidosDelCliente(arg0=idCliente)
+
+    # Inicializa una lista para almacenar los datos de los productos
+    pedidos_data = []
+
+    # Itera a través de la lista de productos en la respuesta
+    for pedido in peticion_pedidos_cliente:
+        pedido_data = {
+            'id_cliente': pedido.cliente_id_cliente,
+            'comision_maipo': pedido.comisionmaipogrande,
+            'estado_pedido': pedido.descripcionestado,
+            'id_estado_pedido' : pedido.estadopedido_idestado,                 
+            'fecha_pedido': pedido.fechapedido,
+            'id_pedido': pedido.idpedido,
+            'iva': pedido.iva,
+            'nombre_bodega': pedido.nombrebodega,
+            'peso_pedido': pedido.pesototalpedido,
+            'seguro': pedido.tiposeguro_idtiposeguro,
+            'total_final': pedido.totalfinal,
+            'total_pedido': pedido.totalpedido,
+            'total_transporte': pedido.totaltransporte
+        }
+        pedidos_data.append(pedido_data)
+
+    # Convierte la lista de productos a una cadena JSON
+    json_data = json.dumps(pedidos_data, indent=4)
+
+    #print(json_data)
+    return json_data
+
+
+
+    

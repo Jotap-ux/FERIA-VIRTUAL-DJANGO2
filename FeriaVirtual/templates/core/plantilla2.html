@@ -90,15 +90,17 @@
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
                             <a href="{% url 'INDEX' %}" class="nav-item nav-link text-light">Inicio</a>
-                            <a href="{% url 'PRODUCTOS' %}" class="nav-item nav-link text-light">Productos</a>
+                            <!--<a href="{% url 'PRODUCTOS' %}" class="nav-item nav-link text-light">Productos</a>-->
                             <a href="{% url 'NOSOTROS' %}" class="nav-item nav-link text-light">Nosotros</a>
-                            <a href="{% url 'CONTACTO' %}" class="nav-item nav-link text-light">Contacto</a>
+                            <!--<a href="{% url 'CONTACTO' %}" class="nav-item nav-link text-light">Contacto</a>-->
 
                             {% if request.session.user_info.tipo_usuario == 'PRODUCTOR' %}
                                 <a href="{% url 'PROD_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
                             {% elif request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
+                                <a href="{% url 'PRODUCTOS' %}" class="nav-item nav-link text-light">Productos</a>
                                 <a href="{% url 'CLIENTE_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
                             {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
+                                <a href="{% url 'PRODUCTOS' %}" class="nav-item nav-link text-light">Productos</a>
                                 <a href="{% url 'CLIENTE_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
                             {% elif request.session.user_info.tipo_usuario == 'TRANSPORTISTA' %}
                                 <a href="{% url 'PROD_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
