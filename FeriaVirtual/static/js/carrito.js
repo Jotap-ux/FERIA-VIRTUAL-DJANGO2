@@ -32,8 +32,10 @@ function agregarAlCarrito() {
 
             // Guardar el carrito actualizado en el almacenamiento local
             localStorage.setItem("carrito", JSON.stringify(carrito));
+            
         } catch (error) {
             console.error("Error al agregar al carrito:", error);
+            //alert('El producto se agregó al carrito!! :) ');
         }
     } else {
         // Manejar el caso en que la cantidad no sea válida
@@ -108,7 +110,11 @@ function mostrarCarrito() {
             eliminarButton.classList.add("btn", "btn-sm", "btn-danger");
             eliminarButton.innerHTML = '<i class="fa fa-times"></i>';
             cellEliminar.appendChild(eliminarButton);
-            cellEliminar.classList.add("align-middle");
+            cellEliminar.classList.add("align-middle");           
+
+            //eliminarButton.addEventListener("click", function () {
+              //  eliminarDelCarrito(index);
+            //});
 
             // Agrega las celdas a la fila
             //row.appendChild(cellImagen);
@@ -259,3 +265,4 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+

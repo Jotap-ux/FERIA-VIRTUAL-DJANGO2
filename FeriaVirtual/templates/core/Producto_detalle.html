@@ -66,6 +66,7 @@
                             </div>
                         </div>
                         <button class="btn btn-success px-3 add-to-cart"
+                            data-bs-toggle="modal" data-bs-target="#modal-carrito"
                             data-product="{{ producto.nombre_producto }}" 
                             data-calibre="{{ producto.calibre }}"
                             data-calibre_id="{{ producto.calibre_id }}" 
@@ -77,8 +78,26 @@
                             </i> Añadir al Carrito
                         </button>                                                                                                                
 
-                                         
+                        
+                    </div>
 
+                    <!--MODAL PARA MODIFICAR DATOS PERSONALES TRANSPORTISTA-->
+
+                    <div class="modal fade" id="modal-carrito" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content text-center">
+                                <div class="modal-header justify-content-center">
+                                    <h5 class="modal-title" id="modal-formu-contactoLabel">MENSAJE</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Se han agreado los productos al carrito! 
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-success" id="btnAceptar" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,4 +105,6 @@
     </div>
 
 {% endblock contenido %}    
+
+
 
