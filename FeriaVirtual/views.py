@@ -1,7 +1,8 @@
 from django import forms
 from django.shortcuts import render, redirect
 from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
-from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente
+from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente, crearTransporte
+from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca
 from.models import Productor, Cliente, Transportista, OfertarSubasta
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -635,11 +636,48 @@ def perfil_transp_transpor(request):
     return render(request, "core/Perfil_transportista_transportes.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
+@user_info_required
 def perfil_transp_vehi(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-    return render(request, "core/Perfil_transportista_vehiculos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    # Obtener los datos de las marcas utilizando la función de la API
+    marcas_json = listar_marca_combobox()
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    marcas_data = json.loads(marcas_json)
+
+    
+
+    if request.method == 'POST':
+        patente = request.POST.get('patente')
+        capacidadcarga = request.POST.get('capacidad_carga')
+        frigorificotrans = request.POST.get('frigorifico')
+        permisocirculacion = request.POST.get('permiso_circulacion')
+        transportista_rut = user_info['Rut_usuario']
+        modelo_idmodelo = request.POST.get('modelo')
+        
+
+        response = crearTransporte(
+            patente,
+            capacidadcarga,
+            frigorificotrans,
+            permisocirculacion,
+            transportista_rut,
+            modelo_idmodelo
+        )
+
+        # Procesa la respuesta del servicio SOAP, si es necesario
+
+        if response == 'OK':
+            return redirect('TRANSP_VEHI')
+        else:
+            #return HttpResponse('Hello World')
+            return redirect('TRANSP_VEHI')
+    else:
+        return render(request, "core/Perfil_transportista_vehiculos.html",{'usuario_autenticado': usuario_autenticado,
+                                                                            'user_info': user_info,
+                                                                            'marcas': marcas_data})
 
 
 #subasta------------------------------------------------------------------------------------------------
@@ -781,6 +819,15 @@ def comunas_por_region(request):
     return render(request, 'core/combobox_comunas.html',{'comunas': comunas_data})
 
 #--------------------------------------------------------------------------------------------------------
+#COMBO BOXX Modelo de vehiculo por id_marca
+def modelo_por_marca(request):
+    
+    idmarca = request.GET.get('marca')
 
+    # Obtener los datos de las regiones utilizando la función de la API
+    modelos_json = listar_modelo_por_marca(idmarca)
 
+    # Parsea la cadena JSON a una lista de diccionarios
+    modelos_data = json.loads(modelos_json)
 
+    return render(request, 'core/combobox_modelos.html',{'modelos': modelos_data})

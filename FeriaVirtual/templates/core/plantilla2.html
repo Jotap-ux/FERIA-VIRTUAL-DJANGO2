@@ -103,7 +103,7 @@
                                 <a href="{% url 'PRODUCTOS' %}" class="nav-item nav-link text-light">Productos</a>
                                 <a href="{% url 'CLIENTE_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
                             {% elif request.session.user_info.tipo_usuario == 'TRANSPORTISTA' %}
-                                <a href="{% url 'PROD_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
+                                <a href="{% url 'TRANSP_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
                                 <a href="{% url 'SUBASTAS' %}" class="nav-item nav-link text-light">Subastas</a>                                
                             {% endif %}
 

@@ -23,240 +23,87 @@
 
             </div>
 
-            <!---CONTENEDOR ORIGINAL-->
             <!--------------------------->
             <div class="col-lg-8 mx-auto">
-                <div class="bg-light p-30 mb-2">
-                    <div class="row">
+                <form method="post" action="{% url 'TRANSP_VEHI' %}">
+                    {% csrf_token %}
+                    <div class="bg-light p-30 mb-2">
+                        <div class="row">
 
-                        <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
-                        <div class="col-12">
-                            <h4 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">VEHÍCULO</span></h4>
-                        </div>
-                        <!-------------------SON DE 4 EN 4---------->
-                        <div class="col-md-6 form-group">
-                            <label>Placa Patente</label>
-                            <input class="form-control" type="text" placeholder="AB-AB-11">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Capacidad de Carga</label>
-                            <input class="form-control" type="text" placeholder="2.500 Kg.">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Marca</label>
-                            <input class="form-control" type="text" placeholder="KIA">
-                        </div>
+                            <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
+                            <div class="col-12">
+                                <h4 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">VEHÍCULO</span></h4>
+                            </div>
+                            <!-------------------SON DE 4 EN 4---------->
+                            <div class="col-md-6 form-group">
+                                <label for="id_patente">Placa Patente</label>
+                                <input name="patente" id="id_patente" class="form-control" type="text" placeholder="AB-AB-11">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="id_capacidad_carga">Capacidad de Carga</label>
+                                <input name="capacidad_carga" id="id_capacidad_Carga" class="form-control" type="text" placeholder="2000">
+                            </div>
+                            
+                            <!--------------------------------------------->
+                            <div class="col-md-6 form-group">
+                                <label for="id_frigorifico">Frigorífico</label>
+                                <select name="frigorifico" id="id_frigorifico" class="custom-select">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="1">Sí</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
 
-                        <div class="col-md-6 form-group">
-                            <label>Modelo</label>
-                            <input class="form-control" type="text" placeholder="FRONTIER">
-                        </div>
+                            <div class="col-md-6 form-group">
+                                <label for="id_permiso_circulacion">Permiso Circulación</label>
+                                <select name="permiso_circulacion" id="id_permiso_circulacion" class="custom-select">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="1">Sí</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
 
-                        <div class="col-md-6 form-group">
-                            <label>Año</label>
-                            <input class="form-control" type="text" placeholder="2023">
-                        </div>
-                        
-                        <div class="col-md-6 form-group">  
-                            <label>Tipo Carrozado</label>                                    
-                            <select class="custom-select">
-                                <option selected>Carroceria Cerrada</option>
-                                <option>Carroceria Abierta</option>
-                                <option>Carrozado Frigorifico</option>
-                                <option>Carrozado Adicional</option>
-                            </select>
-                        </div>                      
-                        <div class="col-md-6 form-group">                        
-                            <!---------------DOCUMENTACIÓN DEL VEHÍCULO------------------------------>
-                            <div class="col-12 form-group mb-0">
-                                <h6 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Documentos</span></h6>
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="permiso-circulacion">
-                                        <label class="custom-control-label" for="permiso-circulacion">Permiso de Circulación</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="seguro-soap">
-                                        <label class="custom-control-label" for="seguro-soap">Seguro Obligatorio (SOAP)</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="padron-vehículo">
-                                        <label class="custom-control-label" for="padron-vehículo">Padrón Vehículo</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="revision-tecnica">
-                                        <label class="custom-control-label" for="revision-tecnica">Revisión Técnica / Homologado</label>
-                                    </div>
-                                </div>
-                            </div>                        
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label></label>
-                        </div>                                               
-                        <div class="col-5 form-group mt-3">                                    
-                            <select class="custom-select">
-                                <option selected>Permiso de Circulación</option>
-                                <option>Seguro Obligatorio (SOAP)</option>
-                                <option>Padrón Vehículo</option>
-                                <option>Revisión Técnica / Homologado</option>
-                            </select>
-                        </div>                        
-                        <div class="col-7 form-group mt-3">                                                       
-                            <input class="form-control col-6" type="file" id="formFileMultiple" multiple accept=".pdf, .doc, .docx">
-                        </div>       
-                        <div class="col-6 form-group mt-3">                                                       
-                            <!-----ES PARAR PODER TENER LA SEPARACIÓN-->                            
-                        </div>        
-                        <div class="col-md-6 d-flex justify-content-end">
-                            <button type="button" class="btn btn-danger btn-lg mb-1 col-5" data-bs-toggle="modal" data-bs-target="#modal-eliminar-vehiculo">
-                                Eliminar
-                            </button>
-                            <button type="button" class="btn btn-success btn-lg mb-1 col-5 ml-2" data-bs-toggle="modal" data-bs-target="#modal-modificar-vehiculo">
-                                Modificar
-                            </button>
-                        </div>                                                                                                                    
-                    </div>                
-                </div>              
-            </div>  
- 
-        </div>
-
-        <!------------------------------------------------------------->
-        <!---------SEGUNDO CONTENEDOR DE EJEMPLO------>
-        <div class="row px-xl-5 d-none" id="contenedor-ejemplo">
-    
-            <div class="col-lg-4">
-                
-                <div class="p-10 mb-2 text-center">
-                  
-                </div>
-                <div class="p-30 mb-5">
-                    
-                </div>
-
-            </div>
-
-            <!---?????????????????????????????-->
-            <div class="col-lg-8 mx-auto">
-                <div class="bg-light p-30 mb-2">
-                    <div class="row">
-
-                        <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
-                        <div class="col-12">
-                            <h4 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">VEHÍCULO</span></h4>
-                        </div>
-                        <!-------------------SON DE 4 EN 4---------->
-                        <div class="col-md-6 form-group">
-                            <label>Placa Patente</label>
-                            <input class="form-control" type="text" placeholder="AB-AB-11">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Capacidad de Carga</label>
-                            <input class="form-control" type="text" placeholder="2.500 Kg.">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Marca</label>
-                            <input class="form-control" type="text" placeholder="KIA">
-                        </div>
-
-                        <div class="col-md-6 form-group">
-                            <label>Modelo</label>
-                            <input class="form-control" type="text" placeholder="FRONTIER">
-                        </div>
-
-                        <div class="col-md-6 form-group">
-                            <label>Año</label>
-                            <input class="form-control" type="text" placeholder="2023">
-                        </div>
-                        
-                        <div class="col-md-6 form-group">  
-                            <label>Tipo Carrozado</label>                                    
-                            <select class="custom-select">
-                                <option selected>Carroceria Cerrada</option>
-                                <option>categoria 1</option>
-                                <option>categoria 2</option>
-                                <option>categoria 3</option>
-                            </select>
-                        </div>                      
-                        <div class="col-md-6 form-group">                        
-                            <!---------------DOCUMENTACIÓN DEL VEHÍCULO------------------------------>
-                            <div class="col-12 form-group mb-0">
-                                <h6 class="section-title position-relative text-uppercase mb-3"><span class="bg-light pr-3">Documentos</span></h6>
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="permiso-circulacion">
-                                        <label class="custom-control-label" for="permiso-circulacion">Permiso de Circulación</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="seguro-soap">
-                                        <label class="custom-control-label" for="seguro-soap">Seguro Obligatorio (SOAP)</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="padron-vehículo">
-                                        <label class="custom-control-label" for="padron-vehículo">Padrón Vehículo</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="revision-tecnica">
-                                        <label class="custom-control-label" for="revision-tecnica">Revisión Técnica / Homologado</label>
-                                    </div>
-                                </div>
-                            </div>                        
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label></label>
-                        </div>                                               
-                        <div class="col-5 form-group mt-3">                                    
-                            <select class="custom-select">
-                                <option selected>Permiso de Circulación</option>
-                                <option>Seguro Obligatorio (SOAP)</option>
-                                <option>Padrón Vehículo</option>
-                                <option>Revisión Técnica / Homologado</option>
-                            </select>
-                        </div>                        
-                        <div class="col-7 form-group mt-3">                                                       
-                            <input class="form-control col-6" type="file" id="formFileMultiple" multiple accept=".pdf, .doc, .docx">
-                        </div>       
-                        <div class="col-6 form-group mt-3">                                                       
-                            <!-----ES PARAR PODER TENER LA SEPARACIÓN-->                            
-                        </div>        
-                        <div class="col-md-6 d-flex justify-content-end">
-                            <button type="button" class="btn btn-danger btn-lg mb-1 col-5" data-bs-toggle="modal" data-bs-target="#modal-eliminar-vehiculo">
-                                Eliminar
-                            </button>
-                            <button type="button" class="btn btn-success btn-lg mb-1 col-5 ml-2" data-bs-toggle="modal" data-bs-target="#modal-modificar-vehiculo">
-                                Modificar
-                            </button>
-                        </div>                                                                                                                    
-                    </div>                
-                </div>              
-            </div>  
-    
-        </div>
-
-        <!------------------------------------------------------------>
-        <!--BOTON AÑADIR-->
-        <div class="col-lg-12 mx-auto ml-auto" id="boton-anadir-vehiculo">
-            <div class="p-30">
-                <div class="row">
-                    <div class="col-md-12 d-flex justify-content-end">                        
-                        <button  type="button" class="btn btn-info btn-lg mb-1 col-3 ml-2">
-                            Añadir
-                        </button>
-                    </div>    
-                </div>
-            </div>
+                            <!---------------------------------------------->
+                            <div class="col-md-6 form-group">
+                                <label>Rut Transportista</label>
+                                <input name="" id="" class="form-control" type="text" placeholder="{{user_info.Rut_completo}}" readonly>
+                            </div>                            
+                                            
+                            <div class="col-md-6 form-group"> 
+                                <label>Marca</label>                                          
+                                <select class="custom-select" name="marca" id="id_marca" onchange="cambiarModelo()">
+                                    <option value="">Seleccione Marca</option>
+                                    {% for m in marcas %}
+                                    <option value="{{ m.id_marca }}">{{ m.nombre_marca}}</option>                                                
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!----COMBOBOX---MODELO----->
+                            <div class="col-md-6 form-group">       
+                                <label for="id_modelo">Modelo</label>                                      
+                                <select class="custom-select" id="id_modelo" name="modelo">
+                                    
+                                </select>
+                            </div>
+                            
+                            <!---------PARA SEPARAR EL FORMULARIO--------->                                     
+                            <div class="col-md-6 form-group">
+                                <label></label>
+                            </div>                                               
+                            <div class="col-md-6 form-group">
+                                <label></label>
+                            </div>                                                  
+                              
+                            <!------------------------------------------------>
+                            <div class="col-md-12 d-flex justify-content-end">                    
+                                <button type="submit" class="btn btn-info btn-lg mb-1 col-5" data-bs-toggle="modal" data-bs-target="">
+                                    Añadir
+                                </button>                                
+                            </div>                                                                                                                    
+                        </div>                
+                    </div> 
+                </form>             
+            </div>             
         </div>
         
     </div>
@@ -340,33 +187,23 @@
         });
     </script>
 
-    <!-------------SCRIPT PARA AÑADIR EL NUEVO VEHÍCULO-------->
+    <!--SCRIPT PARA EL COMBO BOX Modelo--->
     <script>
-        // Obtiene el botón "Añadir" por su ID
-        var botonAnadir = document.getElementById("boton-anadir-vehiculo");
-
-        // Obtiene el contenedor de ejemplo original por su ID
-        var contenedorEjemploOriginal = document.getElementById("contenedor-ejemplo");
-
-        // Agrega un evento de clic al botón "Añadir"
-        botonAnadir.addEventListener("click", function () {
-            // Clona el contenedor de ejemplo original
-            var contenedorClonado = contenedorEjemploOriginal.cloneNode(true);
-
-            // Quita la clase "d-none" para mostrar el contenedor clonado
-            contenedorClonado.classList.remove("d-none");
-
-            // Agrega el contenedor clonado al final de la sección
-            contenedorEjemploOriginal.parentNode.appendChild(contenedorClonado);
-
-            // Mueve el botón "Añadir" al final de la sección
-            contenedorEjemploOriginal.parentNode.appendChild(botonAnadir);
-
-            // Quita la clase "ml-2" y agrega "mr-2" al botón para alinear a la derecha
-            botonAnadir.classList.remove("ml-2");
-            botonAnadir.classList.add("mr-2");
-
-        });
+        function cambiarModelo() {
+            
+            let marcaID = document.getElementById("id_marca").value;
+            //alert(paisID);
+            let url = '/modelos/?marca='+ marcaID;
+            //alert(url)
+            fetch(url)
+                .then(function(result){
+                    return result.text();
+                })
+                .then(function(result){
+                    document.getElementById("id_modelo").innerHTML = result;
+                });
+        }
     </script>
+    
 
 {% endblock script %}

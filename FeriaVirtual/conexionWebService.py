@@ -394,6 +394,63 @@ def listarPedidos_cliente(idCliente):
     #print(json_data)
     return json_data
 
+#--------SECCION DE TRANSPORTE------------------------------
+def crearTransporte(patente, capacidadcarga, frigorificotrans, permisocirculacion, transportista_rut, modelo_idmodelo):
 
+    client = Client(URL_WEBSERVICE)
 
+    response = client.service.agregarTransporte(patente=patente, capacidadcarga=capacidadcarga, frigorificotrans=frigorificotrans,
+                                               permisocirculacion=permisocirculacion, transportista_rut=transportista_rut, modelo_idmodelo=modelo_idmodelo)
+
+    return response
     
+def listar_marca_combobox():
+    # Crea un cliente SOAP con la URL del servicio web
+    client = Client(URL_WEBSERVICE)
+
+    # Realizamos la petición al servicio web
+    peticion_listar_marca_combobox = client.service.listarMarcas()
+
+    # Inicializa una lista para almacenar los datos de los productos
+    marcas_data = []
+
+    # Itera a través de la lista de calibres en la respuesta
+    for marca in peticion_listar_marca_combobox:
+        marca_data = {
+            'nombre_marca': marca.descmarca,
+            'id_marca': marca.idmarca,
+        }
+        marcas_data.append(marca_data)
+
+    # Convierte la lista de calibres a una cadena JSON
+    json_data = json.dumps(marcas_data, indent=4)
+
+    return json_data
+
+
+def listar_modelo_por_marca(idmarca):
+    client = Client(URL_WEBSERVICE)
+
+    peticion_modelo = client.service.listarModelos(arg0=idmarca)
+
+    # Inicializa una lista para almacenar los datos de los productos
+    modelos_data = []
+
+    # Itera a través de la lista de calibres en la respuesta
+    for modelo in peticion_modelo:
+        modelo_data = {
+            'nombre_modelo': modelo.descmodelo,
+            'id_modelo': modelo.idmodelo,
+        }
+        modelos_data.append(modelo_data)
+
+    # Convierte la lista de calibres a una cadena JSON
+    json_data = json.dumps(modelos_data, indent=4)
+
+    #print(json_data)
+    return json_data
+
+
+#------FIN SECCION TRANSPORTE-----------------------------
+
+
