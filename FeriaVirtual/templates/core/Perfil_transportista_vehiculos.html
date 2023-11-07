@@ -37,17 +37,17 @@
                             <!-------------------SON DE 4 EN 4---------->
                             <div class="col-md-6 form-group">
                                 <label for="id_patente">Placa Patente</label>
-                                <input name="patente" id="id_patente" class="form-control" type="text" placeholder="AB-AB-11">
+                                <input name="patente" id="id_patente" class="form-control" type="text" placeholder="AB-AB-11" required>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="id_capacidad_carga">Capacidad de Carga</label>
-                                <input name="capacidad_carga" id="id_capacidad_Carga" class="form-control" type="text" placeholder="2000">
+                                <input name="capacidad_carga" id="id_capacidad_Carga" class="form-control" type="number" placeholder="2000" required>
                             </div>
                             
                             <!--------------------------------------------->
                             <div class="col-md-6 form-group">
                                 <label for="id_frigorifico">Frigorífico</label>
-                                <select name="frigorifico" id="id_frigorifico" class="custom-select">
+                                <select name="frigorifico" id="id_frigorifico" class="custom-select" required>
                                     <option value="">Seleccione una opción</option>
                                     <option value="1">Sí</option>
                                     <option value="0">No</option>
@@ -56,7 +56,7 @@
 
                             <div class="col-md-6 form-group">
                                 <label for="id_permiso_circulacion">Permiso Circulación</label>
-                                <select name="permiso_circulacion" id="id_permiso_circulacion" class="custom-select">
+                                <select name="permiso_circulacion" id="id_permiso_circulacion" class="custom-select" required>
                                     <option value="">Seleccione una opción</option>
                                     <option value="1">Sí</option>
                                     <option value="0">No</option>
@@ -71,7 +71,7 @@
                                             
                             <div class="col-md-6 form-group"> 
                                 <label>Marca</label>                                          
-                                <select class="custom-select" name="marca" id="id_marca" onchange="cambiarModelo()">
+                                <select class="custom-select" name="marca" id="id_marca" onchange="cambiarModelo()" required>
                                     <option value="">Seleccione Marca</option>
                                     {% for m in marcas %}
                                     <option value="{{ m.id_marca }}">{{ m.nombre_marca}}</option>                                                
@@ -81,7 +81,7 @@
                             <!----COMBOBOX---MODELO----->
                             <div class="col-md-6 form-group">       
                                 <label for="id_modelo">Modelo</label>                                      
-                                <select class="custom-select" id="id_modelo" name="modelo">
+                                <select class="custom-select" id="id_modelo" name="modelo" required>
                                     
                                 </select>
                             </div>
@@ -99,11 +99,58 @@
                                 <button type="submit" class="btn btn-info btn-lg mb-1 col-5" data-bs-toggle="modal" data-bs-target="">
                                     Añadir
                                 </button>                                
-                            </div>                                                                                                                    
+                            </div>  
+                            {% if messages %}
+                                <ul class="messages custom-message">
+                                    {% for message in messages %}
+                                        <li {% if message.tags %} class="{{ message.tags }} custom-message"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+
                         </div>                
                     </div> 
                 </form>             
-            </div>             
+            </div>    
+
+            <!-------------------TABLA LISTA DE LOS VEHÍCULOS---------->
+            <div class="col-md-12 form-group">
+                <table class="table table-dark table-striped table-hover border border-light">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="d-none d-md-table-cell">PLACA PATENTE</th>
+                            <th scope="col">CAPACIDAD DE CARGA</th>
+                            <th scope="col" class="d-none d-md-table-cell">¿POSEE FRIGORIFICO?</th>
+                            <th scope="col">¿CUENTA CON PERMISO DE CIRCULACIÓN?</th>                      
+                            <th scope="col" class="d-none d-md-table-cell">MODELO VEHÍCULO</th>                      
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in vehiculos %}
+                        <tr>
+                            <th scope="row" class="d-none d-md-table-cell">{{ v.patente }}</th>
+                            <td >{{ v.capacidad_carga}}</td>
+                            <td class="d-none d-md-table-cell">
+                                {% if v.frigorificotrans == '1' %}
+                                    Si posee
+                                {% elif v.frigorificotrans == '0' %}
+                                    No posee
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if v.permisocirculacion == '1' %}
+                                    Si posee
+                                {% elif v.permisocirculacion == '0' %}
+                                    No posee
+                                {% endif %}
+                            </td>       
+                            <td class="d-none d-md-table-cell">{{v.modelo_idmodelo}}</td>                                  
+                        </tr> 
+                        {% endfor %}                                       
+                    </tbody>
+                </table>
+                
+            </div>         
         </div>
         
     </div>

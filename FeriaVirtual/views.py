@@ -2,7 +2,7 @@ from django import forms
 from django.shortcuts import render, redirect
 from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
 from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente, crearTransporte
-from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca
+from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista
 from.models import Productor, Cliente, Transportista, OfertarSubasta
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -224,6 +224,7 @@ def cerrar_sesion(request):
         del request.session['user_info']  # Elimina la información de usuario
     # Cierra la sesión del usuario
     logout(request)
+    messages.success(request, 'La sesión se ha cerrado :( ')
     return redirect('INDEX')  # Redirige a la página de inicio o a donde desees
 
 #--------------------------------------------------------------------
@@ -318,7 +319,7 @@ def regis_clien_em(request):
         if response == 'OK':
             return redirect('REGIS_EMPRESA')
         else:
-            #return HttpResponse('Hello World')
+            messages.success(request, 'Usted se ha registrado exitosamente :) ')
             return redirect('REGIS_EMPRESA')
     else:
         return render(request, "core/Registro_cliente_empresa.html",
@@ -362,7 +363,7 @@ def regis_clien_per(request):
         if response == 'OK':
             return redirect('REGIS_PERSONA')
         else:
-            #return HttpResponse('Hello World')
+            messages.success(request, 'Usted se ha registrado exitosamente :) ')
             return redirect('REGIS_PERSONA')
     else:
         return render(request, "core/Registro_cliente_persona.html",
@@ -408,7 +409,7 @@ def regis_prod(request):
         if response == 'OK':
             return redirect('REGIS_PROD')
         else:
-            #return HttpResponse('Hello World')
+            messages.success(request, 'Usted se ha registrado exitosamente :) ')
             return redirect('REGIS_PROD')
     else:
         # Cualquier otro código que necesites para la vista si no se envió un formulario POST
@@ -460,7 +461,7 @@ def regis_transp(request):
         if response == 'OK':
             return redirect('REGIS_TRANSP')
         else:
-            #return HttpResponse('Hello World')
+            messages.success(request, 'La información se ha guardado exitosamente :) ')
             return redirect('REGIS_TRANSP')
     else:
         
@@ -573,6 +574,7 @@ def perfil_pro_productos(request):
     # Parsea la cadena JSON a una lista de diccionarios
     productos_productor = json.loads(lista_productos_productor)
 
+    print(productos_productor)
     if request.method == 'POST':        
         precio = request.POST.get('precio')     
         stock = request.POST.get('stock')
@@ -594,7 +596,7 @@ def perfil_pro_productos(request):
         if response == 'OK':
             return redirect('PROD_PRODUC')
         else:
-            #return HttpResponse('Hello World')
+            messages.success(request, 'Los productos fueron agregados exitosamente :) ')
             return redirect('PROD_PRODUC')
     else:
         return render(request, "core/Perfil_productor_productos.html",{
@@ -647,8 +649,16 @@ def perfil_transp_vehi(request):
     # Parsea la cadena JSON a una lista de diccionarios
     marcas_data = json.loads(marcas_json)
 
-    
+    #----------------------------seccion para listar los productos por productor----------------------------------------------
+    rutabuscar = user_info['Rut_usuario']
 
+    print(rutabuscar)
+    lista_vehiculos_transp = listar_vehiculos_transportista(rutabuscar)
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    vehiculos_transportista = json.loads(lista_vehiculos_transp)
+
+    print(vehiculos_transportista)
     if request.method == 'POST':
         patente = request.POST.get('patente')
         capacidadcarga = request.POST.get('capacidad_carga')
@@ -670,14 +680,16 @@ def perfil_transp_vehi(request):
         # Procesa la respuesta del servicio SOAP, si es necesario
 
         if response == 'OK':
+            #messages.success(request, 'La información se ha guardado exitosamente.')
             return redirect('TRANSP_VEHI')
         else:
-            #return HttpResponse('Hello World')
+            messages.success(request, 'El vehiculo fue registrado con éxito! :) ')
             return redirect('TRANSP_VEHI')
     else:
         return render(request, "core/Perfil_transportista_vehiculos.html",{'usuario_autenticado': usuario_autenticado,
                                                                             'user_info': user_info,
-                                                                            'marcas': marcas_data})
+                                                                            'marcas': marcas_data,
+                                                                            'vehiculos': vehiculos_transportista})
 
 
 #subasta------------------------------------------------------------------------------------------------

@@ -9814,3 +9814,15 @@ a.text-dark:hover, a.text-dark:focus {
   height: 60px; /* Cambia la altura del botón */
   font-size: 24px; /* Cambia el tamaño del texto */
 }
+
+.letra-blanca{
+  color: white;
+  font-size: 25px;
+  margin: auto;
+}
+
+.letra-blanca-peque{
+  color: white;
+  font-size: 20px;
+  margin: auto;
+}

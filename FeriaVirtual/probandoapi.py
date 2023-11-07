@@ -5,24 +5,28 @@ import json
 
 URL_WEBSERVICE = 'http://localhost:8080/WSFERIAVIRTUAL/WSFERIAVIRTUAL?WSDL'
 
+
 client = Client(URL_WEBSERVICE)
 
-marca = 'm01'
-peticion_modelo = client.service.listarModelos(marca)
+rutabuscar = '12345678'
+peticion_vehi_transportista = client.service.listarTransportexRut(rutabuscar)
 
 # Inicializa una lista para almacenar los datos de los productos
-modelos_data = []
+vehiculos_data = []
 
-# Itera a través de la lista de calibres en la respuesta
-for modelo in peticion_modelo:
-    modelo_data = {
-        'nombre_modelo': modelo.descmodelo,
-        'id_modelo': modelo.idmodelo,
+# Itera a través de la lista de productos en la respuesta
+for vehiculo in peticion_vehi_transportista:
+    vehiculo_data = {
+        'capacidad_carga': vehiculo.capacidadcarga,
+        'frigorificotrans': vehiculo.frigorificotrans,
+        'modelo_idmodelo': vehiculo.modelo_idmodelo,
+        'patente' : vehiculo.patente,                 
+        'permisocirculacion': vehiculo.permisocirculacion,            
     }
-    modelos_data.append(modelo_data)
+    vehiculos_data.append(vehiculo_data)
 
-# Convierte la lista de calibres a una cadena JSON
-json_data = json.dumps(modelos_data, indent=4)
+# Convierte la lista de productos a una cadena JSON
+json_data = json.dumps(vehiculos_data, indent=4)
 
 print(json_data)
 #return json_data

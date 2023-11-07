@@ -98,10 +98,15 @@
                             <div class="col-12 text-center mt-4 mb-2">
                                 <button type="submit" class="btn btn-success btn-lg mb-1">
                                     Registrarse
-                                </button>
-
-                                <!--- data-bs-toggle="modal" data-bs-target="#modal-registro-persona"--->
+                                </button>                                
                             </div>
+                            {% if messages %}
+                                <ul class="messages custom-message">
+                                    {% for message in messages %}
+                                        <li {% if message.tags %} class="{{ message.tags }} custom-message"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div>              
                 </div>            
