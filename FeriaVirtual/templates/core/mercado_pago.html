@@ -1,0 +1,50 @@
+{% extends "core/plantilla2.html" %}
+{% load static %}
+
+{% block contenido %}
+
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4 mt-4"><span class="bg-secondary pr-3">PROCESO DE PAGO</span></h2>
+
+    <div class="boton_mercadoPago">
+        <!-- El contenedor donde se mostrará el botón de pago -->
+        <div id="wallet_container"></div>
+    </div>
+
+   
+
+{% endblock contenido %}
+
+{% block script %}
+
+    <script>
+        // Crea una instancia de MercadoPago con tu clave pública (YOUR_PUBLIC_KEY)
+        const mp = new MercadoPago('TEST-bb56ef9a-ede0-40e0-ac0e-cc0cecf70164',{
+            locales: 'es-MX'
+        });
+
+        // Reemplaza 'preference_id' con la variable que contiene el ID de la preferencia
+        const preferenceId = '{{ preference_id }}';
+
+        // Configuración de personalización del botón de pago
+        const customizationSettings = {
+            texts: {
+                action: 'Pagar',
+            },
+            visual: {
+            buttonBackground: 'default',
+            borderRadius: '16px',                   
+            },
+        };
+
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: preferenceId,  // Utiliza la variable preferenceId
+                redirectMode: "modal"
+            },
+            customization: customizationSettings, // Agrega la configuración de personalización aquí
+        });
+
+    </script>
+
+{% endblock script %}
+

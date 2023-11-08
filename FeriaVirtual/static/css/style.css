@@ -9826,3 +9826,18 @@ a.text-dark:hover, a.text-dark:focus {
   font-size: 20px;
   margin: auto;
 }
+
+.boton_mercadoPago{
+  width: 160px;
+  margin: auto;
+  margin-bottom: 160px;
+}
+
+.al_medio{
+  text-align: center;
+  color: white;
+}
+
+.borde_inferior{
+  margin-bottom: 110px;
+}

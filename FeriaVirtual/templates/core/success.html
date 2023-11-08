@@ -1,0 +1,61 @@
+{% extends "core/plantilla2.html" %}
+{% load static %}
+
+{% block contenido %}
+
+    <div class="col-md-12 form-group borde_inferior">
+        <div class="detalles-pedido row">                                                    
+            <!--TITULO DEL DETALLE DE PEDIDO-->
+            <div class="col-12">
+                <h3 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">PAGO APROBADO!</span></h3>
+            </div>
+        
+            <!----------------------------------------->
+            <div class="col-lg-7">                        
+                <div class="bg-light mb-2 border border-dark">
+                    <div class="border-bottom pb-2 separacion-detalles">
+                        <div class="d-flex justify-content-between">
+                            <h6>ID DEL PAGO (payment_id) : </h6>
+                            <h6>{{ payment_id }}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6>TIPO DE PAGO (payment_type) :</h6>
+                            {% if payment_type == 'credit_card' %}
+                                <h6>Tarjeta de Crédito</h6>
+                            {% else %}
+                                <h6>Tarjeta de Débito</h6>
+                            {% endif %}
+                            
+                        </div>                        
+                        <div class="d-flex justify-content-between">
+                            <h6>ID PREFERENCIA(preference_id) :</h6>
+                            <h6>{{preference_id}}</h6>
+                        </div>
+                        <div class="pt-2">
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5>ESTADO DEL PAGO (status) :</h5>
+                                {% if status == 'approved' %}
+                                    <h5>Aprobado</h5>                                
+                                {% endif %}                                                                                                                                                                               
+                            </div>                                                                                                        
+                        </div>
+                        
+                    </div>                                                            
+                </div>
+
+            </div>
+        <!--------->
+        </div>
+    </div>
+    
+{% endblock contenido %}
+
+
+        
+        
+       
+        
+        
+        
+        
+        

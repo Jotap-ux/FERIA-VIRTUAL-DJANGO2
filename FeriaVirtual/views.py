@@ -21,7 +21,10 @@ import re
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db.models import Min
-
+# SDK de Mercado Pago
+import mercadopago
+# Importa el módulo urljoin para construir URLs absolutas
+from urllib.parse import urljoin
 
 # lista
 def index(request):
@@ -843,3 +846,91 @@ def modelo_por_marca(request):
     modelos_data = json.loads(modelos_json)
 
     return render(request, 'core/combobox_modelos.html',{'modelos': modelos_data})
+
+#----------MERCADO PAGO--------------------------
+@user_info_required
+def mercado_pago(request, id_pedido, total_final):
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+
+    # Convierte total_final a un número decimal o flotante si es necesario
+    total_final = float(total_final)
+
+    #print(id_pedido)
+    #print(total_final)
+
+    # Agrega credenciales
+    mp = mercadopago.SDK("TEST-2425236459265153-110720-6072014a12c4a69929615f29f8ffe128-755995052")    
+
+    # Concatena el id_pedido con el título
+    title = f"Pedido Número {id_pedido}"
+    # Define las URLs de retorno
+    success_url = urljoin(request.build_absolute_uri(), 'success/')
+    pending_url = urljoin(request.build_absolute_uri(), 'pending/')
+    failure_url = urljoin(request.build_absolute_uri(), 'failure/')
+
+
+
+    # Define los detalles de la preferencia, como el ítem a vender y sus atributos
+    preference_data = {
+        "items": [
+            {
+                "title": title,
+                "description": "Monto total pedido",
+                "quantity": 1,
+                "unit_price": total_final,
+                "statement_descriptor": "Feria Virtual"
+            }
+        ],
+        "back_urls": {
+            "success": success_url,  
+            "pending": pending_url,
+            "failure": failure_url,         
+        },
+        "binary_mode": True  # Habilita el modo binario
+    }
+
+    # Crea la preferencia
+    preference_response = mp.preference().create(preference_data)
+    preference = preference_response["response"]
+
+    # Pasa la preferencia a la plantilla HTML
+    return render(request, "core/mercado_pago.html", {'usuario_autenticado': usuario_autenticado,
+                                                      'user_info': user_info,
+                                                      'preference_id': preference["id"]})
+
+
+@user_info_required
+@csrf_exempt
+def success_view(request, id_pedido, total_final):
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+
+
+    collection_id = request.GET.get('collection_id')
+    collection_status = request.GET.get('collection_status')
+    payment_id = request.GET.get('payment_id')
+    payment_type = request.GET.get('payment_type')
+    status = request.GET.get('status')
+    external_reference = request.GET.get('external_reference')
+    merchant_order_id = request.GET.get('merchant_order_id')
+    preference_id = request.GET.get('preference_id')
+    site_id = request.GET.get('site_id')
+    processing_mode = request.GET.get('processing_mode')
+    merchant_account_id = request.GET.get('merchant_account_id')
+
+    # Ahora, puedes pasar estos valores a la plantilla
+    return render(request, 'core/success.html', {'usuario_autenticado': usuario_autenticado,
+                                                 'user_info': user_info,
+        'collection_id': collection_id,
+        'collection_status': collection_status,
+        'payment_id': payment_id,
+        'payment_type': payment_type,
+        'status': status,
+        'external_reference': external_reference,
+        'merchant_order_id': merchant_order_id,
+        'preference_id': preference_id,
+        'site_id': site_id,
+        'processing_mode': processing_mode,
+        'merchant_account_id': merchant_account_id
+    })
