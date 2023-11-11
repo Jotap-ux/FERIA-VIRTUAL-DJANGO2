@@ -520,6 +520,34 @@ def listar_pedidosTransportista(ruttransportista):
     #print(json_data)
     return json_data
 
+def listar_pedidosTransportista_Finalizados(ruttransportista):
+    client = Client(URL_WEBSERVICE)
+
+    peticion_pedidos_transportista_final = client.service.listarPedidosxRutTransportistaFinalizado(arg0=ruttransportista)
+
+    # Inicializa una lista para almacenar los datos de los productos
+    pedidos_data = []
+
+    # Itera a través de la lista de productos en la respuesta
+    for pedido in peticion_pedidos_transportista_final:
+        pedido_data = {
+            'capacidad_carga': pedido.comisionmaipogrande,
+            'estado': pedido.descripcionestado,
+            'id_estado': pedido.estadopedido_idestado,
+            'id_pedido' : pedido.idpedido,                 
+            'iva': pedido.iva, 
+            'peso_total' : pedido.pesototalpedido,
+            'total_final' : pedido.totalfinal,
+            'total_pedido' : pedido.totalpedido,
+            'total_transporte' : pedido.totaltransporte 
+        }
+        pedidos_data.append(pedido_data)
+
+    # Convierte la lista de productos a una cadena JSON
+    json_data = json.dumps(pedidos_data, indent=4)
+
+    #print(json_data)
+    return json_data
 
 
 def actualizar_pedido_Enviado(idpedido):

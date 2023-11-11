@@ -33,59 +33,33 @@
                         </div>
 
                         <div class="col-12 mt-0">
-                            <h2 class="section-title position-relative text-uppercase mb-3 text-left"><span class="bg-light pr-3">DETALLE - SUBASTA</span></h2>
+                            <h2 class="section-title position-relative text-uppercase mb-3 text-left"><span class="bg-light pr-3">HISTORIAL</span></h2>
                         </div>
-                        <!-------------------TABLA DE HISTORIAL DE PEDIDO---------->
-                        <div class="col-md-12 form-group">                        
-                            <table class="table table-dark table-striped table-hover">
+                        <!-------------------TABLA DE HISTORIAL DE PEDIDOS---------->
+                        <div class="col-md-12 form-group">
+                            <table class="table table-dark table-striped table-hover border border-light">
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID_PEDIDO</th>
-                                        <th scope="col" class="d-none d-md-table-cell">CANTIDAD</th>
-                                        <th scope="col" class="d-none d-md-table-cell">UNIDAD</th>
-                                        <th scope="col">OFERTADO</th>
-                                        <th scope="col">ESTADO</th>
-                                        <th scope="col" class="d-none d-md-table-cell">TIEMPO DISPONIBLE</th>
+                                        <th scope="col" class="d-none d-md-table-cell">ID PEDIDO</th>
+                                        <th scope="col">GANANCIA</th>
+                                        <th scope="col" class="d-none d-md-table-cell">TOTAL FINAL</th>
+                                        <th scope="col">ESTADO ENVÍO</th>                                                                                    
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="text-center">
-                                        <th scope="row">0001_0001</th>
-                                        <td class="d-none d-md-table-cell">1000</td>
-                                        <td>KG</td>
-                                        <td class="d-none d-md-table-cell">$ 15.990</td>
-                                        <td>GANADO</td>
-                                        <td class="d-none d-md-table-cell">00:00 Hrs</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <th scope="row">0002_0002</th>
-                                        <td class="d-none d-md-table-cell">1000</td>
-                                        <td class="d-none d-md-table-cell">KG</td>
-                                        <td>$ 15.990</td>
-                                        <td>GANADO</td>
-                                        <td class="d-none d-md-table-cell">00:00 Hrs</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <th scope="row">0003_0003</th>
-                                        <td class="d-none d-md-table-cell">1000</td>
-                                        <td class="d-none d-md-table-cell">KG</td>
-                                        <td>$ 15.990</td>
-                                        <td>GANADO</td>
-                                        <td class="d-none d-md-table-cell">00:00 Hrs</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <th scope="row">0003_0003</th>
-                                        <td class="d-none d-md-table-cell">1000</td>
-                                        <td class="d-none d-md-table-cell">KG</td>
-                                        <td>$ 15.990</td>
-                                        <td>GANADO</td>
-                                        <td class="d-none d-md-table-cell">00:00 Hrs</td>
-                                    </tr>
-                                   
+                                    {% for pedido in pedidos_finalizados %}
+                                    <tr>
+                                        <th scope="row" class="d-none d-md-table-cell">{{ pedido.id_pedido }}</th>
+                                        <td >$ {{ pedido.total_transporte }}</td>
+                                        <td class="d-none d-md-table-cell">$ {{ pedido.total_final }}</td>
+                                        <td>{{ pedido.estado }}</td>                                                                                                                                                                                                    
+                                    </tr> 
+                                    {% endfor %}                                       
                                 </tbody>
                             </table>
                             
-                        </div>                    
+                        </div>
+                        <!------------------------------------------------------------->                 
                     </div>
                 </div>              
             </div>  

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
 from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente, crearTransporte
 from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista, crearPago, listar_pedidosTransportista
-from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido
+from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados
 from.models import Productor, Cliente, Transportista, OfertarSubasta
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -628,11 +628,12 @@ def perfil_transp_domici(request):
     return render(request, "core/Perfil_transportista_domicilio.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
+@user_info_required
 def perfil_transp_pedi(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-    #----------------------------seccion para listar los productos por productor----------------------------------------------
+    #----------------------------seccion para listar los pedidos por Transportista----------------------------------------------
 
     ruttransportista = user_info['Rut_usuario']
 
@@ -667,11 +668,26 @@ def perfil_transp_pedi(request):
             'pedidos_transpor': pedidos_transportista})
 
 # lista
+@user_info_required
 def perfil_transp_transpor(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-    return render(request, "core/Perfil_transportista_transportes.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    #----------------------------seccion para listar los pedidos por Transportista----------------------------------------------
+
+    ruttransportista = user_info['Rut_usuario']
+
+    lista_pedidos_finalizados_transportista = listar_pedidosTransportista_Finalizados(ruttransportista)
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    pedidos_transportista = json.loads(lista_pedidos_finalizados_transportista)
+    
+    print(pedidos_transportista)
+        
+    return render(request, "core/Perfil_transportista_transportes.html",{
+        'usuario_autenticado': usuario_autenticado,
+        'user_info': user_info,
+        'pedidos_finalizados' : pedidos_transportista})
 
 # lista
 @user_info_required
