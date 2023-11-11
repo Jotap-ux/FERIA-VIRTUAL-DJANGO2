@@ -33,85 +33,74 @@
                         <div class="col-12">
                             <h3 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">TRANSPORTE DE PEDIDOS</span></h3>
                         </div>
-                        <!-------------------TABLA DE HISTORIAL DE PEDIDO---------->
+                        <!-------------------TABLA DE HISTORIAL DE PEDIDOS---------->
                         <div class="col-md-12 form-group">
-                            <table class="table table-dark table-striped table-hover">
+                            <table class="table table-dark table-striped table-hover border border-light">
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID_PEDIDO</th>
-                                        <th scope="col">FECHA</th>
-                                        <th scope="col">MONTO ENVÍO </th>
-                                        <th scope="col">ESTADO</th>
+                                        <th scope="col" class="d-none d-md-table-cell">ID PEDIDO</th>
+                                        <th scope="col">GANANCIA</th>
+                                        <th scope="col" class="d-none d-md-table-cell">TOTAL FINAL</th>
+                                        <th scope="col">ESTADO ENVÍO</th>  
+                                        <th scope="col" class="d-none d-md-table-cell"></th> 
+                                        <th scope="col"></th>                                           
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for pedido in pedidos_transpor %}
                                     <tr>
-                                        <th scope="row">0001_0001</th>
-                                        <td>10/04/23</td>
-                                        <td>$ 100.000</td>
-                                        <td>En Camino</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">0002_0002</th>
-                                        <td>10/05/23</td>
-                                        <td>$ 125.000</td>
-                                        <td>Entregado</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">0003_0003</th>
-                                        <td>10/06/23</td>
-                                        <td>$ 150.500</td>
-                                        <td>Entregado</td>
-                                    </tr>
+                                        <th scope="row" class="d-none d-md-table-cell">{{ pedido.id_pedido }}</th>
+                                        <td >$ {{ pedido.total_transporte }}</td>
+                                        <td class="d-none d-md-table-cell">$ {{ pedido.total_final }}</td>
+                                        <td>
+                                            {% if pedido.id_estado == '4' %}
+                                                Pendiente de envio
+                                            {% else %}
+                                                {{ pedido.estado }}
+                                            {% endif %}
+
+                                        </td>                                      
+                                        <td class="d-none d-md-table-cell">
+
+                                            {% if pedido.id_estado == '4' %}
+                                                <form method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                    <input type="hidden" name="id_pedido" value="{{ pedido.id_pedido }}">
+
+                                                    <button type="submit" class="btn btn-success btn-sm mb-3 w-100">
+                                                        Enviado
+                                                    </button>  
+                                                </form>                                                
+                                            {% else %}
+                                                                                                                                                                                                                                          
+                                            {% endif %}   
+
+                                        </td>  
+                                        <td class="d-none d-md-table-cell"> 
+
+                                            {% if pedido.id_estado == '4' or pedido.id_estado == '5' %}    
+                                                <form method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                    <input type="hidden" name="id_pedido2" value="{{ pedido.id_pedido }}">
+                                                    
+                                                    <button type="submit" class="btn btn-info btn-sm mb-3 w-100">
+                                                        Recibido por cliente
+                                                    </button>
+                                                </form>                                                
+                                            {% elif pedido.id_estado == '6' %}
+                                                
+                                            {% endif %}
+
+                                        </td> 
+                                    </tr> 
+                                    {% endfor %}                                       
                                 </tbody>
                             </table>
                             
                         </div>
-                        <!------------------------------------------------------------->
-                        <!--TITULO DETALLE DE PEDIDO Y BOTON "MODIFICAR"-->
-                        <div class="col-4">
-                            <h3 class="section-title position-relative text-uppercase mb-3 text-left"><span class="bg-light pr-3">ESTADO ENVÍO</span></h3>
-                        </div>
-                        <div class="col-4">
-                            <select class="custom-select">
-                                <option selected>En camino</option>
-                                <option>Entregado</option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-begin">
-                                <button type="button" class="btn btn-success btn-md mb-1">ACTUALIZAR</button>
-                            </div>
-                        </div>
-                        
-
-                        <!--VER ESTADO DEL ENVIO-->
-                        <div class="col-lg-12 mt-5">
-                            <div class="bg-light mb-5 border border-dark">
-                                <div class="border-bottom pb-2 separacion-detalles row">
-                                    
-                                    <input type="range" class="form-range col-12" min="0" max="2" id="customRange2">
-                                    
-                                    <div class="col-4 text-center mt-3">
-                                        <!-- Imagen encima del texto -->
-                                        <img src="{% static 'img/retiro.svg' %}" class="estilo-iconos" alt="Descripción de la imagen">
-                                        <h6>RETIRO</h6>
-                                    </div>
-                                    
-                                    <div class="col-4 text-center mt-3">
-                                        <!-- Icono 2 -->
-                                        <img src="{% static 'img/envio.svg' %}" class="estilo-iconos" alt="Descripción de la imagen">
-                                        <h6>EN CAMINO</h6>
-                                    </div>
-                                    <div class="col-4 text-center mt-3">
-                                        <!-- Icono 3 -->
-                                        <img src="{% static 'img/recepcion-cliente.svg' %}" class="estilo-iconos" alt="Descripción de la imagen">
-                                        <h6>RECEPCIÓN CLIENTE</h6>
-                                    </div>
-                                          
-                                </div>
-                            </div>
-                        </div>
+                        <!------------------------------------------------------------->                                               
                         
                     </div>
                 </div>              

@@ -2,7 +2,8 @@ from django import forms
 from django.shortcuts import render, redirect
 from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
 from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente, crearTransporte
-from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista
+from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista, crearPago, listar_pedidosTransportista
+from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido
 from.models import Productor, Cliente, Transportista, OfertarSubasta
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -631,7 +632,39 @@ def perfil_transp_pedi(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-    return render(request, "core/Perfil_transportista_pedidos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    #----------------------------seccion para listar los productos por productor----------------------------------------------
+
+    ruttransportista = user_info['Rut_usuario']
+
+    lista_pedidos_transportista = listar_pedidosTransportista(ruttransportista)
+
+    # Parsea la cadena JSON a una lista de diccionarios
+    pedidos_transportista = json.loads(lista_pedidos_transportista)
+    
+    print(pedidos_transportista)
+
+    #----ENVIO DE ID_PEDIDO para actualizar estado:
+    if request.method == 'POST':
+        enviado = request.POST.get('id_pedido')
+        recibido = request.POST.get('id_pedido2')
+        #comuna_idcomuna = request.POST.get('comuna_idcomuna')
+        
+        if enviado:
+            response = actualizar_pedido_Enviado(enviado)
+        elif recibido:
+            response = actualizar_pedido_Recibido(recibido)
+        
+        
+        if response == 'OK':
+            return redirect('TRANSP_PEDI')
+        else:
+            messages.success(request, 'La información se ha guardado exitosamente :) ')
+            return redirect('TRANSP_PEDI')
+    else:                
+        return render(request, "core/Perfil_transportista_pedidos.html",{
+            'usuario_autenticado': usuario_autenticado,
+            'user_info': user_info,
+            'pedidos_transpor': pedidos_transportista})
 
 # lista
 def perfil_transp_transpor(request):
@@ -861,6 +894,7 @@ def mercado_pago(request, id_pedido, total_final):
 
     # Agrega credenciales
     mp = mercadopago.SDK("TEST-2425236459265153-110720-6072014a12c4a69929615f29f8ffe128-755995052")    
+    #mp = mercadopago.SDK("TEST-8830216595670397-111017-5a43b09d9f5af1773697ddbdd6758677-1540801280") 
 
     # Concatena el id_pedido con el título
     title = f"Pedido Número {id_pedido}"
@@ -918,6 +952,17 @@ def success_view(request, id_pedido, total_final):
     site_id = request.GET.get('site_id')
     processing_mode = request.GET.get('processing_mode')
     merchant_account_id = request.GET.get('merchant_account_id')
+
+
+    #AHORA USAMOS EL METODO PARA CREAR EL PAGO y dejar el pedido en estado '4' --> 'Pago exitoso'
+    pedido_idpedido = id_pedido
+    pago_exitoso = 0 #aca inicializamos la variable
+    
+    if status == 'approved':
+
+        pago_exitoso = 1                               
+
+        response = crearPago(pago_exitoso, pedido_idpedido)
 
     # Ahora, puedes pasar estos valores a la plantilla
     return render(request, 'core/success.html', {'usuario_autenticado': usuario_autenticado,

@@ -478,3 +478,60 @@ def listar_vehiculos_transportista(rutabuscar):
 
     print(json_data)
     return json_data
+
+#----------SECCION GESTIONAR PAGO------------------
+def crearPago(pago_exitoso, pedido_idpedido):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.crearPago(pago_exitoso=pago_exitoso, pedido_idpedido=pedido_idpedido)
+
+
+    return response
+
+
+def listar_pedidosTransportista(ruttransportista):
+
+    client = Client(URL_WEBSERVICE)
+
+    peticion_pedidos_transportista = client.service.listarPedidosxRutTransportista(arg0=ruttransportista)
+
+    # Inicializa una lista para almacenar los datos de los productos
+    pedidos_data = []
+
+    # Itera a través de la lista de productos en la respuesta
+    for pedido in peticion_pedidos_transportista:
+        pedido_data = {
+            'capacidad_carga': pedido.comisionmaipogrande,
+            'estado': pedido.descripcionestado,
+            'id_estado': pedido.estadopedido_idestado,
+            'id_pedido' : pedido.idpedido,                 
+            'iva': pedido.iva, 
+            'peso_total' : pedido.pesototalpedido,
+            'total_final' : pedido.totalfinal,
+            'total_pedido' : pedido.totalpedido,
+            'total_transporte' : pedido.totaltransporte 
+        }
+        pedidos_data.append(pedido_data)
+
+    # Convierte la lista de productos a una cadena JSON
+    json_data = json.dumps(pedidos_data, indent=4)
+
+    #print(json_data)
+    return json_data
+
+
+
+def actualizar_pedido_Enviado(idpedido):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.actualizarEstadoEnviado(idpedido=idpedido)
+
+    return response
+
+def actualizar_pedido_Recibido(idpedido):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.actualizarEstadoRecibidoporCliente(idpedido=idpedido)
+
+    return response
