@@ -6,7 +6,24 @@
 {% load humanize %}
     <!-- INICIO DE LA SECCIÓN DE LOS PRODUCTOS -->
     <div class="container-fluid pt-5 pb-3">
-        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">PRODUCTOS DISPONIBLES</span></h2>
+
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">PRODUCTOS DISPONIBLES</span>
+        </h2>
+
+        <div class="col-lg-4 col-6 text-center mb-5 mx-auto">
+            <form method="GET" action="{% url 'PRODUCTOS' %}">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Buscar productos">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-dark text-success">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <div class="row px-xl-5">
 
             {% for p in productos %}

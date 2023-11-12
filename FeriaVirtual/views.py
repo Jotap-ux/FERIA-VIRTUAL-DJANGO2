@@ -41,14 +41,23 @@ def productos(request):
     
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
+    #--------------------------------------------------//////////////
+    # Obtener el término de búsqueda de la URL
+    search_term = request.GET.get('q', '')
 
+    #----------------------------------------------------////////////////
     # Llama a la función para obtener la lista de productos en formato JSON
     json_data = obtener_productos_json()
 
     # Parsea la cadena JSON a una lista de diccionarios
     lista_de_productos = json.loads(json_data)
 
+    #----------------------------------------------------////////////
+    # Filtra los productos según el término de búsqueda
+    if search_term:
+        lista_de_productos = [producto for producto in lista_de_productos if search_term.lower() in producto['nombre_producto'].lower()]
 
+    #-----------------------------------------------------///////////
     return render(request, "core/Productos.html", {"productos": lista_de_productos, 'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
@@ -993,5 +1002,6 @@ def success_view(request, id_pedido, total_final):
         'preference_id': preference_id,
         'site_id': site_id,
         'processing_mode': processing_mode,
-        'merchant_account_id': merchant_account_id
+        'merchant_account_id': merchant_account_id,
+        'total_pago': total_final
     })

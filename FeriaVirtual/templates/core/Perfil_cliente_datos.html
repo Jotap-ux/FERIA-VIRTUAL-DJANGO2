@@ -10,7 +10,14 @@
             <div class="col-lg-4">
                 
                 <div class="bg-light p-10 mb-2 text-center">
-                    <h1 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Cliente</span></h1>
+                    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+                        {% if user_info.tipo_usuario == 'CLIENTENORMAL'  %}
+                            Cliente - Persona Natural
+                        {% elif user_info.tipo_usuario == 'CLIENTEEMP' %}
+                            Cliente - Empresa
+                        {% endif %}
+                        
+                    </h2>
                 </div>
                 <div class="bg-light p-30 mb-5">
                     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">Información</span></h2>

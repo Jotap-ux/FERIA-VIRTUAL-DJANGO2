@@ -53,18 +53,7 @@
                     <span class="h1 text-uppercase text-success bg-dark px-2 ml-n1">Virtual</span>
                 </a>
             </div>
-            <div class="col-lg-4 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Buscar productos">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-success">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
+           
             <div class="col-lg-4 col-6 text-right">
                 <p class="m-0">Contactenos</p>
                 <h5 class="m-0">+560 22334455</h5>
@@ -135,35 +124,35 @@
 
 
                         <!---DATOS DEL USUARIO CON LA SESIÓN INICIADA---->
-                        <a href="" class="nav-item nav-link text-light">{{ user_info.username }}</a> 
+                        <a href="#" class="nav-item nav-link text-light disabled">{{ user_info.username }}</a> 
 
                         {% if request.session.user_info.tipo_usuario == 'PRODUCTOR' %} 
                             
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.NombreCompleto }}</a>
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a>  
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>
+                            <a href="#" class="nav-item nav-link text-light disabled">{{ user_info.NombreCompleto }}</a>
+                            <!--<a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a>-->  
+                            <!--<a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>-->
                             
                         
                         {% elif request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
                             
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.NombreCompleto }}</a> 
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a>   
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.id_cliente }}</a>
+                            <a href="#" class="nav-item nav-link text-light disabled">{{ user_info.NombreCompleto }}</a>
+                            <!--<a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a> -->  
+                            <!--<a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>-->
+                            <!--<a href="" class="nav-item nav-link text-light">{{ user_info.id_cliente }}</a>-->
                             
 
                         {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
 
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.RazonSocial }}</a>
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.Rut_usuario }}</a>
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>
-                            <a href="" class="nav-item nav-link text-light">{{ user_info.id_cliente }}</a>
+                            <a href="#" class="nav-item nav-link text-light disabled">{{ user_info.RazonSocial }}</a>
+                            <!--<a href="" class="nav-item nav-link text-light">{{ user_info.Rut_usuario }}</a>-->
+                            <!--<a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>-->
+                            <!--<a href="" class="nav-item nav-link text-light">{{ user_info.id_cliente }}</a>-->
                         
                         {% elif request.session.user_info.tipo_usuario == 'TRANSPORTISTA' %}
 
-                        <a href="" class="nav-item nav-link text-light">{{ user_info.NombreCompleto }}</a>
-                        <a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a>
-                        <a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>
+                        <a href="#" class="nav-item nav-link text-light disabled">{{ user_info.NombreCompleto }}</a>
+                        <!--<a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a>-->
+                        <!--<a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>-->
                                             
                         {% endif %}
                                                                          

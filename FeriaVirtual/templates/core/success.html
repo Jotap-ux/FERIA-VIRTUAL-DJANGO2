@@ -15,11 +15,11 @@
                 <div class="bg-light mb-2 border border-dark">
                     <div class="border-bottom pb-2 separacion-detalles">
                         <div class="d-flex justify-content-between">
-                            <h6>ID DEL PAGO (payment_id) : </h6>
+                            <h6>ID DEL PAGO : </h6>
                             <h6>{{ payment_id }}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <h6>TIPO DE PAGO (payment_type) :</h6>
+                            <h6>TIPO DE PAGO :</h6>
                             {% if payment_type == 'credit_card' %}
                                 <h6>Tarjeta de Crédito</h6>
                             {% else %}
@@ -28,8 +28,12 @@
                             
                         </div>                        
                         <div class="d-flex justify-content-between">
-                            <h6>ID PREFERENCIA(preference_id) :</h6>
-                            <h6>{{preference_id}}</h6>
+                            <!-----<h6>ID PREFERENCIA(preference_id) :</h6>---->
+                            <!----<h6>{{preference_id}}</h6>----->
+                            <h6>MONTO PAGADO :</h6>
+                            <h6>$ {{total_pago}}</h6>
+
+
                         </div>
                         <div class="pt-2">
                             <div class="d-flex justify-content-between mt-2">
