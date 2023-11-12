@@ -1,4 +1,4 @@
-{% extends "core/plantilla.html" %}
+{% extends "core/plantilla2.html" %}
 {% load static %}
     
 {% block contenido %}
@@ -33,12 +33,12 @@
                             <!-------------------SON DE 4 EN 4---------->
                             <div class="col-12 form-group">
                                 <label for="id_razonsocial">Razón Social</label>
-                                <input name="razonsocial" id="id_razonsocial" required class="form-control" type="text" placeholder="Ingrese la razón social">
+                                <input name="razonsocial" id="id_razonsocial" required class="form-control" type="text" placeholder="Ingrese la razón social" minlength="3" maxlength="45">
                             </div>
                             
                             <div class="col-md-6 form-group">
                                 <label for="id_identificadorempresa">Numero de identificación</label>
-                                <input name="identificadorempresa" id="id_identificadorempresa" required class="form-control" type="text" placeholder="sin puntos ni guion">
+                                <input name="identificadorempresa" id="id_identificadorempresa" required class="form-control" type="text" placeholder="sin puntos ni guion" minlength="7" maxlength="9">
                             </div>
                             <!--ACA VA LA FECHA DE CONSTITUCION DE LA EMPRESA-->                            
                             <!--------------------------------------------------->
@@ -53,7 +53,7 @@
                             <!----COMBOBOX---PAIS----->
                             <div class="col-md-6 form-group">       
                                 <label for="pais">Pais</label>                                      
-                                <select class="custom-select" id="pais" name="pais" onchange="cambiarRegion()">
+                                <select class="custom-select" id="pais" name="pais" onchange="cambiarRegion()" required>
                                     <option value="">Seleccione Pais</option>
                                     {% for p in paises %}
                                     <option value="{{ p.id_pais }}">{{ p.nombre_pais}}</option>                                                
@@ -64,7 +64,7 @@
                             <!----COMBOBOX---REGION----->
                             <div class="col-md-6 form-group">       
                                 <label for="region">Region</label>                                      
-                                <select class="custom-select" id="region" name="region" onchange="cambiarComuna()">
+                                <select class="custom-select" id="region" name="region" onchange="cambiarComuna()" required>
                                     
                                 </select>
                             </div>
@@ -72,14 +72,14 @@
                             <!----COMBOBOX---COMUNA----->
                             <div class="col-md-6 form-group">       
                                 <label for="comuna">Comuna</label>                                      
-                                <select class="custom-select" id="comuna" name="comuna">
+                                <select class="custom-select" id="comuna" name="comuna" required>
                                     
                                 </select>
                             </div>      
                             
                             <div class="col-md-6 form-group">
                                 <label for="id_direccion">Dirección</label>
-                                <input name="direccion" id="id_direccion" required class="form-control" type="text" placeholder="Ingrese la calle y el número">
+                                <input name="direccion" id="id_direccion" required class="form-control" type="text" placeholder="Ingrese la calle y el número" minlength="5" maxlength="20">
                             </div>
                                                                           
                             <!--PALABRA PARA SEPARAR-->
@@ -89,11 +89,11 @@
                             <!------------------------------------------------------>
                             <div class="col-md-6 form-group">
                                 <label for="id_correoelectronico">Correo Electrónico</label>
-                                <input name="correoelectronico" id="id_correoelectronico" required class="form-control" type="email" placeholder="Ingrese su email">
+                                <input name="correoelectronico" id="id_correoelectronico" required class="form-control" type="email" placeholder="Ingrese su email" minlength="13" maxlength="40">
                             </div>                            
                             <div class="col-md-6 form-group">
                                 <label for="id_contrasena">Contraseña</label>
-                                <input name="contrasena" id="id_contrasena" required class="form-control" type="password" placeholder="Ingrese su contraseña">
+                                <input name="contrasena" id="id_contrasena" required class="form-control" type="password" placeholder="Ingrese su contraseña" minlength="5" maxlength="10">
                             </div>                            
                             <div class="col-12 text-center mt-4 mb-2">
                                 <button type="submit" class="btn btn-success btn-lg mb-1">

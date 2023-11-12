@@ -47,13 +47,16 @@
     <div class="container-fluid">
         
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-            <div class="col-lg-4">
-                <a href="{% url 'INDEX' %}" class="text-decoration-none">
+            <div class="col-lg-7">
+                <!-- Icono de la pestaña de la página -->
+                <img src="{% static 'img/logo_v3_mediano.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100">
+
+                <a href="{% url 'INDEX' %}" class="text-decoration-none  mt-3">
                     <span class="h1 text-uppercase text-white bg-success px-2">Feria</span>
                     <span class="h1 text-uppercase text-success bg-dark px-2 ml-n1">Virtual</span>
-                </a>
+                </a>                            
             </div>
-           
+                       
             <div class="col-lg-4 col-6 text-right">
                 <p class="m-0">Contactenos</p>
                 <h5 class="m-0">+560 22334455</h5>
@@ -94,7 +97,9 @@
                                 <a href="{% url 'CLIENTE_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
                             {% elif request.session.user_info.tipo_usuario == 'TRANSPORTISTA' %}
                                 <a href="{% url 'TRANSP_DATOS' %}" class="nav-item nav-link text-light">Perfil</a>
-                                <a href="{% url 'SUBASTAS' %}" class="nav-item nav-link text-light">Subastas</a>                                
+                                <a href="{% url 'SUBASTAS' %}" class="nav-item nav-link text-light">Subastas</a>  
+                            {% else %}
+                                <a href="{% url 'PRODUCTOS' %}" class="nav-item nav-link text-light">Productos</a>
                             {% endif %}
 
 

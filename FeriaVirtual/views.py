@@ -42,7 +42,7 @@ def productos(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
     #--------------------------------------------------//////////////
-    # Obtener el término de búsqueda de la URL
+    # Obtener el término de búsqueda de la URL (PARA PRODUCTOS)
     search_term = request.GET.get('q', '')
 
     #----------------------------------------------------////////////////

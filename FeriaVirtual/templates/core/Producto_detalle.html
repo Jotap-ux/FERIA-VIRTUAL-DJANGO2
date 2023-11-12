@@ -40,47 +40,58 @@
                             <small class="fas fa-star"></small>
                             <small class="fas fa-star"></small>
                             <small class="fas fa-star"></small>
-                        </div>
-                        <small class="pt-1">(Buenardo)</small>
+                        </div>                        
                     </div>
                    
                     <h3 class="font-weight-semi-bold mb-4">Precio : ${{ producto.precio}}</h3>
                     <h3 class="font-weight-semi-bold mb-4">Stock : {{ producto.stock }}</h3>
                     <h3 class="font-weight-semi-bold mb-4">Calibre : {{ producto.calibre }} ({{ producto.calibre_id }})</h3>                    
                     
-                    
-                    <div class="d-flex align-items-center mb-4 pt-2">
-                        <div class="input-group quantity mr-3" style="width: 200px;">
-                            <div class="input-group-btn">
-                                <button class="btn btn-success btn-minus">
-                                    <i class="fa fa-minus"></i>
-                                </button>                                
+                    {% if user_info %}
+                        <div class="d-flex align-items-center mb-4 pt-2">
+                            <div class="input-group quantity mr-3" style="width: 200px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-success btn-minus">
+                                        <i class="fa fa-minus"></i>
+                                    </button>                                
+                                </div>
+                                
+                                <input type="number" id="cantidadProducto" class="form-control bg-secondary border-0 text-center" value="1">
+
+                                <div class="input-group-btn">
+                                    <button class="btn btn-success btn-plus">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
                             </div>
+                            <button class="btn btn-success px-3 add-to-cart"
+                                data-bs-toggle="modal" data-bs-target="#modal-carrito"
+                                data-product="{{ producto.nombre_producto }}" 
+                                data-calibre="{{ producto.calibre }}"
+                                data-calibre_id="{{ producto.calibre_id }}" 
+                                data-precio="{{ producto.precio }}"
+                                data-rut_productor="{{ producto.rut_productor }}" 
+                                data-id_producto="{{ producto.id_producto }}" 
+                                onclick="agregarAlCarrito()">
+                                <i class="fa fa-shopping-cart mr-1">
+                                </i> Añadir al Carrito
+                            </button>                                                                                                                
+
                             
-                            <input type="number" id="cantidadProducto" class="form-control bg-secondary border-0 text-center" value="1">
-
-                            <div class="input-group-btn">
-                                <button class="btn btn-success btn-plus">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
                         </div>
-                        <button class="btn btn-success px-3 add-to-cart"
-                            data-bs-toggle="modal" data-bs-target="#modal-carrito"
-                            data-product="{{ producto.nombre_producto }}" 
-                            data-calibre="{{ producto.calibre }}"
-                            data-calibre_id="{{ producto.calibre_id }}" 
-                            data-precio="{{ producto.precio }}"
-                            data-rut_productor="{{ producto.rut_productor }}" 
-                            data-id_producto="{{ producto.id_producto }}" 
-                            onclick="agregarAlCarrito()">
-                            <i class="fa fa-shopping-cart mr-1">
-                            </i> Añadir al Carrito
-                        </button>                                                                                                                
+                    {% else %}
+                        <div class="d-flex flex-column align-items-center justify-content-center">
+                            <img src="{% static 'img/triste.png' %}" alt="Imagen triste" class="img-fluid mx-auto">
+                            <h4 class="font-weight-semi-bold mb-4 text-center">                        
+                                Si desea comprar                       
+                            </h4> 
+                            <h4 class="font-weight-semi-bold mb-4 text-center">                        
+                                Primero debe registrarse                        
+                            </h4>          
+                        </div>        
 
-                        
-                    </div>
-
+                    {% endif %}
+                    
                     <!--MODAL PARA MODIFICAR DATOS PERSONALES TRANSPORTISTA-->
 
                     <div class="modal fade" id="modal-carrito" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
