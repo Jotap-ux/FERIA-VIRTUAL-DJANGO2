@@ -9841,3 +9841,11 @@ a.text-dark:hover, a.text-dark:focus {
 .borde_inferior{
   margin-bottom: 110px;
 }
+
+.oculto {
+  display: none;
+  color: white;
+}
+
+
+

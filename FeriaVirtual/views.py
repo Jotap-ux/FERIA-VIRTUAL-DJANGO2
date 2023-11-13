@@ -4,7 +4,7 @@ from .conexionWebService import crear_productor, crear_clienteNormal, crear_clie
 from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente, crearTransporte
 from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista, crearPago, listar_pedidosTransportista
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados
-from.models import Productor, Cliente, Transportista, OfertarSubasta
+from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
 from django.http import JsonResponse, HttpResponseRedirect
@@ -752,18 +752,26 @@ def perfil_transp_vehi(request):
                                                                             'marcas': marcas_data,
                                                                             'vehiculos': vehiculos_transportista})
 
+#-----------------VERIFICAR SI EL TRANSPORTISTA TIENE VEHICULOS O NO--------------------------------
+def tiene_vehiculos_registrados(transportista_rut):
+    # Verifica si el transportista tiene vehículos registrados
+    return Transporte.objects.filter(transportista_rut=transportista_rut).exists()
 
 #subasta------------------------------------------------------------------------------------------------
 def subasta(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
+    #---------------------------------------------------------------------------
+    
+    #----------------------------------------------------------------------------
     # Llama a la función para obtener la lista de subastas en formato JSON
     json_data = obtener_subastas_json()
 
     # Parsea la cadena JSON a una lista de diccionarios
     lista_de_subastas = json.loads(json_data)
 
+    
     #----------------------------------------------------------------------------------
     # Realiza una consulta para obtener las ofertas del usuario actual
     ofertas_usuario = OfertarSubasta.objects.filter(transportista_rut=user_info['Rut_usuario'])
@@ -797,27 +805,41 @@ def subasta(request):
         else:
             subasta['oferta_minima'] = 'No hay oferta para esta subasta'
     #------------------------------------------------------------------------------------
-    if request.method == 'POST':        
-        montosubasta = request.POST.get('monto')              
-        subasta_id = request.POST.get('id_subasta')  
-        transportista_rut = user_info['Rut_usuario']
-        pedido_idpedido = request.POST.get('id_pedido')  
+    
+    # Verifica si el formulario se envió mediante POST
+    if request.method == 'POST':
+        # Verifica si el transportista tiene vehículos registrados
+        tiene_vehiculos = tiene_vehiculos_registrados(user_info['Rut_usuario'])
+        print(tiene_vehiculos)
 
-        response = crearOfertaSubasta(            
-            montosubasta = montosubasta,
-            subasta_id_subasta = subasta_id,
-            transportista_rut = transportista_rut,
-            pedido_idpedido = pedido_idpedido
-        )
+        if not tiene_vehiculos:
+            mensaje_error = 'Debes tener al menos un vehículo registrado para hacer ofertas en subastas.'
+            return render(request, "core/Subastas.html", {"mensaje_error": mensaje_error,
+                                                           'usuario_autenticado': usuario_autenticado,
+                                                           'user_info': user_info})
+        else:
+            # Procesa la oferta
+            montosubasta = request.POST.get('monto')
+            subasta_id = request.POST.get('id_subasta')
+            transportista_rut = user_info['Rut_usuario']
+            pedido_idpedido = request.POST.get('id_pedido')
 
-        if response == 'OK':
-            return redirect('SUBASTAS')
-        else:            
-            return redirect('SUBASTAS')
+            response = crearOfertaSubasta(
+                montosubasta=montosubasta,
+                subasta_id_subasta=subasta_id,
+                transportista_rut=transportista_rut,
+                pedido_idpedido=pedido_idpedido
+            )
+
+            if response == 'OK':
+                return redirect('SUBASTAS')
+            else:
+                return redirect('SUBASTAS')
     else:   
         return render(request, "core/Subastas.html",{"subastas": lista_de_subastas,
                                                 'usuario_autenticado': usuario_autenticado,
                                                 'user_info': user_info})
+
 
 
 #DETALLE DEL PRODUCTO

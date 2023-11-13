@@ -2,187 +2,187 @@
 {% load static %} 
 
 {% block contenido %}
+    <div id="main-content" style="display: flex; flex-direction: column; min-height: 50vh; margin-bottom: 50px;">
+        <!--CONTENIDO DEL LA PAGINA-->
+        <div class="container-fluid mt-3 mb-30">
+            <div class="row px-xl-5">
 
-    <!--CONTENIDO DEL LA PAGINA-->
-    <div class="container-fluid mt-3">
+                <!------------------------------------->
+                <div class="col-lg-8">
 
-        <!--TITULO SUBASTAS-->
-        <div class="col-lg-12">
-            <div class="p-10 mb-2 text-left">
-                <h1 class="section-title position-relative text-uppercase mx-xl-5 mb-4 text-left fondo-fruta"><span class="bg-light text-left">Subastas Disponibles</span></h1>
-            </div>
-        </div>
-
-        <!--SUBASTA 1-->
-        {% for s in subastas %}
-        <div class="row px-xl-0">
-
-            <!--IMAGEN-->
-            <div class="col-lg-3 ">                                
-                <div class="bg-light p-30 mb-3 border border-dark">
-                    <div>
-                        <img class="img-fluid w-100" src="{% static 'img/platano.jpg' %}" alt="">                        
-                    </div>
-                </div>
-            </div>
-
-             <!--ACA ESTA LA TABLA CON LOS DATOS DE LA SUBASTA--->
-            <!----------------PRIMER DETALLE-------------------------------------->
-            <div class="col-lg-6">
-                <div class="bg-light mb-3 border border-dark">
-                    <div class="border-bottom pb-2 separacion-detalles">
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>NÚMERO DE PEDIDO :</h6>
-                            <h6>{{s.id_pedido}}</h6>                        
-
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>NÚMERO DE SUBASTA :</h6>
-                            <h6>{{s.id_subasta}}</h6>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>NOMBRE CLIENTE :</h6>
-                            <h6>
-                                {{s.nombre_cliente}}
-                                {% if s.nombre_clienteEmpresa %}
-                                    {{s.nombre_clienteEmpresa}}
-                                {% endif %}                                                        
-                            </h6>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>CANTIDAD DE PRODUCTOS :</h6>
-                            <h6>{{s.cantidad_productos}}</h6>
-                        </div>                                               
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>FECHA SUBASTA :</h6>
-                            <h6>{{s.fecha_subasta}}</h6>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>HORA DE TERMINO :</h6>
-                            <h6>{{s.hora_termino}}</h6>
-                        </div>
-
-                        <!--MENSAJES DE PREVIZUALIZACIÓN-->
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>DIRECCIÓN DE ORIGEN :</h6>
-                            <h6>
-                                {{s.comuna_origen}}
-                                <a class="color-links custom-tooltip">
-                                  DETALLE  <span class="tooltip-text"> {{s.direccion_origen}} </span>                                    
-                                </a>                                
-                            </h6>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>DIRECCIÓN DE DESTINO:</h6>
-                            <h6>
-                                {{s.comuna_destino}}
-                                <a class="color-links custom-tooltip">
-                                  DETALLE  <span class="tooltip-text"> {{s.direccion_destino}} </span>                                    
-                                </a>                                
-                            </h6>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center info-div">
-                            <h6>OFERTA MÍNIMA HECHA :</h6>
-                            <h6>{{s.oferta_minima}}</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--CUADRO CON LOS BOTONES-->            
-            <div class="col-lg-3">   
-                <form method="post" action="{% url 'SUBASTAS' %}">
-                    {% csrf_token %}
-                    <div class="bg-light p-30 mb-5 border border-dark">
-                        {% if s.monto_oferta %}
-                            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">USTED YA OFERTÓ</span></h2>
-                        {% else %}
-                            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">OFERTAR</span></h2>
-                        {% endif %}
-
-                        
-                        <div class="col-md-12 form-group mb-3">
-                            <!-- Agrega campos ocultos con los valores que deseas transmitir -->
-                            <input type="hidden" name="id_pedido" value="{{ s.id_pedido }}">
-                            <input type="hidden" name="id_subasta" value="{{ s.id_subasta }}">
-                            {% if s.monto_oferta %}
-                                <p>Monto Ofertado : ${{ s.monto_oferta }}</p>
+                <!--TITULO SUBASTAS-->
+                    <div class="col-lg-12 mt-3">
+                        <div class="p-10 mb-30 text-left ">
+                            {% if not mensaje_error %}
+                                <h1 class="section-title position-relative text-uppercase mx-xl-5 mb-4 text-left fondo-fruta">
+                                    <span class="bg-light text-left">
+                                        Subastas Disponibles
+                                    </span>                                
+                                </h1>                       
                             {% else %}
-                                <input name="monto" id="id_monto" class="form-control" type="number" placeholder="$ 15.990">
+                                <h1 class="bg-light">{{ mensaje_error }}</h1> 
                             {% endif %}
+                            
+                        
                         </div>
+                    </div>  
+                </div>  
+                
+            </div>
 
-                        <div class="col-md-12 form-group text-right">
-                            {% if not s.monto_oferta %}
-                                <button type="submit" class="btn btn-success btn-lg mb-3 w-100" data-bs-toggle="modal" data-bs-target="#modal-enviar-oferta">
-                                Enviar Oferta
-                                </button>
-                            {% endif %}
+                    
+            <!--SUBASTA 1-->
+            {% for s in subastas %}
+            <div class="row px-xl-0">
+
+                <!--IMAGEN-->
+                <div class="col-lg-3 ">                                
+                    <div class="bg-dark p-30 mb-3 border border-light">
+                        <div>
+                            <img class="img-fluid w-100" src="{% static 'img/subastas.png' %}" alt="">                        
                         </div>
                     </div>
-                </form>
+                </div>
+
+                <!--ACA ESTA LA TABLA CON LOS DATOS DE LA SUBASTA--->
+                <!----------------PRIMER DETALLE-------------------------------------->
+                <div class="col-lg-6">
+                    <div class="bg-light mb-3 border border-dark">
+                        <div class="border-bottom pb-2 separacion-detalles">
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>NÚMERO DE PEDIDO :</h6>
+                                <h6>{{s.id_pedido}}</h6>                        
+
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>NÚMERO DE SUBASTA :</h6>
+                                <h6>{{s.id_subasta}}</h6>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>NOMBRE CLIENTE :</h6>
+                                <h6>
+                                    {{s.nombre_cliente}}
+                                    {% if s.nombre_clienteEmpresa %}
+                                        {{s.nombre_clienteEmpresa}}
+                                    {% endif %}                                                        
+                                </h6>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>CANTIDAD DE PRODUCTOS :</h6>
+                                <h6>{{s.cantidad_productos}}</h6>
+                            </div>                                               
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>FECHA SUBASTA :</h6>
+                                <h6>{{s.fecha_subasta}}</h6>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>HORA DE TERMINO :</h6>
+                                <h6>{{s.hora_termino}}</h6>
+                            </div>
+
+                            <!--MENSAJES DE PREVIZUALIZACIÓN-->
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>DIRECCIÓN DE ORIGEN :</h6>
+                                <h6>
+                                    {{s.comuna_origen}}
+                                    <a class="color-links custom-tooltip">
+                                    DETALLE  <span class="tooltip-text"> {{s.direccion_origen}} </span>                                    
+                                    </a>                                
+                                </h6>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>DIRECCIÓN DE DESTINO:</h6>
+                                <h6>
+                                    {{s.comuna_destino}}
+                                    <a class="color-links custom-tooltip">
+                                    DETALLE  <span class="tooltip-text"> {{s.direccion_destino}} </span>                                    
+                                    </a>                                
+                                </h6>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center info-div">
+                                <h6>OFERTA MÍNIMA HECHA :</h6>
+                                <h6>{{s.oferta_minima}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--CUADRO CON LOS BOTONES-->            
+                <div class="col-lg-3">   
+                    <form method="post" action="{% url 'SUBASTAS' %}">
+                        {% csrf_token %}
+                        <div class="bg-light p-30 mb-5 border border-dark">
+                            {% if s.monto_oferta %}
+                                <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">USTED YA OFERTÓ</span></h2>
+                            {% else %}
+                                <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">OFERTAR</span></h2>
+                            {% endif %}
+
+                            
+                            <div class="col-md-12 form-group mb-3">
+                                <!-- Agrega campos ocultos con los valores que deseas transmitir -->
+                                <input type="hidden" name="id_pedido" value="{{ s.id_pedido }}">
+                                <input type="hidden" name="id_subasta" value="{{ s.id_subasta }}">
+                                {% if s.monto_oferta %}
+                                    <p>Monto Ofertado : ${{ s.monto_oferta }}</p>
+                                {% else %}
+                                    <input name="monto" id="id_monto" class="form-control" type="number" placeholder="$ 15.990">
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-12 form-group text-right">
+                                {% if not s.monto_oferta %}
+                                    <button type="submit" class="btn btn-success btn-lg mb-3 w-100" data-bs-toggle="modal" data-bs-target="#modal-enviar-oferta">
+                                    Enviar Oferta
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
             </div>
-
-
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    <!------------------------------------->
+        <!------------------------------------->
 
-    <!--MODAL PARA ENVIAR OFERTA EN UNA SUBASTA-->
-
-    <div class="modal fade" id="modal-enviar-oferta" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content text-center">
-                <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-formu-contactoLabel">MENSAJE</h5>
-                </div>
-                <div class="modal-body">
-                    Se ha enviado su oferta!
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-info" id="btnEnviar-oferta" data-bs-dismiss="modal" aria-label="Close">OK</button>
+        
+        <!-------------MODAL PARA PREGUNTAR SI DESEA ELIMINAR LA OFERTA EN ESA SUBASTA----------->
+        <div class="modal fade" id="modal-eliminar-oferta" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content text-center">
+                    <div class="modal-header justify-content-center">
+                        <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro que desea eliminar la oferta para esta subasta?
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-success" id="btnEliminar-oferSI" data-bs-target="#modal-aviso-inhabilitacion">Si</button>
+                        <button type="button" class="btn btn-danger" id="btnEliminar-oferNO" data-bs-dismiss="modal" aria-label="Close">No</button>
+                    </div>
                 </div>
             </div>
-            
         </div>
-    </div>
 
-    <!-------------MODAL PARA PREGUNTAR SI DESEA ELIMINAR LA OFERTA EN ESA SUBASTA----------->
-    <div class="modal fade" id="modal-eliminar-oferta" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content text-center">
-                <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
-                </div>
-                <div class="modal-body">
-                    ¿Está seguro que desea eliminar la oferta para esta subasta?
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" id="btnEliminar-oferSI" data-bs-target="#modal-aviso-inhabilitacion">Si</button>
-                    <button type="button" class="btn btn-danger" id="btnEliminar-oferNO" data-bs-dismiss="modal" aria-label="Close">No</button>
+        <!------------------MODAL PARA AVISAR QUE LA OFERTA FUE ELIMINADA DE ESA SUBASTA---------------------->
+        <div class="modal fade" id="modal-aviso-OferEliminada" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content text-center">
+                    <div class="modal-header justify-content-center">
+                        <h5 class="modal-title" id="modal-avisoLabel">MENSAJE</h5>
+                    </div>
+                    <div class="modal-body">
+                        Su oferta ha sido eliminada!
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" id="btnOfertaEliminada" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!------------------MODAL PARA AVISAR QUE LA OFERTA FUE ELIMINADA DE ESA SUBASTA---------------------->
-    <div class="modal fade" id="modal-aviso-OferEliminada" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content text-center">
-                <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-avisoLabel">MENSAJE</h5>
-                </div>
-                <div class="modal-body">
-                    Su oferta ha sido eliminada!
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-danger" id="btnOfertaEliminada" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 {% endblock contenido %}
 
 {% block script %}

@@ -212,6 +212,7 @@ def obtener_subastas_json():
     # Convierte la lista de productos a una cadena JSON
     json_data = json.dumps(subastas_data, indent=4)
     
+    print(json_data)
     return json_data
 
 #COMBO-BOX PAIS, REGION Y COMUNA
