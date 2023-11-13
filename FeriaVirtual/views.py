@@ -26,6 +26,9 @@ from django.db.models import Min
 import mercadopago
 # Importa el módulo urljoin para construir URLs absolutas
 from urllib.parse import urljoin
+import requests
+
+
 
 # lista
 def index(request):
@@ -951,7 +954,6 @@ def mercado_pago(request, id_pedido, total_final):
     failure_url = urljoin(request.build_absolute_uri(), 'failure/')
 
 
-
     # Define los detalles de la preferencia, como el ítem a vender y sus atributos
     preference_data = {
         "items": [
@@ -1011,7 +1013,7 @@ def success_view(request, id_pedido, total_final):
 
         response = crearPago(pago_exitoso, pedido_idpedido)
 
-    # Ahora, puedes pasar estos valores a la plantilla
+    # Ahora, pasamos estos valores a la plantilla
     return render(request, 'core/success.html', {'usuario_autenticado': usuario_autenticado,
                                                  'user_info': user_info,
         'collection_id': collection_id,

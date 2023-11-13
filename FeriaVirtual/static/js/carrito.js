@@ -133,7 +133,7 @@ function mostrarCarrito() {
 
         });
 
-        // Calcula envío (puedes agregar la lógica aquí si es necesario)
+        // Calcula envío
         envio = 0;
 
         // Calcula comisión (Maipo Grande)
