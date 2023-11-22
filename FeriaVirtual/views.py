@@ -28,7 +28,7 @@ import mercadopago
 from urllib.parse import urljoin
 import requests
 #IMPORTACION DE LIBRERIA PARA ENCRIPTAR CONTRASEÑA
-import bcrypt
+#import bcrypt
 
 
 # lista
@@ -598,15 +598,13 @@ def perfil_pro_productos(request):
         calibre_idcalibre = request.POST.get('calibre_idcalibre')
         producto_idproducto = request.POST.get('producto_idproducto')
         productor_rut = user_info['Rut_usuario']
-        img = request.POST.get('img')
         
         response = agregar_productos(            
            precio,
            stock,
            calibre_idcalibre,
            producto_idproducto,
-           productor_rut,
-           img
+           productor_rut
         )
          # Procesa la respuesta del servicio SOAP, si es necesario
 
