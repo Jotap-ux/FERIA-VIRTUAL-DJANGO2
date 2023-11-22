@@ -27,7 +27,8 @@ import mercadopago
 # Importa el módulo urljoin para construir URLs absolutas
 from urllib.parse import urljoin
 import requests
-
+#IMPORTACION DE LIBRERIA PARA ENCRIPTAR CONTRASEÑA
+import bcrypt
 
 
 # lista
@@ -233,7 +234,6 @@ def inicio_sesion(request):
     return render(request, "core/Inicio_de_sesión.html")
 
 
-
 @never_cache
 def cerrar_sesion(request):
     if 'user_info' in request.session:
@@ -361,7 +361,8 @@ def regis_clien_per(request):
         correoelectronico = request.POST.get('correoelectronico')
         contrasena = request.POST.get('contrasena')
         comuna_idcomuna = request.POST.get('comuna')
-        
+        #--------------------------------------
+
         response = crear_clienteNormal(
             rut,
             dv,
