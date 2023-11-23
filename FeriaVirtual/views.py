@@ -4,7 +4,7 @@ from .conexionWebService import crear_productor, crear_clienteNormal, crear_clie
 from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente, crearTransporte
 from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista, crearPago, listar_pedidosTransportista
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados
-from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte
+from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
 from django.http import JsonResponse, HttpResponseRedirect
@@ -109,10 +109,33 @@ def inicio_sesion(request):
 
                 rut_completo = f"{rut_usuario}-{productor.dv}"
                 
-                #nombre = {productor.nombre}
-                #apellido = {productor.apellidopat}
-                # Obtiene la fecha de nacimiento del modelo Productor
-                #fecha_nacimiento = productor.fechanacimiento.strftime("%Y-%m-%d")
+                #---------------OBTENER COMUNA, REGION Y PAIS----------------------------------
+
+                # Obtén el id de la comuna como cadena
+                id_comuna_str = str(productor.comuna_idcomuna_id)  # Accede directamente al ID
+
+                #buscamos el nombre de la COMUNA de acuerdo a ese id...
+                comuna = Comuna.objects.get(idcomuna = id_comuna_str)
+
+                nombre_comuna = comuna.nombrecomuna
+                
+                # Obtén el id de la region como cadena
+                id_region_str = str(comuna.region_idregion_id)
+
+                #buscamos el nombre de la REGION de acuerdo a ese id...
+                region = Region.objects.get(idregion = id_region_str)
+
+                nombre_region = region.nombreregion
+
+                # Obtén el id del pais como cadena
+                id_pais_str = str(region.pais_idpais_id)
+
+                #buscamos el nombre de la PAIS de acuerdo a ese id...
+                pais = Pais.objects.get(idpais = id_pais_str)
+
+                nombre_pais = pais.nombrepais                
+                #--------------------------------------------------------
+                print('Su comuna es : ', id_comuna_str, 'y el nombre es:', nombre_comuna, 'su region : ', id_region_str, 'Su pais : ', id_pais_str)
 
                 request.session['user_info'] = {
                     'username': correoelectronico,
@@ -123,7 +146,11 @@ def inicio_sesion(request):
                     'Fecha_nacimiento': productor.fechanacimiento.strftime("%d-%m-%Y"),
                     'Nombre': productor.nombre,
                     'Apellido': productor.apellidopat,
-                    'Direccion': productor.direccion
+                    'Direccion': productor.direccion,
+                    'comuna_id': id_comuna_str,  # Convertimos el id de la comuna a cadena
+                    'comuna' : nombre_comuna,
+                    'region': nombre_region,
+                    'pais' : nombre_pais
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
@@ -143,11 +170,39 @@ def inicio_sesion(request):
             try:
                 # Busca el objeto Productor en la base de datos utilizando el campo 'rut'
                 cliente = Cliente.objects.get(rut=rut_usuario)
-
+                
                 # Concatena nombre y apellido y agrega el valor resultante a user_info
                 nombre_completo = f"{cliente.nombre} {cliente.apellidopat} {cliente.apellidomat}"
 
                 rut_completo = f"{rut_usuario}-{cliente.dv}"
+                
+                #---------------OBTENER COMUNA, REGION Y PAIS----------------------------------
+
+                # Obtén el id de la comuna como cadena
+                id_comuna_str = str(cliente.comuna_idcomuna_id)  # Accede directamente al ID
+
+                #buscamos el nombre de la COMUNA de acuerdo a ese id...
+                comuna = Comuna.objects.get(idcomuna = id_comuna_str)
+
+                nombre_comuna = comuna.nombrecomuna
+                
+                # Obtén el id de la region como cadena
+                id_region_str = str(comuna.region_idregion_id)
+
+                #buscamos el nombre de la REGION de acuerdo a ese id...
+                region = Region.objects.get(idregion = id_region_str)
+
+                nombre_region = region.nombreregion
+
+                # Obtén el id del pais como cadena
+                id_pais_str = str(region.pais_idpais_id)
+
+                #buscamos el nombre de la PAIS de acuerdo a ese id...
+                pais = Pais.objects.get(idpais = id_pais_str)
+
+                nombre_pais = pais.nombrepais                
+                #--------------------------------------------------------
+                print('Su comuna es : ', id_comuna_str, 'y el nombre es:', nombre_comuna, 'su region : ', id_region_str, 'Su pais : ', id_pais_str)
 
                 request.session['user_info'] = {
                     'username': correoelectronico,
@@ -158,9 +213,15 @@ def inicio_sesion(request):
                     'Fecha_nacimiento': cliente.fechanacimiento.strftime("%d-%m-%Y"),
                     'Nombre': cliente.nombre,
                     'Apellido': cliente.apellidopat,
-                    'Direccion': cliente.direccion,
-                    'id_cliente': cliente.id_cliente
+                    'Direccion': cliente.direccion,  
+                    'id_cliente': cliente.id_cliente,                
+                    'comuna_id': id_comuna_str,  # Convertimos el id de la comuna a cadena
+                    'comuna' : nombre_comuna,
+                    'region': nombre_region,
+                    'pais' : nombre_pais
                 }
+
+                print('Su id de cliente es : ', cliente.id_cliente)
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
 
@@ -176,13 +237,46 @@ def inicio_sesion(request):
                 # Busca el objeto Productor en la base de datos utilizando el campo 'rut'
                 cliente = Cliente.objects.get(identificadorempresa=rut_usuario)
 
+                #---------------OBTENER COMUNA, REGION Y PAIS----------------------------------
+
+                # Obtén el id de la comuna como cadena
+                id_comuna_str = str(cliente.comuna_idcomuna_id)  # Accede directamente al ID
+
+                #buscamos el nombre de la COMUNA de acuerdo a ese id...
+                comuna = Comuna.objects.get(idcomuna = id_comuna_str)
+
+                nombre_comuna = comuna.nombrecomuna
+                
+                # Obtén el id de la region como cadena
+                id_region_str = str(comuna.region_idregion_id)
+
+                #buscamos el nombre de la REGION de acuerdo a ese id...
+                region = Region.objects.get(idregion = id_region_str)
+
+                nombre_region = region.nombreregion
+
+                # Obtén el id del pais como cadena
+                id_pais_str = str(region.pais_idpais_id)
+
+                #buscamos el nombre de la PAIS de acuerdo a ese id...
+                pais = Pais.objects.get(idpais = id_pais_str)
+
+                nombre_pais = pais.nombrepais                
+                #--------------------------------------------------------
+                print('Su comuna es : ', id_comuna_str, 'y el nombre es:', nombre_comuna, 'su region : ', id_region_str, 'Su pais : ', id_pais_str)
+
+
                 request.session['user_info'] = {
                     'username': correoelectronico,
                     'tipo_usuario': tipo_usuario,
                     'Rut_usuario': rut_usuario,
                     'RazonSocial': cliente.razonsocial,
                     'Direccion': cliente.direccion,
-                    'id_cliente': cliente.id_cliente
+                    'id_cliente': cliente.id_cliente,
+                    'comuna_id': id_comuna_str,  # Convertimos el id de la comuna a cadena
+                    'comuna' : nombre_comuna,
+                    'region': nombre_region,
+                    'pais' : nombre_pais
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
@@ -204,6 +298,11 @@ def inicio_sesion(request):
 
                 rut_completo = f"{rut_usuario}-{transportista.dv}"
 
+                #---------------OBTENER COMUNA, REGION Y PAIS----------------------------------
+
+                              
+                #--------------------------------------------------------
+                
                 request.session['user_info'] = {
                     'username': correoelectronico,
                     'tipo_usuario': tipo_usuario,
@@ -213,7 +312,11 @@ def inicio_sesion(request):
                     'Fecha_nacimiento': transportista.fechanacimiento.strftime("%d-%m-%Y"),
                     'Nombre': transportista.nombre,
                     'Apellido': transportista.apellidopat,
-                    'Direccion': transportista.direccion
+                    'Direccion': transportista.direccion,
+                    #'comuna_id': id_comuna_str,  # Convertimos el id de la comuna a cadena
+                    #'comuna' : nombre_comuna,
+                    #'region': nombre_region,
+                    #'pais' : nombre_pais
                 }
 
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
