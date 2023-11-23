@@ -23,22 +23,54 @@
                         <div class="p-3" style="max-width: 900px;">
 
                             {% if request.session.user_info.tipo_usuario == 'PRODUCTOR' %}
-                                <h1 class="display-3 text-white mb-md-4">BIENVENIDO SEÑOR PRODUCTOR</h1>
+                                
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 50%; height: auto;">                                    
+                                    </div>                                    
+                                </div>
+                                                            
+                                <h1 class="display-3 text-white mb-md-4"> BIENVENIDO ESTIMADO PRODUCTOR</h1>
                                 <h3 class="text-white text-uppercase mb-md-3">Esperamos que su estadia por la pagina web sea agradable!</h3>           
                             {% elif request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 50%; height: auto;">                                    
+                                    </div>                                    
+                                </div>
                                 <h4 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO CLIENTE</h4>
                                 <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>
-                                <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
+                                
                                 <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a ver Productos</a>
                             {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 50%; height: auto;">                                    
+                                    </div>                                    
+                                </div>
                                 <h4 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO CLIENTE EMPRESA</h4>
                                 <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>
-                                <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
+                                
                                 <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a ver Productos</a>
                             {% elif request.session.user_info.tipo_usuario == 'TRANSPORTISTA' %}
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 50%; height: auto;">                                    
+                                    </div>                                    
+                                </div>
                                 <h4 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO TRANSPORTISTA</h4>
                                 <h4 class="text-white text-uppercase mb-md-3">Esperamos que su estadia por la pagina web sea agradable!</h4>                          
-                            {% else %}                                
+                            {% else %}
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 70%; height: auto;">                                    
+                                    </div>                                    
+                                </div>                                
                                 <h2 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h2>
                                 <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
                                 <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a ver Productos</a>
@@ -54,22 +86,50 @@
                         <div class="p-3" style="max-width: 900px;">
 
                             {% if request.session.user_info.tipo_usuario == 'PRODUCTOR' %}
-                                <h1 class="display-3 text-white mb-md-4">BIENVENIDO SEÑOR PRODUCTOR</h1>
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 50%; height: auto;">                                    
+                                    </div>                                    
+                                </div>
+                                <h1 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO PRODUCTOR</h1>
                                 <h3 class="text-white text-uppercase mb-md-3">Esperamos que su estadia por la pagina web sea agradable!</h3>           
                             {% elif request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 50%; height: auto;">                                    
+                                    </div>                                    
+                                </div>
                                 <h4 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO CLIENTE</h4>
-                                <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>
-                                <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
+                                <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>                                
                                 <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a ver Productos</a>
                             {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 50%; height: auto;">                                    
+                                    </div>                                    
+                                </div>
                                 <h4 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO CLIENTE EMPRESA</h4>
-                                <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>
-                                <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
+                                <h4 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h4>                                
                                 <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a ver Productos</a>
                             {% elif request.session.user_info.tipo_usuario == 'TRANSPORTISTA' %}
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 50%; height: auto;">                                    
+                                    </div>                                    
+                                </div>
                                 <h4 class="display-3 text-white mb-md-4">BIENVENIDO ESTIMADO TRANSPORTISTA</h4>
                                 <h4 class="text-white text-uppercase mb-md-3">Esperamos que su estadia por la pagina web sea agradable!</h4>                          
-                            {% else %}                                
+                            {% else %} 
+                                <div class="container-fluid text-white pt-5 ">            
+                                    <div class="row justify-content-center px-xl-5">
+                                        <!-- Icono de la pestaña de la página -->                                        
+                                        <img src="{% static 'img/t_logo_grande.png' %}" alt="Imagen triste" class="img-fluid mx-auto d-inline-block align-middle h-100" style="max-width: 70%; height: auto;">                                    
+                                    </div>                                    
+                                </div>                                 
                                 <h2 class="text-white text-uppercase mb-md-3">Aprovecha las mejores ofertas</h2>
                                 <h2 class="display-3 text-white mb-md-4">En Feria Virtual</h2>
                                 <a href="{% url 'PRODUCTOS' %}" class="btn btn-success py-md-3 px-md-5 mt-2">Ir a ver Productos</a>
