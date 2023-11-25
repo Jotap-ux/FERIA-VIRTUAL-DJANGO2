@@ -99,11 +99,6 @@ def inicio_sesion(request):
                 # Busca el objeto Productor en la base de datos utilizando el campo 'rut'
                 productor = Productor.objects.get(rut=rut_usuario)
 
-                 # veriricando contraseña, aunque no funciona f
-                if productor.contrasena != contrasena:
-                    response = HttpResponse("Error, contraseña incorrecta!")
-                    return response
-                
                 # Concatena nombre y apellido y agrega el valor resultante a user_info
                 nombre_completo = f"{productor.nombre} {productor.apellidopat} {productor.apellidomat}"
 
@@ -160,7 +155,7 @@ def inicio_sesion(request):
 
             except Productor.DoesNotExist:
 
-                response = HttpResponse("USUARIO NO EXISTE")
+                response = HttpResponse("CREDENCIALES INCORRECTAS!")
                 return response
 
                 # Aquí puedes manejar el caso en el que no se encuentre un Productor con el 'Rut_usuario' proporcionado
