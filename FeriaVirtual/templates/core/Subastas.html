@@ -127,6 +127,8 @@
                                 <!-- Agrega campos ocultos con los valores que deseas transmitir -->
                                 <input type="hidden" name="id_pedido" value="{{ s.id_pedido }}">
                                 <input type="hidden" name="id_subasta" value="{{ s.id_subasta }}">
+                                <input type="hidden" name="peso_pedido" value="{{ s.peso_pedido }}">
+                                
                                 {% if s.monto_oferta %}
                                     <p>Monto Ofertado : ${{ s.monto_oferta }}</p>
                                 {% else %}
@@ -136,7 +138,7 @@
 
                             <div class="col-md-12 form-group text-right">
                                 {% if not s.monto_oferta %}
-                                    <button type="submit" class="btn btn-success btn-lg mb-3 w-100" data-bs-toggle="modal" data-bs-target="#modal-enviar-oferta">
+                                    <button type="submit" class="btn btn-success btn-lg mb-3 w-100">
                                     Enviar Oferta
                                     </button>
                                 {% endif %}

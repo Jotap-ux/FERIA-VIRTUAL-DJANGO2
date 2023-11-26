@@ -28,8 +28,7 @@ import mercadopago
 # Importa el módulo urljoin para construir URLs absolutas
 from urllib.parse import urljoin
 import requests
-#IMPORTACION DE LIBRERIA PARA ENCRIPTAR CONTRASEÑA
-#import bcrypt
+from django.db.models import Max
 
 
 # lista
@@ -928,9 +927,17 @@ def perfil_transp_vehi(request):
 
 #-----------------VERIFICAR SI EL TRANSPORTISTA TIENE VEHICULOS O NO--------------------------------
 def tiene_vehiculos_registrados(transportista_rut):
+
     # Verifica si el transportista tiene vehículos registrados
     return Transporte.objects.filter(transportista_rut=transportista_rut).exists()
 
+#----------VERIFICAR SI ALGUNO DE SUS VEHICULOS TIENE CAPACIDAD PARA LLEGAR LA CARGA---------
+def obtener_maxima_capacidad_carga(transportista_rut):
+    # Consulta para obtener la máxima capacidad de carga de los vehículos del transportista
+    maxima_capacidad = Transporte.objects.filter(transportista_rut=transportista_rut).aggregate(Max('capacidadcarga'))['capacidadcarga__max']
+
+    maxima_capacidad_int = int(maxima_capacidad) if maxima_capacidad is not None else 0
+    return maxima_capacidad_int
 #subasta------------------------------------------------------------------------------------------------
 def subasta(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
@@ -982,6 +989,14 @@ def subasta(request):
     
     # Verifica si el formulario se envió mediante POST
     if request.method == 'POST':
+
+        capacidad_carga_subasta = request.POST.get('peso_pedido')
+        print('peso pedido:' , capacidad_carga_subasta)
+        #la capacidad máxima de carga de los vehículos del transportista
+        maxima_capacidad = obtener_maxima_capacidad_carga(user_info['Rut_usuario'])
+
+        print(maxima_capacidad)
+
         # Verifica si el transportista tiene vehículos registrados
         tiene_vehiculos = tiene_vehiculos_registrados(user_info['Rut_usuario'])
         print(tiene_vehiculos)
@@ -991,6 +1006,11 @@ def subasta(request):
             return render(request, "core/Subastas.html", {"mensaje_error": mensaje_error,
                                                            'usuario_autenticado': usuario_autenticado,
                                                            'user_info': user_info})
+        elif int(float(capacidad_carga_subasta)) > int(maxima_capacidad):
+            mensaje_error = 'Ninguno de tus vehiculos registrados cuenta con la capacidad para llevar la carga del pedido.'
+            return render(request, "core/Subastas.html", {"mensaje_error": mensaje_error,
+                                                       'usuario_autenticado': usuario_autenticado,
+                                                       'user_info': user_info})
         else:
             # Procesa la oferta
             montosubasta = request.POST.get('monto')
