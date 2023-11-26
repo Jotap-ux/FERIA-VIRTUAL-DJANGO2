@@ -770,15 +770,15 @@ def perfil_transp_pedi(request):
         #imgnueva = request.POST.get('imagen_origen')
         imgnueva = request.FILES.get('imagen_origen')
 
+        #---------------------------------------------------------
+        idpedido2 = request.POST.get('id_pedido_foto_destino')
+        imgnueva2 = request.FILES.get('imagen_destino')
+        
         if imgnueva:
 
             urlIMG = 'img/'+imgnueva.name
             print(urlIMG)
-            
-            #---------------------------------------------------------
-            idpedido2 = request.POST.get('id_pedido_foto_destino')
-            imgnueva2 = request.POST.get('imagen_destino')
-            
+                                    
             if enviado:
                 response = actualizar_pedido_Enviado(enviado)
             elif recibido:
@@ -796,12 +796,31 @@ def perfil_transp_pedi(request):
                     return redirect('TRANSP_PEDI')
             elif idpedido2:
                 response = actualizar_IMGfinal(idpedido2, imgnueva2)
-                
-        else:
-            #---------------------------------------------------------
-            idpedido2 = request.POST.get('id_pedido_foto_destino')
-            imgnueva2 = request.POST.get('imagen_destino')
+
+        elif imgnueva2:
+
+            urlIMG2 = 'img/'+imgnueva2.name
+            print(urlIMG2)                      
             
+            if enviado:
+                response = actualizar_pedido_Enviado(enviado)
+            elif recibido:
+                response = actualizar_pedido_Recibido(recibido)
+            elif rechazado_transportista:
+                response = actualizar_pedido_recha_transportista(rechazado_transportista)
+            elif rechazado_cliente:
+                response = actualizar_pedido_recha_cliente(rechazado_cliente)
+            elif idpedido:
+                response = actualizar_IMGinicio(idpedido, urlIMG)
+                if response == 'OK':
+                    return redirect('TRANSP_PEDI')
+                else:
+                    messages.success(request, 'Imagen subida correctamente! :) ')
+                    return redirect('TRANSP_PEDI')
+            elif idpedido2:
+                response = actualizar_IMGfinal(idpedido2, urlIMG2)       
+        else:
+
             if enviado:
                 response = actualizar_pedido_Enviado(enviado)
             elif recibido:
