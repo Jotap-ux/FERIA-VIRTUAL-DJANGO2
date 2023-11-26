@@ -601,3 +601,10 @@ def actualizar_IMGfinal(idpedido2, imgnueva2):
 
     return response
     
+def actualizarDireccionDespacho(idcliente, nuevadireccion):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.actualizarDireccionDestino(idcliente=idcliente, arg1=nuevadireccion)
+
+    return response

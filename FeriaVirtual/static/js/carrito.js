@@ -239,9 +239,9 @@ realizarPedidoButton.addEventListener('click', function (event) {
 
             // Borra el contenido del localStorage
             localStorage.removeItem('carrito');
-
+            
             // También puedes redirigir al usuario después de borrar el localStorage si es necesario
-            window.location.href = '/productos'; // Cambia la URL de redirección según tus necesidades
+            window.location.href = '/confirme_direccion'; // Cambia la URL de redirección según tus necesidades
         });
     } else {
         console.error("El carrito no es un array válido en localStorage.");

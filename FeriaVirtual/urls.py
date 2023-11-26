@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from .views import index, productos, nosotros, contacto, inicio_sesion, carrito, regis_clien_em, regis_clien_per, regis_prod, regis_transp, regis_transp2, perfil_cli_datos, perfil_cli_domici, perfil_cli_pedi, perfil_pro_datos, perfil_pro_domici,perfil_pro_envios,perfil_pro_pedi, perfil_pro_productos, perfil_transp_datos, perfil_transp_domici, perfil_transp_pedi, perfil_transp_transpor, perfil_transp_vehi, subasta, detalle_producto, cerrar_sesion, regiones_por_pais, comunas_por_region, modelo_por_marca
-from .views import mercado_pago, success_view
+from .views import mercado_pago, success_view, confirmeDireccion
 urlpatterns = [
     path('',index, name='INDEX'),
     path('productos/', productos, name='PRODUCTOS'),
@@ -34,6 +34,7 @@ urlpatterns = [
     path('comunas/', comunas_por_region, name='COMUNAS'),
     path('modelos/', modelo_por_marca, name='MODELOS'),
     path('mercado_pago/<str:id_pedido>/<str:total_final>/', mercado_pago, name='MERCADO_PAGO'),
-    path('mercado_pago/<str:id_pedido>/<str:total_final>/success/', success_view, name='success')
+    path('mercado_pago/<str:id_pedido>/<str:total_final>/success/', success_view, name='success'),
+    path('confirme_direccion/', confirmeDireccion, name='CONFIRME_DIRECCION')
  
 ]

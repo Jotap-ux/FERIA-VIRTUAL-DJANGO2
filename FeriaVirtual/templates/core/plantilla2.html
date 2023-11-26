@@ -140,7 +140,8 @@
                         
                         {% elif request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
                             
-                            <a href="#" class="nav-item nav-link text-light disabled">{{ user_info.NombreCompleto }}</a>
+                            <a href="#" class="nav-item nav-link text-light disabled">{{ user_info.NombreCompleto }}</a>                         
+                            
                             <!--<a href="" class="nav-item nav-link text-light">{{ user_info.Rut_completo }}</a> -->  
                             <!--<a href="" class="nav-item nav-link text-light">{{ user_info.tipo_usuario }}</a>-->
                             <!--<a href="" class="nav-item nav-link text-light">{{ user_info.id_cliente }}</a>-->
@@ -308,7 +309,17 @@
         });
     </script>
 
-    
+    <script>
+        document.getElementById('btn-modificar').addEventListener('click', function () {
+            // Habilitar la edición del input
+            //$("#direccion_despacho_input").prop("readonly", false);
+            alert('Ya puede modificar su dirección de entrega');
+            $("#direccion_despacho_input").prop("readonly", false);
+        });
+
+       
+
+    </script>
    
     <!--------------------------------------------------------------------->
     <!-- LIBRERIAS PARA PODER USAR BOOSTRAP -->

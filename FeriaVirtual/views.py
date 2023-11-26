@@ -4,8 +4,8 @@ from .conexionWebService import crear_productor, crear_clienteNormal, crear_clie
 from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente, crearTransporte
 from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista, crearPago, listar_pedidosTransportista
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados, actualizar_pedido_recha_cliente, actualizar_pedido_recha_transportista
-from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal
-from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais
+from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal, actualizarDireccionDespacho
+from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais, Direccion
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
 from django.http import JsonResponse, HttpResponseRedirect
@@ -198,6 +198,12 @@ def inicio_sesion(request):
                 nombre_pais = pais.nombrepais                
                 #--------------------------------------------------------
                 print('Su comuna es : ', id_comuna_str, 'y el nombre es:', nombre_comuna, 'su region : ', id_region_str, 'Su pais : ', id_pais_str)
+                #-----------------OBTENER DIRECCION DE ENTREGA (PEDIDO)------------------
+                #buscamos el la direccion registrada con ese id...
+                direccion = Direccion.objects.get(cliente_id_cliente = cliente.id_cliente)
+                
+                nombre_direccion = direccion.direccion_nueva
+                print(nombre_direccion)
 
                 request.session['user_info'] = {
                     'username': correoelectronico,
@@ -213,7 +219,8 @@ def inicio_sesion(request):
                     'comuna_id': id_comuna_str,  # Convertimos el id de la comuna a cadena
                     'comuna' : nombre_comuna,
                     'region': nombre_region,
-                    'pais' : nombre_pais
+                    'pais' : nombre_pais,
+                    'direccion_entrega' : nombre_direccion
                 }
 
                 print('Su id de cliente es : ', cliente.id_cliente)
@@ -1220,3 +1227,34 @@ def success_view(request, id_pedido, total_final):
         'merchant_account_id': merchant_account_id,
         'total_pago': total_final
     })
+
+#-----------------------------------------------------
+# lista
+@user_info_required
+def confirmeDireccion(request):
+    usuario_autenticado = request.session.get('usuario_autenticado', False)
+    user_info = request.session.get('user_info', {})
+
+    if request.method == 'POST':
+        idcliente = user_info['id_cliente']
+        nuevadireccion = request.POST.get('direccion_despacho')
+        print('ACA EST',idcliente)
+        response = actualizarDireccionDespacho(
+            idcliente,
+            nuevadireccion
+        )
+
+        print(response)
+        if response == 'OK':
+            return redirect('CLIENTE_PEDI')
+        else:
+            messages.success(request, 'La información se ha guardado exitosamente :) ')
+            return redirect('CLIENTE_PEDI')
+    else:
+
+        return render(request, "core/Confirmar_direccion.html",
+                      {'usuario_autenticado': usuario_autenticado,
+                        'user_info': user_info})
+
+
+
