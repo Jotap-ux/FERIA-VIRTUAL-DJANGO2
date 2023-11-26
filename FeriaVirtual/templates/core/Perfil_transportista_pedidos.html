@@ -131,7 +131,23 @@
                                                                                                                                                                                                                                                         
                                                                 {% endif %}   
                                                              
-                                                                
+                                                            <!---PROBANDO ANDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO-->
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <h6>SUBIR IMAGEN</h6>
+                                                                <form method="POST" enctype="multipart/form-data">
+                                                                    {% csrf_token %}
+                                                                    <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                                    <input type="hidden" name="id_pedido_foto" value="{{ pedido.id_pedido }}">
+                                                                    
+                                                                    <!---CAMPO QUE INGRESAMOS, IMAGEN DE ORIGEN-->
+                                                                    <input class="form-control mt-3" type="file" name="imagen_origen" placeholder="Ingrese la imagen de origen">
+
+                                                                    <button type="submit" class="btn btn-success btn-sm mb-3 mt-3 w-100">
+                                                                        Adjuntar 
+                                                                    </button>  
+                                                                </form>       
+                                                            </div>     
+                                                            <!----------------------------------------------------->
 
                                                             {% elif pedido.img_origen == '0' %}
 
@@ -143,7 +159,7 @@
                                                                         <input type="hidden" name="id_pedido_foto" value="{{ pedido.id_pedido }}">
                                                                         
                                                                         <!---CAMPO QUE INGRESAMOS, IMAGEN DE ORIGEN-->
-                                                                        <input class="form-control mt-3" type="text" name="imagen_origen" placeholder="Ingrese la imagen de origen">
+                                                                        <input class="form-control mt-3" type="file" name="imagen_origen" placeholder="Ingrese la imagen de origen">
 
                                                                         <button type="submit" class="btn btn-success btn-sm mb-3 mt-3 w-100">
                                                                             Adjuntar 
@@ -226,7 +242,7 @@
                                                                 {% elif pedido.img_destino == '0' %}
 
                                                                     <div class="d-flex justify-content-between align-items-center">
-                                                                        <h6>SUBIR IMAGEN</h6>
+                                                                        <h6>SUBIR IMAGENNN</h6>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             {% csrf_token %}
                                                                             <!-- Input oculto con el valor de pedido.id_pedido -->
@@ -237,7 +253,8 @@
 
                                                                             <button type="submit" class="btn btn-success btn-sm mb-3 mt-3 w-100">
                                                                                 Adjuntar 
-                                                                            </button>  
+                                                                            </button>
+                                                                            
                                                                         </form>       
                                                                     </div>  
 
