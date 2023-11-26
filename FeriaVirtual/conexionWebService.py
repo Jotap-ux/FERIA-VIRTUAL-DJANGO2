@@ -205,7 +205,8 @@ def obtener_subastas_json():
             'id_pedido': subasta.idPedido,
             'id_subasta' : subasta.idSubasta,    
             'nombre_cliente': subasta.nombreCliente,
-            'nombre_clienteEmpresa': subasta.nombreClienteEmp,        
+            'nombre_clienteEmpresa': subasta.nombreClienteEmp, 
+            'peso_pedido': subasta.pesototalpedido,
             'total_transporte': subasta.totalTransporte
         }
         subastas_data.append(subasta_data)
@@ -506,8 +507,12 @@ def listar_pedidosTransportista(ruttransportista):
         pedido_data = {
             'capacidad_carga': pedido.comisionmaipogrande,
             'estado': pedido.descripcionestado,
+            'direccion_destino' : pedido.direcciondestino,
+            'direccion_origen' : pedido.direccionorigen,
             'id_estado': pedido.estadopedido_idestado,
-            'id_pedido' : pedido.idpedido,                 
+            'id_pedido' : pedido.idpedido,  
+            'img_origen' : pedido.img_url_inicio,
+            'img_destino' : pedido.img_url_termino,               
             'iva': pedido.iva, 
             'peso_total' : pedido.pesototalpedido,
             'total_final' : pedido.totalfinal,
@@ -551,7 +556,7 @@ def listar_pedidosTransportista_Finalizados(ruttransportista):
     #print(json_data)
     return json_data
 
-
+#---ACTUALIZACIÓN DE PEDIDOS------------------------------
 def actualizar_pedido_Enviado(idpedido):
     client = Client(URL_WEBSERVICE)
 
@@ -565,3 +570,34 @@ def actualizar_pedido_Recibido(idpedido):
     response = client.service.actualizarEstadoRecibidoporCliente(idpedido=idpedido)
 
     return response
+
+
+def actualizar_pedido_recha_cliente(idpedido):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.actualizar_pedidorechazadoxcliente(idpedido=idpedido)
+
+    return response
+
+def actualizar_pedido_recha_transportista(idpedido):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.actualizar_pedidorechazadoxtransportista(idpedido=idpedido)
+
+    return response
+
+#--PARA ACTUALIZAR IMAGENES DE ORIGEN Y DESTINO
+def actualizar_IMGinicio(idpedido, imgnueva):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.actualizarimginicio(idpedido=idpedido, arg1=imgnueva)
+
+    return response
+    
+def actualizar_IMGfinal(idpedido2, imgnueva2):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.actualizarimgfinal(idpedido=idpedido2, arg1=imgnueva2)
+
+    return response
+    

@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 from .conexionWebService import crear_productor, crear_clienteNormal, crear_clienteEmpresa, crear_transportista ,obtener_productos_json, autenticar_usuario, agregar_productos, listar_calibres, listar_productos_combobox, crearPedido, crearDetalle_pedido, obtener_subastas_json
 from .conexionWebService import listar_pais_combobox, listar_region_por_pais, listar_comuna_por_region, listarProductos_Productor, crearOfertaSubasta, listarMontoSubasta, listarPedidos_cliente, crearTransporte
 from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista, crearPago, listar_pedidosTransportista
-from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados
+from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados, actualizar_pedido_recha_cliente, actualizar_pedido_recha_transportista
+from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal
 from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -756,15 +757,36 @@ def perfil_transp_pedi(request):
     #----ENVIO DE ID_PEDIDO para actualizar estado:
     if request.method == 'POST':
         enviado = request.POST.get('id_pedido')
-        recibido = request.POST.get('id_pedido2')
-        #comuna_idcomuna = request.POST.get('comuna_idcomuna')
+        recibido = request.POST.get('id_pedido_recibido')
+        rechazado_transportista = request.POST.get('id_pedido_rechazado_transp')
+        rechazado_cliente = request.POST.get('id_pedido_rechazado_cliente')
+        #---------------------------------------------------------
+        idpedido = request.POST.get('id_pedido_foto')
+        imgnueva = request.POST.get('imagen_origen')
+        #---------------------------------------------------------
+        idpedido2 = request.POST.get('id_pedido_foto_destino')
+        imgnueva2 = request.POST.get('imagen_destino')
         
         if enviado:
             response = actualizar_pedido_Enviado(enviado)
         elif recibido:
             response = actualizar_pedido_Recibido(recibido)
-        
-        
+        elif rechazado_transportista:
+            response = actualizar_pedido_recha_transportista(rechazado_transportista)
+        elif rechazado_cliente:
+            response = actualizar_pedido_recha_cliente(rechazado_cliente)
+        elif idpedido:
+            response = actualizar_IMGinicio(idpedido, imgnueva)
+            if response == 'OK':
+                return redirect('TRANSP_PEDI')
+            else:
+                messages.success(request, 'Imagen subida correctamente! :) ')
+                return redirect('TRANSP_PEDI')
+        elif idpedido2:
+            response = actualizar_IMGfinal(idpedido2, imgnueva2)
+
+
+
         if response == 'OK':
             return redirect('TRANSP_PEDI')
         else:

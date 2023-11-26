@@ -41,9 +41,10 @@
                                         <th scope="col" class="d-none d-md-table-cell">ID PEDIDO</th>
                                         <th scope="col">GANANCIA</th>
                                         <th scope="col" class="d-none d-md-table-cell">TOTAL FINAL</th>
-                                        <th scope="col">ESTADO ENVÍO</th>  
-                                        <th scope="col" class="d-none d-md-table-cell"></th> 
-                                        <th scope="col"></th>                                           
+                                        <th scope="col">PESO (Kg)</th> 
+                                        <th scope="col" class="d-none d-md-table-cell">ESTADO ENVÍO</th>  
+                                        <th scope="col"></th> 
+                                                                             
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,6 +53,7 @@
                                         <th scope="row" class="d-none d-md-table-cell">{{ pedido.id_pedido }}</th>
                                         <td >$ {{ pedido.total_transporte }}</td>
                                         <td class="d-none d-md-table-cell">$ {{ pedido.total_final }}</td>
+                                        <td> {{ pedido.peso_total }} Kg</td>
                                         <td>
                                             {% if pedido.id_estado == '4' %}
                                                 Pendiente de envio
@@ -59,42 +61,198 @@
                                                 {{ pedido.estado }}
                                             {% endif %}
 
-                                        </td>                                      
+                                        </td>   
                                         <td class="d-none d-md-table-cell">
-
-                                            {% if pedido.id_estado == '4' %}
-                                                <form method="POST" enctype="multipart/form-data">
-                                                    {% csrf_token %}
-                                                    <!-- Input oculto con el valor de pedido.id_pedido -->
-                                                    <input type="hidden" name="id_pedido" value="{{ pedido.id_pedido }}">
-
-                                                    <button type="submit" class="btn btn-success btn-sm mb-3 w-100">
-                                                        Enviado
-                                                    </button>  
-                                                </form>                                                
-                                            {% else %}
-                                                                                                                                                                                                                                          
-                                            {% endif %}   
-
-                                        </td>  
-                                        <td class="d-none d-md-table-cell"> 
-
-                                            {% if pedido.id_estado == '4' or pedido.id_estado == '5' %}    
-                                                <form method="POST" enctype="multipart/form-data">
-                                                    {% csrf_token %}
-                                                    <!-- Input oculto con el valor de pedido.id_pedido -->
-                                                    <input type="hidden" name="id_pedido2" value="{{ pedido.id_pedido }}">
-                                                    
-                                                    <button type="submit" class="btn btn-info btn-sm mb-3 w-100">
-                                                        Recibido por cliente
-                                                    </button>
-                                                </form>                                                
-                                            {% elif pedido.id_estado == '6' %}
-                                                
-                                            {% endif %}
-
-                                        </td> 
+                                            <button type="button" class="btn btn-dark btn-sm mb-3 w-100 border border-light" data-toggle="collapse" data-target="#detalle-{{ pedido.id_pedido }}">
+                                                Actualizar envio
+                                            </button>
+                                        </td>                                  
+                                        
                                     </tr> 
+                                    <!---PARTE QUE APARECE ABAJO PARA SUBIR IMAGENES -->                                    
+                                    <tr class="collapse bg-dark" id="detalle-{{ pedido.id_pedido }}">
+                                        <td colspan="6">
+                                            <div class="detalles-pedido row">                                                    
+                                                <!--TITULO DEL DETALLE DE PEDIDO-->
+                                                <div class="col-12">
+                                                    <h3 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">SUBIR EVIDENCIA DEL PEDIDO</span></h3>
+                                                </div>
+                                                <!----------------PRIMER DETALLE-------------------------------------->
+                                                <div class="col-lg-6">
+                                                    <div class="bg-light mb-5 border border-dark">
+                                                        <div class="border-bottom pb-2 separacion-detalles">
+                                                            <h4 class="section-title position-relative text-uppercase mb-3 text-center"><span class="bg-light pr-3">ORIGEN</span></h4>
+
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <h6>DIRECCIÓN ORIGEN :</h6>                                                                
+                                                                <h6> {{ pedido.direccion_origen }}</h6>
+                                                            </div>                                                            
+
+                                                            {% if not pedido.img_origen == '0' %}
+
+                                                                <div class="d-flex justify-content-center align-items-center">                                                                
+                                                                    <!--IMAGEN  img/origen.jpg -->
+                                                                    <div class="col-lg-12">                                
+                                                                        <div class="bg-dark p-30 mb-3 mt-3 border border-light text-center">
+                                                                            <div>
+                                                                                <img class="img-fluid w-100" src="{% static pedido.img_origen %}" alt="">                        
+                                                                            </div>
+                                                                            
+                                                                        </div>
+                                                                        
+                                                                    </div>                                                                                                                               
+                                                                </div>
+                                                                                                                            
+                                                                {% if pedido.id_estado == '4' %}
+                                                                    <h6 class="text-center">CAMBIAR ESTADO ENVIO</h6>
+                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            {% csrf_token %}
+                                                                            <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                                            <input type="hidden" name="id_pedido" value="{{ pedido.id_pedido }}">
+
+                                                                            <button type="submit" class="btn btn-info btn-md mb-3 w-100">
+                                                                                Pedido en camino
+                                                                            </button>  
+                                                                        </form> 
+                                                                    </div> 
+                                                                    <div class="d-flex justify-content-center align-items-center">                                                                                                                                    
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            {% csrf_token %}
+                                                                            <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                                            <input type="hidden" name="id_pedido_rechazado_transp" value="{{ pedido.id_pedido }}">
+    
+                                                                            <button type="submit" class="btn btn-danger btn-md mb-3 w-100">
+                                                                                Rechazar pedido
+                                                                            </button>  
+                                                                        </form>                                                                                                                     
+                                                                    </div>                                                                     
+                                                                {% else  %}
+                                                                                                                                                                                                                                                        
+                                                                {% endif %}   
+                                                             
+                                                                
+
+                                                            {% elif pedido.img_origen == '0' %}
+
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <h6>SUBIR IMAGEN</h6>
+                                                                    <form method="POST" enctype="multipart/form-data">
+                                                                        {% csrf_token %}
+                                                                        <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                                        <input type="hidden" name="id_pedido_foto" value="{{ pedido.id_pedido }}">
+                                                                        
+                                                                        <!---CAMPO QUE INGRESAMOS, IMAGEN DE ORIGEN-->
+                                                                        <input class="form-control mt-3" type="text" name="imagen_origen" placeholder="Ingrese la imagen de origen">
+
+                                                                        <button type="submit" class="btn btn-success btn-sm mb-3 mt-3 w-100">
+                                                                            Adjuntar 
+                                                                        </button>  
+                                                                    </form>       
+                                                                </div>   
+                                                                
+
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% if pedido.id_estado == '5' %}    
+                                                    <!-----------------SEGUNDO DETALLE------------------------>
+                                                    <div class="col-lg-6">
+                                                        <div class="bg-light mb-5 border border-dark">
+                                                            <div class="border-bottom pb-2 separacion-detalles">
+                                                                <h4 class="section-title position-relative text-uppercase mb-3 text-center"><span class="bg-light pr-3">DESTINO</span></h4>
+
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <h6>DIRECCIÓN DESTINO :</h6>
+                                                                    <h6>{{ pedido.direccion_destino }}</h6>
+                                                                </div>
+
+                                                                {% if not pedido.img_destino == '0' %}
+                                                                    <!---IMAGEN-->
+                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                    
+                                                                        <!--IMAGEN-->
+                                                                        <div class="col-lg-12">                                
+                                                                            <div class="bg-dark p-30 mb-3 mt-3 border border-light text-center">
+                                                                                <div>
+                                                                                    <img class="img-fluid w-100" src="{% static pedido.img_destino %}" alt="">                        
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+        
+                                                                    </div>
+
+                                                                    {% if pedido.id_estado == '5' %}
+                                                                        <h6 class="text-center">CAMBIAR ESTADO ENVIO</h6>
+                                                                        
+                                                                        <div class="d-flex justify-content-center align-items-center">                                                
+                                                                            
+                                                                            {% if pedido.id_estado == '5' %}    
+                                                                                <form method="POST" enctype="multipart/form-data">
+                                                                                    {% csrf_token %}
+                                                                                    <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                                                    <input type="hidden" name="id_pedido_recibido" value="{{ pedido.id_pedido }}">
+                                                                                    
+                                                                                    <button type="submit" class="btn btn-info btn-md mb-3 w-100 align-items-center">
+                                                                                        Recibido por cliente
+                                                                                    </button>
+                                                                                </form>                                                
+                                                                            {% elif pedido.id_estado == '6' %}
+                                                                                
+                                                                            {% endif %}
+
+                                                                        </div> 
+                                                                        <div class="d-flex justify-content-center align-items-center">
+                                                                            
+                                                                            {% if pedido.id_estado == '5' %}
+                                                                                <form method="POST" enctype="multipart/form-data">
+                                                                                    {% csrf_token %}
+                                                                                    <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                                                    <input type="hidden" name="id_pedido_rechazado_cliente" value="{{ pedido.id_pedido }}">
+
+                                                                                    <button type="submit" class="btn btn-danger btn-md mb-3 w-100">
+                                                                                        Cliente rechaza pedido
+                                                                                    </button>  
+                                                                                </form>                                                
+                                                                            {% else %}
+                                                                                                                                                                                                                                                                        
+                                                                            {% endif %}   
+                                                                        </div>  
+                                                                    {% else  %}
+                                                                                                                                                                                                                                                        
+                                                                    {% endif %}  
+
+                                                                {% elif pedido.img_destino == '0' %}
+
+                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                        <h6>SUBIR IMAGEN</h6>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            {% csrf_token %}
+                                                                            <!-- Input oculto con el valor de pedido.id_pedido -->
+                                                                            <input type="hidden" name="id_pedido_foto_destino" value="{{ pedido.id_pedido }}">
+                                                                            
+                                                                            <!---CAMPO QUE INGRESAMOS, IMAGEN DE ORIGEN-->
+                                                                            <input class="form-control mt-3" type="text" name="imagen_destino" placeholder="Ingrese la imagen de destino">
+
+                                                                            <button type="submit" class="btn btn-success btn-sm mb-3 mt-3 w-100">
+                                                                                Adjuntar 
+                                                                            </button>  
+                                                                        </form>       
+                                                                    </div>  
+
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                                                                                                                                                                                                                                
+                                                {% endif %} 
+
+                                                <!--------->
+                                            </div>
+                                        </td>
+                                    </tr>
                                     {% endfor %}                                       
                                 </tbody>
                             </table>
