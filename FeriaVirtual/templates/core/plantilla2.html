@@ -329,6 +329,14 @@
         });
     </script>
 
+    <!---SCRIPT PARA MANDAR A AGREGAR DIRECCION DE DESTINO-->
+    <script>
+        document.getElementById('btnAceptarPEDIDOOK').addEventListener('click', function () {
+            
+            window.location.href = "{% url 'CONFIRME_DIRECCION' %}";
+        });
+    </script>
+
     <!--------------------------------------------------------------------->
     <!-- LIBRERIAS PARA PODER USAR BOOSTRAP -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

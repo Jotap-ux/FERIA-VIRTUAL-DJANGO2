@@ -310,36 +310,59 @@ realizarPedidoButton.addEventListener('click', function (event) {
     // Obtén el carrito del almacenamiento local
     let carrito = JSON.parse(localStorage.getItem('carrito'));
 
-    
+    //INTENTANDO VALIDAR CANTIDAD X STOCK
+    //var cantidadProducto = parseInt(document.getElementById("cantidadProducto2").value);
+    //var stock = parseInt(document.getElementById("stock2").value);
 
+    console.log(cantidadProducto, stock)
     // Verifica si el carrito es un array válido
     if (Array.isArray(carrito)) {
-        // Realiza la solicitud POST al servidor como lo estabas haciendo
-        const csrfToken = getCookie('csrftoken');
-        fetch('/carrito/', {
-            method: 'POST',
-            body: JSON.stringify(carrito),
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Maneja la respuesta del servidor si es necesario
 
-            
-        })
-        .catch(error => { //el mensaje se captura como error, pero la info si se guarda en la BD :)
-            console.error('Error:', error);
-            alert('Su pedido se ha creado con èxito, por favor espere el termino de la subasta :)');
+        // Obtiene la cantidad y el stock del primer producto en el carrito
+        var cantidadProducto = parseInt(carrito[0].cantidad); // Modifica según la estructura de tu carrito
+        var stock = parseInt(carrito[0].stock); // Modifica según la estructura de tu carrito
 
-            // Borra el contenido del localStorage
-            localStorage.removeItem('carrito');
+        console.log(cantidadProducto, stock);
+
+        if (isNaN(cantidadProducto) || cantidadProducto <= 0) {
+            //alert("Ingrese una cantidad válida.");
+            $('#modal-carrito-CantidadValida2').modal('show');
+        } else if (cantidadProducto > stock) {
+            //alert("No puede ingresar una cantidad superior al stock disponible."); modal-carrito-StockDisponible
+            $('#modal-carrito-StockDisponible2').modal('show');
+        } else {       
             
-            // También puedes redirigir al usuario después de borrar el localStorage si es necesario
-            window.location.href = '/confirme_direccion'; // Cambia la URL de redirección según tus necesidades
-        });
+            
+            // Realiza la solicitud POST al servidor como lo estabas haciendo
+            const csrfToken = getCookie('csrftoken');
+            fetch('/carrito/', {
+                method: 'POST',
+                body: JSON.stringify(carrito),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Maneja la respuesta del servidor si es necesario
+                // Envía el formulario después de agregar al carrito
+                
+            })
+            .catch(error => { //el mensaje se captura como error, pero la info si se guarda en la BD :)
+                                                
+                console.error('Error:', error);
+                //alert('Su pedido se ha creado con èxito, por favor espere el termino de la subasta :)');
+               
+
+                // Borra el contenido del localStorage
+                localStorage.removeItem('carrito');
+                
+                $('#modal-pedidoOK').modal('show');
+                // También puedes redirigir al usuario después de borrar el localStorage si es necesario
+                //window.location.href = '/confirme_direccion'; // Cambia la URL de redirección según tus necesidades
+            });
+        }        
     } else {
         console.error("El carrito no es un array válido en localStorage.");
         alert('El carrito está vacío o no es válido. Agrega productos antes de realizar un pedido.');
@@ -379,24 +402,5 @@ function validarCantidad() {
         agregarAlCarrito();
         // Activamos el modal
         $('#modal-carrito').modal('show');
-    }
-}
-
-//PARA VALIDAR LA CANTIDAD QUE ESTAMOS INTENTANDO COMPRAR
-function validarCantidad2() {
-    var cantidadProducto = parseInt(document.getElementById("cantidadProducto2").value);
-    var stock = parseInt(document.getElementById("stock2").textContent);
-
-    if (isNaN(cantidadProducto) || cantidadProducto <= 0) {
-        alert("Ingrese una cantidad válida.");
-        //$('#modal-carrito-CantidadValida').modal('show');
-    } else if (cantidadProducto > stock) {
-        alert("No puede ingresar una cantidad superior al stock disponible."); modal-carrito-StockDisponible
-        //$('#modal-carrito-StockDisponible').modal('show');
-    } else {
-        // Si la cantidad es válida, puedes llamar a la función agregarAlCarrito() aquí.
-        //agregarAlCarrito();
-        // Envía el formulario después de agregar al carrito
-        document.getElementById("miFormulario").submit();
     }
 }
