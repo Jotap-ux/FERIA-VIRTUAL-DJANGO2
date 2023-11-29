@@ -266,3 +266,19 @@ function getCookie(name) {
     return cookieValue;
 }
 
+//PARA VALIDAR LA CANTIDAD QUE ESTAMOS AGREGANDO AL CARRITO DE COMPRAS
+function validarCantidad() {
+    var cantidadProducto = parseInt(document.getElementById("cantidadProducto").value);
+    var stock = parseInt(document.getElementById("stock").value);
+
+    if (isNaN(cantidadProducto) || cantidadProducto <= 0) {
+        alert("Ingrese una cantidad válida.");
+    } else if (cantidadProducto > stock) {
+        alert("No puede ingresar una cantidad superior al stock disponible.");
+    } else {
+        // Si la cantidad es válida, puedes llamar a la función agregarAlCarrito() aquí.
+        agregarAlCarrito();
+        // Activamos el modal
+        $('#modal-carrito').modal('show');
+    }
+}

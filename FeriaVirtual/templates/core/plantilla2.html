@@ -309,6 +309,7 @@
         });
     </script>
 
+    <!--SCRIPT PARA HABILITAR EL INPUT DE AGREGAR DIRECCION DE ENTREGA-->
     <script>
         document.getElementById('btn-modificar').addEventListener('click', function () {
             // Habilitar la edición del input
@@ -317,10 +318,17 @@
             $("#direccion_despacho_input").prop("readonly", false);
         });
 
-       
-
     </script>
-   
+
+    <!---SCRIPT PARA REDIRIGIR A LOS PRODUCTOS UNA VEZ SE AGREGUEN COSAS AL CARRITO-->
+    
+    <script>
+        document.getElementById('btnAceptarCarrito').addEventListener('click', function () {
+            
+            window.location.href = "{% url 'CARRITO' %}";
+        });
+    </script>
+
     <!--------------------------------------------------------------------->
     <!-- LIBRERIAS PARA PODER USAR BOOSTRAP -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

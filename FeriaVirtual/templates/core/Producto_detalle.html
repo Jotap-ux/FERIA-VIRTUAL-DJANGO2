@@ -44,6 +44,9 @@
                     </div>
                    
                     <h3 class="font-weight-semi-bold mb-4">Precio : ${{ producto.precio}}</h3>
+                    <!-- Input oculto con el valor de pedido.id_pedido -->
+                    <input type="hidden" id="stock" name="stock" value="{{ producto.stock }}">
+
                     <h3 class="font-weight-semi-bold mb-4">Stock : {{ producto.stock }}</h3>
                     <h3 class="font-weight-semi-bold mb-4">Calibre : {{ producto.calibre }} ({{ producto.calibre_id }})</h3>                    
                     
@@ -65,14 +68,14 @@
                                 </div>
                             </div>
                             <button class="btn btn-success px-3 add-to-cart"
-                                data-bs-toggle="modal" data-bs-target="#modal-carrito"
+                                
                                 data-product="{{ producto.nombre_producto }}" 
                                 data-calibre="{{ producto.calibre }}"
                                 data-calibre_id="{{ producto.calibre_id }}" 
                                 data-precio="{{ producto.precio }}"
                                 data-rut_productor="{{ producto.rut_productor }}" 
                                 data-id_producto="{{ producto.id_producto }}" 
-                                onclick="agregarAlCarrito()">
+                                onclick="validarCantidad()">
                                 <i class="fa fa-shopping-cart mr-1">
                                 </i> Añadir al Carrito
                             </button>                                                                                                                
@@ -92,7 +95,7 @@
 
                     {% endif %}
                     
-                    <!--MODAL PARA MODIFICAR DATOS PERSONALES TRANSPORTISTA-->
+                    <!--MODAL PARA DECIR QUE SE AGREGARON LOS PRODUCTOS AL CARRITO-->
 
                     <div class="modal fade" id="modal-carrito" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -104,7 +107,7 @@
                                     Se han agreado los productos al carrito! 
                                 </div>
                                 <div class="modal-footer justify-content-center">
-                                    <button type="button" class="btn btn-success" id="btnAceptar" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                                    <button type="button" class="btn btn-success" id="btnAceptarCarrito" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
                                 </div>
                             </div>
                             
