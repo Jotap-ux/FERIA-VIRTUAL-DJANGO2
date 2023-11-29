@@ -300,9 +300,11 @@ function validarCantidad() {
     var stock = parseInt(document.getElementById("stock").value);
 
     if (isNaN(cantidadProducto) || cantidadProducto <= 0) {
-        alert("Ingrese una cantidad válida.");
+        //alert("Ingrese una cantidad válida.");
+        $('#modal-carrito-CantidadValida').modal('show');
     } else if (cantidadProducto > stock) {
-        alert("No puede ingresar una cantidad superior al stock disponible.");
+        //alert("No puede ingresar una cantidad superior al stock disponible."); modal-carrito-StockDisponible
+        $('#modal-carrito-StockDisponible').modal('show');
     } else {
         // Si la cantidad es válida, puedes llamar a la función agregarAlCarrito() aquí.
         agregarAlCarrito();
