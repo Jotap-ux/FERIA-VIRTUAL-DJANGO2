@@ -289,50 +289,45 @@ function actualizarCantidadEnCarrito() {
 
 // LLAMAMOS A LA FUNCION AL CARGAR LA PAGINA
 actualizarCantidadEnCarrito();
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Llama a la función para obtener los datos de la tabla
-//const datosDeTabla = obtenerDatosDeTabla();
-//console.log(datosDeTabla);
-
-// Obtiene los datos del carrito desde localStorage
-//Aquí, el código intenta obtener datos del carrito almacenados en el almacenamiento local del navegador 
-//bajo la clave 'carrito'. Esto supone que previamente has guardado los datos del carrito en el almacenamiento local.
-// Agrega un controlador de eventos para el clic en el botón
 
 // Hacemos referencia al botón "Realizar pedido"
 const realizarPedidoButton = document.getElementById('realizar_pedido');
 
 realizarPedidoButton.addEventListener('click', function (event) {
-    // Evita la acción predeterminada del botón, que es enviar el formulario.
+    
     event.preventDefault();
-
-    // Obtén el carrito del almacenamiento local
+    
     let carrito = JSON.parse(localStorage.getItem('carrito'));
 
-    //INTENTANDO VALIDAR CANTIDAD X STOCK
-    //var cantidadProducto = parseInt(document.getElementById("cantidadProducto2").value);
-    //var stock = parseInt(document.getElementById("stock2").value);
-
-    console.log(cantidadProducto, stock)
     // Verifica si el carrito es un array válido
     if (Array.isArray(carrito)) {
+        
+        let cantidadExcedeStock = false;
+        let cantidadValida = false;
+        
+        for (let i = 0; i < carrito.length; i++) {
+            const cantidadProducto = parseInt(carrito[i].cantidad);
+            const stock = parseInt(carrito[i].stock);
 
-        // Obtiene la cantidad y el stock del primer producto en el carrito
-        var cantidadProducto = parseInt(carrito[0].cantidad); // Modifica según la estructura de tu carrito
-        var stock = parseInt(carrito[0].stock); // Modifica según la estructura de tu carrito
+            if (isNaN(cantidadProducto) || cantidadProducto <= 0) {
+                cantidadValida = true;                
+                break; 
+            } else if (cantidadProducto > stock){
+                cantidadExcedeStock = true;
+                break; // Rompe el bucle
+            }
+        }
+        
+        if (cantidadExcedeStock == true) {   
 
-        console.log(cantidadProducto, stock);
+            $('#modal-carrito-StockDisponible2').modal('show'); 
 
-        if (isNaN(cantidadProducto) || cantidadProducto <= 0) {
-            //alert("Ingrese una cantidad válida.");
+        }else if(cantidadValida == true){
+
             $('#modal-carrito-CantidadValida2').modal('show');
-        } else if (cantidadProducto > stock) {
-            //alert("No puede ingresar una cantidad superior al stock disponible."); modal-carrito-StockDisponible
-            $('#modal-carrito-StockDisponible2').modal('show');
-        } else {       
-            
-            
+
+        }else {       
+                        
             // Realiza la solicitud POST al servidor como lo estabas haciendo
             const csrfToken = getCookie('csrftoken');
             fetch('/carrito/', {
@@ -344,23 +339,17 @@ realizarPedidoButton.addEventListener('click', function (event) {
                 }
             })
             .then(response => response.json())
-            .then(data => {
-                // Maneja la respuesta del servidor si es necesario
-                // Envía el formulario después de agregar al carrito
+            .then(data => {                
                 
             })
-            .catch(error => { //el mensaje se captura como error, pero la info si se guarda en la BD :)
+            .catch(error => { 
                                                 
-                console.error('Error:', error);
-                //alert('Su pedido se ha creado con èxito, por favor espere el termino de la subasta :)');
-               
+                console.error('Error:', error);                
 
                 // Borra el contenido del localStorage
                 localStorage.removeItem('carrito');
                 
-                $('#modal-pedidoOK').modal('show');
-                // También puedes redirigir al usuario después de borrar el localStorage si es necesario
-                //window.location.href = '/confirme_direccion'; // Cambia la URL de redirección según tus necesidades
+                $('#modal-pedidoOK').modal('show');                                
             });
         }        
     } else {
