@@ -112,57 +112,79 @@
                                 <input name="contrasena" id="id_contrasena" required class="form-control" type="password" placeholder="Ingrese su contraseña" minlength="5" maxlength="10">
                             </div>
                             
-
                             <div class="col-12 text-center mt-4 mb-2">                               
-                                <button type="submit" class="btn btn-success btn-lg mb-1">
+                                <button type="button" class="btn btn-success btn-lg mb-1" id="btnMostrarModal">
                                     Registrarse
                                 </button>                                
                             </div>
-                            {% if messages %}
-                                <ul class="messages custom-message">
-                                    {% for message in messages %}
-                                        <li {% if message.tags %} class="{{ message.tags }} custom-message"{% endif %}>{{ message }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                                                                                    
                         </div>
                     </div>              
                 </div>            
             </div>
         </div>
-    </form>
+        
+        <!--MODAL PARA ACEPTAR TERMINOS Y CONDICIONES-->
+        <div class="modal fade" id="modal-registro-persona" tabindex="-1" aria-labelledby="modal-registro-personaLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content text-center">
+                    <div class="modal-header justify-content-center">
+                        <h2 class="section-title position-relative text-success mb-3 text-center mt-4"><span class="bg-light pr-3">TÉRMINOS Y CONDICIONES</span></h2>
+                    </div>
+                    <div class="modal-body">
+                        Acepta los términos y condiciones para poder registrarse en la pagina web como cliente
 
-    <!--MODAL PARA ACEPTAR TERMINOS Y CONDICIONES-->
-    <div class="modal fade" id="modal-registro-persona" tabindex="-1" aria-labelledby="modal-registro-personaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content text-center">
-                <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-registro-personaLabel">TERMINOS Y CONDICIONES</h5>
+                        <div class="col-md-12">                                 
+                            
+                            <p>Bienvenido a Maipo Grande, la plataforma que conecta productores de frutas con clientes locales e internacionales. Al registrarte como cliente, aceptas nuestras políticas y condiciones:</p>
+                            <p>1. Maipo Grande actúa como intermediario entre productores y clientes, facilitando la comercialización de productos agrícolas. Te comprometes a utilizar la plataforma de manera ética y conforme a las leyes y regulaciones locales.</p>
+                            <p>2. La información proporcionada durante el registro debe ser precisa y actualizada. Maipo Grande no se hace responsable de información incorrecta que pueda afectar las transacciones.</p>
+                            <p>3. Al realizar pedidos, aceptas la posibilidad de que algunos productos no estén disponibles debido a la limitada oferta o la imposibilidad de satisfacer la demanda. Maipo Grande se esfuerza por ofrecer la mejor experiencia, pero no garantiza la disponibilidad total de productos.</p>
+                            <p>4. La privacidad y seguridad de tus datos son fundamentales. Maipo Grande utiliza medidas de seguridad, pero debes tomar precauciones para proteger tu información de acceso. No compartas tu contraseña ni detalles de cuenta con terceros.</p>
+                            <p>5. Al aceptar estos términos, reconoces que Maipo Grande puede utilizar tus datos de acuerdo con su política de privacidad. Te recomendamos revisar la política para comprender cómo se manejan y protegen tus datos personales.</p>
+                            <p>Gracias por unirte a Maipo Grande. Esperamos que disfrutes de nuestra plataforma y contribuyas al crecimiento de la comunidad agrícola.</p>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-success" id="btnAceptar">Si</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">No</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    Acepta los términos y condiciones para poder registrarse en la pagina web como cliente
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" id="btnAceptar">Si</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">No</button>
+                
+            </div>
+        </div>
+
+        <!--MODAL PARA AVISAR QUE QUEDASTE REGISTRADO O ALGO-->
+        <div class="modal fade" id="modal-aviso" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content text-center">
+                    <div class="modal-header justify-content-center">
+                        <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                    </div>
+                    <div class="modal-body">
+                        Usted se ha registrado correctamente!
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="submit" class="btn btn-outline-success" id="btnAceptar2" aria-label="Close">Aceptar</button>
+                    </div>
                 </div>
             </div>
-            
         </div>
-    </div>
+    </form>
 
-    <!--MODAL PARA AVISAR QUE QUEDASTE REGISTRADO O ALGO-->
-    <div class="modal fade" id="modal-aviso" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+    <!--MODAL PARA PEDIR RELLENAR LOS CAMPOS OBLIGATORIOS-->
+    <div class="modal fade" id="modal-aviso-CAMPOS" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content text-center">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                    <h5 class="modal-title" id="modal-avisoLabel">ADVERTENCIA</h5>
                 </div>
                 <div class="modal-body">
-                    Usted se ha registrado correctamente!
+                    Por favor, complete correctamente todos los campos obligatorios!
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-outline-success" id="btnAceptar2" aria-label="Close">Aceptar</button>
+                    <button type="submit" class="btn btn-outline-info" id="btnAceptar2" data-bs-dismiss="modal" aria-label="Close">Entendido!</button>
                 </div>
             </div>
         </div>
@@ -170,22 +192,7 @@
 
 {% endblock contenido %}  
 
-{% block script %}
-
-    <!--SCRIPT DE BOTON ACEPTAR TERMINOS Y CONDICIONES, al aceptar se abre el segundo modal.. -->
-     <script>
-        document.getElementById('btnAceptar').addEventListener('click', function () {
-            $('#modal-aviso').modal('show');
-        });
-    </script>
-
-    <!--Modal para recargar todo cuando se de en aceptar del 2do modal-->
-    <script>
-        document.getElementById("btnAceptar2").addEventListener("click", function() {
-            location.reload(); // Recargar la página cuando se hace clic en el botón "No"
-        });
-    </script>
-
+{% block script %}    
 
     <!---SCRIPTS PARA LA FECHA (FORMATO)------>                
     <script>
