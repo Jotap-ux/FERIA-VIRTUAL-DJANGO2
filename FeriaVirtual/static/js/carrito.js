@@ -8,6 +8,7 @@ function agregarAlCarrito() {
     const precio = document.querySelector('.add-to-cart').getAttribute("data-precio");
     const rut_productor = document.querySelector('.add-to-cart').getAttribute("data-rut_productor");
     const id_producto = document.querySelector('.add-to-cart').getAttribute("data-id_producto");
+    const stock = document.querySelector('.add-to-cart').getAttribute("data-stock");
 
     // Verifica si la cantidad es un número válido
     if (!isNaN(cantidad) && cantidad > 0) {
@@ -25,6 +26,7 @@ function agregarAlCarrito() {
                 calibre,
                 calibreId,
                 precio: parseFloat(precio),
+                stock,
                 rut_productor,
                 cantidad: parseInt(cantidad),
                 total // Agregar el campo 'total'
@@ -97,6 +99,7 @@ function mostrarCarrito() {
             const productoNombre = item.producto;
             const productoCalibre = item.calibre;
             const productoPrecio = item.precio;
+            const productoStock = item.stock;
             let productoCantidad = item.cantidad;
             const productoTotal = productoPrecio * productoCantidad;
 
@@ -123,6 +126,11 @@ function mostrarCarrito() {
             const cellPrecio = document.createElement("td");
             cellPrecio.textContent = `$${productoPrecio}`;
             cellPrecio.classList.add("align-middle");
+
+            //ahora agregamos el stock
+            const cellStock = document.createElement("td");
+            cellStock.textContent = `${productoStock}`;
+            cellStock.classList.add("align-middle");
 
             const cellCantidad = document.createElement("td");
             cellCantidad.classList.add("align-middle");
@@ -192,6 +200,7 @@ function mostrarCarrito() {
             row.appendChild(cellNombre);
             row.appendChild(cellCalibre);
             row.appendChild(cellPrecio);
+            row.appendChild(cellStock);
             row.appendChild(cellCantidad);
             row.appendChild(cellTotal);
             row.appendChild(cellEliminar);
@@ -301,6 +310,8 @@ realizarPedidoButton.addEventListener('click', function (event) {
     // Obtén el carrito del almacenamiento local
     let carrito = JSON.parse(localStorage.getItem('carrito'));
 
+    
+
     // Verifica si el carrito es un array válido
     if (Array.isArray(carrito)) {
         // Realiza la solicitud POST al servidor como lo estabas haciendo
@@ -368,5 +379,24 @@ function validarCantidad() {
         agregarAlCarrito();
         // Activamos el modal
         $('#modal-carrito').modal('show');
+    }
+}
+
+//PARA VALIDAR LA CANTIDAD QUE ESTAMOS INTENTANDO COMPRAR
+function validarCantidad2() {
+    var cantidadProducto = parseInt(document.getElementById("cantidadProducto2").value);
+    var stock = parseInt(document.getElementById("stock2").textContent);
+
+    if (isNaN(cantidadProducto) || cantidadProducto <= 0) {
+        alert("Ingrese una cantidad válida.");
+        //$('#modal-carrito-CantidadValida').modal('show');
+    } else if (cantidadProducto > stock) {
+        alert("No puede ingresar una cantidad superior al stock disponible."); modal-carrito-StockDisponible
+        //$('#modal-carrito-StockDisponible').modal('show');
+    } else {
+        // Si la cantidad es válida, puedes llamar a la función agregarAlCarrito() aquí.
+        //agregarAlCarrito();
+        // Envía el formulario después de agregar al carrito
+        document.getElementById("miFormulario").submit();
     }
 }

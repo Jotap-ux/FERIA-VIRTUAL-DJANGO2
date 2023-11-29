@@ -30,6 +30,7 @@
                             <th>Producto</th>
                             <th>Calibre</th>
                             <th>Precio</th>
+                            <th>Stock</th>
                             <th>Cantidad</th>
                             <th>Total</th>
                             <th>Eliminar producto</th>
@@ -41,6 +42,7 @@
                             <td class="align-middle">>Manzana</td>
                             <td class="align-middle">Alto</td>
                             <td class="align-middle">$1.500</td>
+                            <td id="stock2" class="align-middle">5</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
@@ -48,7 +50,7 @@
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
+                                    <input type="number" id="cantidadProducto2" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-success btn-plus">
                                             <i class="fa fa-plus"></i>
@@ -101,7 +103,11 @@
                                                    
                             <!------------------------------------------------------------------->
 
-                            <button type="submit" class="btn btn-block btn-success font-weight-bold my-3 py-3" id="realizar_pedido">Realizar pedido</button>
+                            <button type="submit" class="btn btn-block btn-success font-weight-bold my-3 py-3" 
+                            id="realizar_pedido"
+                            onclick="validarCantidad2()">
+                            Realizar pedido
+                            </button>
 
                         </form>
                         <!--- <button class="btn btn-block btn-success font-weight-bold my-3 py-3">Realizar pedido</button> --->
