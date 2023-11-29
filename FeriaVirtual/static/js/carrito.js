@@ -1,5 +1,5 @@
 // En carrito.js
-
+// Agregegar al carrito
 function agregarAlCarrito() {
     const cantidad = document.getElementById("cantidadProducto").value;
     const producto = document.querySelector('.add-to-cart').getAttribute("data-product");
@@ -54,7 +54,27 @@ function eliminarDelCarrito(index) {
     }
 }
 
+//actualizar carrito
+function actualizarCantidadYTotal(index, nuevaCantidad) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    const producto = carrito[index];
 
+    if (producto) {
+        // Actualiza la cantidad del producto
+        producto.cantidad = nuevaCantidad;
+
+        // Calcula el nuevo total
+        const nuevoTotal = producto.precio * nuevaCantidad;
+
+        // Actualiza el total del producto
+        producto.total = nuevoTotal;
+
+        // Actualiza el carrito en el almacenamiento local
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+    }
+}
+
+//Mostrar el carrito
 function mostrarCarrito() {
     try {
         const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
@@ -77,7 +97,7 @@ function mostrarCarrito() {
             const productoNombre = item.producto;
             const productoCalibre = item.calibre;
             const productoPrecio = item.precio;
-            const productoCantidad = item.cantidad;
+            let productoCantidad = item.cantidad;
             const productoTotal = productoPrecio * productoCantidad;
 
             // Crea una nueva fila de la tabla
@@ -106,11 +126,41 @@ function mostrarCarrito() {
 
             const cellCantidad = document.createElement("td");
             cellCantidad.classList.add("align-middle");
+
             const cantidadInput = document.createElement("input");
             cantidadInput.type = "text";
             cantidadInput.value = productoCantidad;
             cantidadInput.classList.add("form-control", "form-control-sm", "bg-secondary", "border-0", "text-center");
-            cellCantidad.appendChild(cantidadInput);
+            //cellCantidad.appendChild(cantidadInput);
+
+            //BOTONES + Y -            
+            const btnGroup = document.createElement("div");
+            btnGroup.classList.add("input-group", "quantity", "mx-auto", "d-flex");
+
+            const btnMinus = document.createElement("button");
+            btnMinus.classList.add("btn", "btn-sm", "btn-success", "btn-minus");
+            btnMinus.innerHTML = '<i class="fa fa-minus"></i>';
+            btnMinus.addEventListener("click", function () {
+                if (productoCantidad > 1) {
+                    productoCantidad--;
+                    cantidadInput.value = productoCantidad;
+                    // Aquí actualizamos tanto la cantidad como el total
+                    actualizarCantidadYTotal(index, productoCantidad);
+                    mostrarCarrito();
+                }
+            });
+
+            const btnPlus = document.createElement("button");
+            btnPlus.classList.add("btn", "btn-sm", "btn-success", "btn-plus");
+            btnPlus.innerHTML = '<i class="fa fa-plus"></i>';
+            btnPlus.addEventListener("click", function () {
+                productoCantidad++;
+                cantidadInput.value = productoCantidad;
+                // Aquí actualizamos tanto la cantidad como el total
+                actualizarCantidadYTotal(index, productoCantidad);
+                mostrarCarrito();                
+            });
+
 
             const cellTotal = document.createElement("td");
             cellTotal.textContent = `$${productoTotal}`;
@@ -128,6 +178,14 @@ function mostrarCarrito() {
                 mostrarCarrito();
                 actualizarCantidadEnCarrito();
             });
+
+            //BOTONES MAS Y MENOS
+            btnGroup.appendChild(btnMinus);
+            btnGroup.appendChild(cantidadInput);
+            btnGroup.appendChild(btnPlus);
+
+            cellCantidad.appendChild(btnGroup);
+
 
             // Agrega las celdas a la fila
             //row.appendChild(cellImagen);
