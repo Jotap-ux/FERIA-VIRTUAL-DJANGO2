@@ -43,6 +43,17 @@ function agregarAlCarrito() {
     }
 }
 
+// Eliminar del carrito
+function eliminarDelCarrito(index) {
+    try {
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        carrito.splice(index, 1); // Elimina el elemento del carrito en el índice proporcionado
+        localStorage.setItem("carrito", JSON.stringify(carrito)); // Guarda el carrito actualizado en el localStorage
+    } catch (error) {
+        console.error("Error al eliminar del carrito:", error);
+    }
+}
+
 
 function mostrarCarrito() {
     try {
@@ -61,7 +72,7 @@ function mostrarCarrito() {
         // ...
 
         // Recorre los productos en el carrito y crea las filas de la tabla
-        carrito.forEach(item => {
+        carrito.forEach((item, index) => {
             //const productoImg = item.img; // Obtiene la URL de la imagen del producto como texto
             const productoNombre = item.producto;
             const productoCalibre = item.calibre;
@@ -112,9 +123,10 @@ function mostrarCarrito() {
             cellEliminar.appendChild(eliminarButton);
             cellEliminar.classList.add("align-middle");           
 
-            //eliminarButton.addEventListener("click", function () {
-              //  eliminarDelCarrito(index);
-            //});
+            eliminarButton.addEventListener("click", function () {
+                eliminarDelCarrito(index);
+                mostrarCarrito();
+            });
 
             // Agrega las celdas a la fila
             //row.appendChild(cellImagen);
