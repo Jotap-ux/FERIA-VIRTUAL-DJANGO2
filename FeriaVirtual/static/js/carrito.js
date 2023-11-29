@@ -126,6 +126,7 @@ function mostrarCarrito() {
             eliminarButton.addEventListener("click", function () {
                 eliminarDelCarrito(index);
                 mostrarCarrito();
+                actualizarCantidadEnCarrito();
             });
 
             // Agrega las celdas a la fila
@@ -197,15 +198,30 @@ function contarProductosEnCarrito() {
 }
 
 // Llama a la función para contar los productos en el carrito
-const cantidadProductosEnCarrito = contarProductosEnCarrito();
+// - const cantidadProductosEnCarrito = contarProductosEnCarrito();
 
 // Actualiza el contenido del span
-document.getElementById("carrito-cantidad").textContent = cantidadProductosEnCarrito;
+// - document.getElementById("carrito-cantidad").textContent = cantidadProductosEnCarrito;
 
-console.log("Cantidad de productos en el carrito:", cantidadProductosEnCarrito);
+// - console.log("Cantidad de productos en el carrito:", cantidadProductosEnCarrito);
+
+function actualizarCantidadEnCarrito() {
+    try {
+        // Llama a la función para contar los productos en el carrito
+        const cantidadProductosEnCarrito = contarProductosEnCarrito();
+
+        // Actualiza el contenido del span
+        document.getElementById("carrito-cantidad").textContent = cantidadProductosEnCarrito;
+
+        console.log("Cantidad de productos en el carrito:", cantidadProductosEnCarrito);
+    } catch (error) {
+        console.error("Error al actualizar la cantidad en el carrito:", error);
+    }
+}
 
 
-
+// LLAMAMOS A LA FUNCION AL CARGAR LA PAGINA
+actualizarCantidadEnCarrito();
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Llama a la función para obtener los datos de la tabla
