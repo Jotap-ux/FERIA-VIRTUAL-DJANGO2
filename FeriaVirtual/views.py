@@ -151,7 +151,7 @@ def inicio_sesion(request):
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
 
                 # Redirige a la página de perfil del productor
-                return render(request, 'core/Perfil_productor_datos.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
+                return render(request, 'core/index.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
 
             except Productor.DoesNotExist:
 
@@ -228,7 +228,7 @@ def inicio_sesion(request):
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
 
                 # Redirige a la página de perfil del productor
-                return render(request, 'core/Perfil_cliente_datos.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
+                return render(request, 'core/index.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
             except Productor.DoesNotExist:
 
                 response = HttpResponse("USUARIO NO EXISTE")
@@ -284,7 +284,7 @@ def inicio_sesion(request):
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
 
                 # Redirige a la página de perfil del productor
-                return render(request, 'core/Perfil_cliente_datos.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
+                return render(request, 'core/index.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
             except Productor.DoesNotExist:
 
                 response = HttpResponse("USUARIO NO EXISTE")
@@ -324,7 +324,7 @@ def inicio_sesion(request):
                 request.session['usuario_autenticado'] = True  # Indica que el usuario ha iniciado sesión
 
                 # Redirige a la página de perfil del productor
-                return render(request, 'core/Perfil_transportista_datos.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
+                return render(request, 'core/index.html', {'user_info': request.session['user_info'], 'resultado_json': resultado_json})
             except Productor.DoesNotExist:
 
                 response = HttpResponse("USUARIO NO EXISTE")
