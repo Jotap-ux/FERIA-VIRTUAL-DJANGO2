@@ -78,7 +78,10 @@ function validarFormulario() {
 // Función para validar el formulario INGRESO DE VEHICULO
 function validarFormularioVEHICULO() {
 
-    var patenteRegex = /^([A-Za-z]{4}\d{2}|\d{2}[A-Za-z]{4})$/;
+    //var patenteRegex = /^([A-Za-z]{4}\d{2}|\d{2}[A-Za-z]{4})$/;
+    // Validación personalizada para el campo de patente (4 letras y 2 números o 2 letras y 4 números)
+    var patenteRegex = /^([A-Za-z]{4}\d{2}|[A-Za-z]{2}\d{4})$/;
+
     var patenteInput = $("#id_patente").val();
 
     if (!patenteRegex.test(patenteInput)) {
