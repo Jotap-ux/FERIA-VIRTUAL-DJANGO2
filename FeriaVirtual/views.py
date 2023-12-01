@@ -5,7 +5,7 @@ from .conexionWebService import listar_pais_combobox, listar_region_por_pais, li
 from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, listar_vehiculos_transportista, crearPago, listar_pedidosTransportista
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados, actualizar_pedido_recha_cliente, actualizar_pedido_recha_transportista
 from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal, actualizarDireccionDespacho
-from .conexionWebService import desactivarCuentaClienteNormal
+from .conexionWebService import desactivarCuentaClienteNormal, desactivarCuentaClienteEmpresa, desactivarCuentaProductor, desactivarCuentaTransportista
 from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais, Direccion
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -89,7 +89,7 @@ def inicio_sesion(request):
         contrasena = request.POST.get('contrasena')
 
         resultado_json = autenticar_usuario(correoelectronico, contrasena)
-        
+
         # Parsea el resultado JSON
         resultado_dict = json.loads(resultado_json)
         tipo_usuario = resultado_dict.get('Tipo_usuario')
@@ -222,6 +222,7 @@ def inicio_sesion(request):
                     'region': nombre_region,
                     'pais' : nombre_pais,
                     'direccion_entrega' : nombre_direccion
+                    #'estado_activo': cliente.estadoactivo #---para ver si tiene la cuenta ok
                 }
 
                 print('Su id de cliente es : ', cliente.id_cliente)
@@ -608,13 +609,18 @@ def perfil_cli_datos(request):
     #------DESACTIVAR CUENTA------
     if request.method == 'POST':
         rut = request.POST.get('rut_usuario_Desactivar')        
+        identificadorabuscar = request.POST.get('rut_usuario_Desactivar2') 
 
-        response = desactivarCuentaClienteNormal(rut)
+        if rut:
+
+            response = desactivarCuentaClienteNormal(rut)
+        elif identificadorabuscar:
+            response = desactivarCuentaClienteEmpresa(identificadorabuscar)
 
         if response == 'OK':
             return redirect('CERRAR_SESION')
         else:
-            messages.success(request, 'SU CUENTA SE HA DESACTIVADO!! ')
+            #messages.success(request, 'SU CUENTA SE HA DESACTIVADO!! ')
             return redirect('CERRAR_SESION')     
     else:
         return render(request, "core/Perfil_cliente_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
@@ -655,7 +661,18 @@ def perfil_pro_datos(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-    return render(request, "core/Perfil_productor_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    if request.method == 'POST':
+        rut = request.POST.get('rut_usuario_DesactivarProd')  
+
+        response = desactivarCuentaProductor(rut)
+
+        if response == 'OK':
+            return redirect('CERRAR_SESION')
+        else:
+            #messages.success(request, 'SU CUENTA SE HA DESACTIVADO!! ')
+            return redirect('CERRAR_SESION')
+    else:
+        return render(request, "core/Perfil_productor_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
 @user_info_required
@@ -747,7 +764,19 @@ def perfil_transp_datos(request):
     usuario_autenticado = request.session.get('usuario_autenticado', False)
     user_info = request.session.get('user_info', {})
 
-    return render(request, "core/Perfil_transportista_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
+    if request.method == 'POST':
+        rut = request.POST.get('rut_usuario_DesactivarTranspor')  
+
+        response = desactivarCuentaTransportista(rut)
+
+        if response == 'OK':
+            return redirect('CERRAR_SESION')
+        else:
+            #messages.success(request, 'SU CUENTA SE HA DESACTIVADO!! ')
+            return redirect('CERRAR_SESION')
+    else:
+
+        return render(request, "core/Perfil_transportista_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
 # lista
 def perfil_transp_domici(request):

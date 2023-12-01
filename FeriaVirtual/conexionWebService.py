@@ -617,3 +617,24 @@ def desactivarCuentaClienteNormal(rut):
     response = client.service.desactivarCuentaClienteNormal(rut=rut)
 
     return response
+
+def desactivarCuentaClienteEmpresa(identificadorabuscar):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.desactivarCuentaClienteEmpresa(identificadorabuscar=identificadorabuscar)
+
+    return response
+
+def desactivarCuentaProductor(rut):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.desactivarCuentaProductor(rut=rut)
+
+    return response
+
+def desactivarCuentaTransportista(rut):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.desactivarCuentaTransportista(rut=rut)
+
+    return response
