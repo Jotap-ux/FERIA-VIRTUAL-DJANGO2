@@ -609,3 +609,11 @@ def actualizarDireccionDespacho(idcliente, nuevadireccion):
     response = client.service.actualizarDireccionDestino(idcliente=idcliente, arg1=nuevadireccion)
 
     return response
+
+#---INHABILITAR CUENTAS------------------
+def desactivarCuentaClienteNormal(rut):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.desactivarCuentaClienteNormal(rut=rut)
+
+    return response

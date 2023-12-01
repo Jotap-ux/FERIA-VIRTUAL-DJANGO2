@@ -1,4 +1,4 @@
-
+//FORMULARIO REGISGRO CLIENTE (NATURAL)
 $(document).ready(function () {
     // Agrega el evento clic al botón que abre el modal
     $("#btnMostrarModal").click(function () {
@@ -31,7 +31,7 @@ $(document).ready(function () {
 });
    
 
-// Función para validar el formulario CLIENTE
+// Función para validar el formulario CLIENTE + Contraseña
 function validarFormulario() {
     // Usa el método checkValidity() del formulario para activar la validación HTML nativa
     if ($("#miFormulario")[0].checkValidity()) {

@@ -72,10 +72,53 @@
                         </div>
 
                         <div class="col-md-6 form-group text-center">
-                            
-                            <button type="button" class="btn btn-success btn-lg mb-1 w-65" data-bs-toggle="modal" data-bs-target="#modal-inhabilitar-cuenta">
-                                Inhabilitar cuenta
-                            </button>
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <!-- Input oculto con el valor de pedido.id_pedido -->
+                                <input type="hidden" name="rut_usuario_Desactivar" value="{{ user_info.Rut_usuario }}">
+
+                                <input class="form-control" type="text" placeholder="{{user_info.Rut_usuario}}" readonly>
+
+                                <button type="button" class="btn btn-success btn-lg mb-1 w-65" data-bs-toggle="modal" data-bs-target="#modal-inhabilitar-cuenta">
+                                    Inhabilitar cuenta
+                                </button>
+
+                                <!-------------MODAL PARA PREGUNTAR SI DESEA INHABILITAR SU CUENTA----------->
+                                <div class="modal fade" id="modal-inhabilitar-cuenta" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content text-center">
+                                            <div class="modal-header justify-content-center">
+                                                <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Está seguro que desea inhabilitar su cuenta?
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="button" class="btn btn-success" id="btnDeshabilitarSI" data-bs-target="#modal-aviso-inhabilitacion">Si</button>
+                                                <button type="button" class="btn btn-danger" id="btnDeshabilitarNO" data-bs-dismiss="modal" aria-label="Close">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!------------------MODAL PARA AVISAR QUE SU CUENTA FUE DESHABILITADA---------------------->
+                                <div class="modal fade" id="modal-aviso-inhabilitacion" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content text-center">
+                                            <div class="modal-header justify-content-center">
+                                                <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Su cuenta ha sido Inhabilitada!!
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="submit" class="btn btn-danger" id="btnCuentaEliminada" data-bs-dismiss="modal" aria-label="Close">Continuar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>              
@@ -103,40 +146,7 @@
         </div>
     </div>
 
-    <!-------------MODAL PARA PREGUNTAR SI DESEA INHABILITAR SU CUENTA----------->
-    <div class="modal fade" id="modal-inhabilitar-cuenta" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content text-center">
-                <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
-                </div>
-                <div class="modal-body">
-                    ¿Está seguro que inhabilitar su cuenta?
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" id="btnDeshabilitarSI" data-bs-target="#modal-aviso-inhabilitacion">Si</button>
-                    <button type="button" class="btn btn-danger" id="btnDeshabilitarNO" data-bs-dismiss="modal" aria-label="Close">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!------------------MODAL PARA AVISAR QUE SU CUENTA FUE DESHABILITADA---------------------->
-    <div class="modal fade" id="modal-aviso-inhabilitacion" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content text-center">
-                <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
-                </div>
-                <div class="modal-body">
-                    Su cuenta ha sido Inhabilitada!!
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-danger" id="btnCuentaEliminada" data-bs-dismiss="modal" aria-label="Close">Continuar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
 {% endblock contenido %}
  
