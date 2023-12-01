@@ -25,7 +25,7 @@
 
             <!--------------------------->
             <div class="col-lg-8 mx-auto">
-                <form method="post" action="{% url 'TRANSP_VEHI' %}">
+                <form id="miFormularioREGISTRO_TRANSPORTE" method="post" action="{% url 'TRANSP_VEHI' %}">
                     {% csrf_token %}
                     <div class="bg-light p-30 mb-2">
                         <div class="row">
@@ -37,7 +37,7 @@
                             <!-------------------SON DE 4 EN 4---------->
                             <div class="col-md-6 form-group">
                                 <label for="id_patente">Placa Patente</label>
-                                <input name="patente" id="id_patente" class="form-control" type="text" placeholder="AB-AB-11" required>
+                                <input name="patente" id="id_patente" class="form-control" type="text" placeholder="ABAB11" required>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="id_capacidad_carga">Capacidad de Carga</label>
@@ -96,18 +96,31 @@
                               
                             <!------------------------------------------------>
                             <div class="col-md-12 d-flex justify-content-end">                    
-                                <button type="submit" class="btn btn-info btn-lg mb-1 col-5" data-bs-toggle="modal" data-bs-target="">
+                                <button type="button" class="btn btn-info btn-lg mb-1 col-5" id="btnMostrarModalVEHICULO">
                                     Añadir
                                 </button>                                
                             </div>  
-                            {% if messages %}
-                                <ul class="messages custom-message">
-                                    {% for message in messages %}
-                                        <li {% if message.tags %} class="{{ message.tags }} custom-message"{% endif %}>{{ message }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
 
+
+                            <!--MODAL PARA MODIFICAR DATOS VEHÍCULO-->
+                            <div class="modal fade" id="modal-registro-vehiculo" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content text-center">
+                                        <div class="modal-header justify-content-center">
+                                            <h5 class="modal-title" id="modal-formu-contactoLabel">MENSAJE</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            Se ha agregado el vehiculo exitosamente!
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <button type="button" class="btn btn-success" id="btnAceptar-agregadoVEHICULO" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            
                         </div>                
                     </div> 
                 </form>             
@@ -154,6 +167,43 @@
         </div>
         
     </div>
+
+    <!------------------------------------------------------------------------------------------------------------>
+    <!--MODAL PARA PEDIR LLENAR CAMPOS OBLIGATORIOS DEL FORMULARIO-->
+    <div class="modal fade" id="modal-aviso-DATOS-VEHICULO" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-avisoLabel">AVISO</h5>
+                </div>
+                <div class="modal-body">
+                    Por favor, complete correctamente todos los campos obligatorios!
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn btn-outline-info" id="btnAceptar2" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--MODAL ERROR EN LA PATENTE!!-->
+    <div class="modal fade" id="modal-error-patente" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="modal-avisoLabel">AVISO</h5>
+                </div>
+                <div class="modal-body">
+                    Por favor, Ingrese una patente válida
+                    Ej: AAAA11 o 11AAAA
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn btn-danger" id="btnAceptar2" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-------------------------------------------------------------------------------------------------------------->
 
     <!--MODAL PARA MODIFICAR DATOS VEHÍCULO-->
     <div class="modal fade" id="modal-modificar-vehiculo" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
