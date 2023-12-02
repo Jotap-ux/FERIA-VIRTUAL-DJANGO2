@@ -1,26 +1,17 @@
-from django import forms
-from django.shortcuts import render, redirect
-from zeep import Client
-import json
+from rut_chile import rut_chile
 
-URL_WEBSERVICE = 'http://localhost:8080/WSFERIAVIRTUAL/WSFERIAVIRTUAL?WSDL'
+# Validar RUT
+print(rut_chile.is_valid_rut("12345678-9"))  # debería imprimir False
+print(rut_chile.is_valid_rut("6265837-1"))   # debería imprimir True
+print(rut_chile.is_valid_rut("9126251-4"))
 
+# Obtener dígito verificador
+print(rut_chile.get_verification_digit("9868503"))    # debería imprimir "0"
+print(rut_chile.get_verification_digit("12667869"))   # debería imprimir "k"
+print(rut_chile.get_capitalized_verification_digit("12667869"))  # debería imprimir "K"
 
-client = Client(URL_WEBSERVICE)
-
-
-#----------SECCION GESTIONAR PAGO------------------
-pago_exitoso = 1
-pedido_idpedido = '282'
-
-
-
-response = client.service.crearPago(pago_exitoso, pedido_idpedido)
-
-#id_pedido = int(response)  # Convierte la respuesta a un entero
-#id_pedido_str = str(id_pedido)  # Convierte el entero a una cadena
-
-# Resto de tu lógica
-#print(id_pedido_str)
-
-print(response)
+# Formatear RUT
+print(rut_chile.format_rut_with_dots("12667869k"))          # debería imprimir "12.667.869-k"
+print(rut_chile.format_rut_without_dots("12667869k"))       # debería imprimir "12667869-k"
+print(rut_chile.format_capitalized_rut_without_dots("12667869k"))  # debería imprimir "12667869-K"
+print(rut_chile.format_capitalized_rut_with_dots("12667869k"))     # debería imprimir "12.667.869-K"

@@ -31,7 +31,7 @@ import mercadopago
 from urllib.parse import urljoin
 import requests
 from django.db.models import Max
-
+from rut_chile import rut_chile
 
 # lista
 def index(request):
@@ -418,33 +418,48 @@ def regis_clien_em(request):
     # Parsea la cadena JSON a una lista de diccionarios
     paises_data = json.loads(paises_json)    
 
-
-
     if request.method == 'POST':        
-        direccion = request.POST.get('direccion')
-        #fechanacimiento = request.POST.get('fechanacimiento')        
-        correoelectronico = request.POST.get('correoelectronico')
-        contrasena = request.POST.get('contrasena')
-        identificadorempresa = request.POST.get('identificadorempresa')
-        razonsocial = request.POST.get('razonsocial')
-        comuna_idcomuna = request.POST.get('comuna')
-        
-        response = crear_clienteEmpresa(            
-            direccion,
-            #fechanacimiento,            
-            correoelectronico,
-            contrasena,
-            identificadorempresa,
-            razonsocial,
-            comuna_idcomuna
-        )
-         # Procesa la respuesta del servicio SOAP, si es necesario
 
-        if response == 'OK':
-            return redirect('REGIS_EMPRESA')
+        #---------------------------
+        rut = request.POST.get('identificadorempresa')
+        dv_empresa = request.POST.get('dv_empresa')
+
+        # Concatena rut y dv con '-'
+        identificadorempresa = f"{rut}-{dv_empresa}"
+
+        print(identificadorempresa)
+
+        print(rut_chile.is_valid_rut(identificadorempresa)) 
+        #--------------------------------------------
+        # Valida el rut utilizando la biblioteca rut_chile
+        if rut_chile.is_valid_rut(identificadorempresa) == True:
+
+            direccion = request.POST.get('direccion')
+            #fechanacimiento = request.POST.get('fechanacimiento')        
+            correoelectronico = request.POST.get('correoelectronico')
+            contrasena = request.POST.get('contrasena')        
+            razonsocial = request.POST.get('razonsocial')
+            comuna_idcomuna = request.POST.get('comuna')
+                    
+            response = crear_clienteEmpresa(            
+                direccion,
+                #fechanacimiento,            
+                correoelectronico,
+                contrasena,
+                identificadorempresa,
+                razonsocial,
+                comuna_idcomuna
+            )
+            # Procesa la respuesta del servicio SOAP, si es necesario
+
+            if response == 'OK':
+                return redirect('REGIS_EMPRESA')
+            else:
+                messages.success(request, 'Usted se ha registrado exitosamente :) ')
+                return redirect('REGIS_EMPRESA')
         else:
-            messages.success(request, 'Usted se ha registrado exitosamente :) ')
-            return redirect('REGIS_EMPRESA')
+            response = HttpResponse("Ingrese un rut válido!")
+            return response
     else:
         return render(request, "core/Registro_cliente_empresa.html",
                       {'paises': paises_data})
@@ -461,38 +476,51 @@ def regis_clien_per(request):
     if request.method == 'POST':
         rut = request.POST.get('rut')
         dv = request.POST.get('dv')
-        nombre = request.POST.get('nombre')
-        apellidopat = request.POST.get('apellidopat')
-        apellidomat = request.POST.get('apellidomat')
-        direccion = request.POST.get('direccion')
-        fechanacimiento = request.POST.get('fechanacimiento')        
-        correoelectronico = request.POST.get('correoelectronico')
-        contrasena = request.POST.get('contrasena')
-        comuna_idcomuna = request.POST.get('comuna')
-        #--------------------------------------
 
-        response = crear_clienteNormal(
-            rut,
-            dv,
-            nombre,
-            apellidopat,
-            apellidomat,
-            direccion,
-            fechanacimiento,            
-            correoelectronico,
-            contrasena,
-            comuna_idcomuna
-        )
-         # Procesa la respuesta del servicio SOAP, si es necesario
+        # Concatena rut y dv con '-'
+        rut_completo = f"{rut}-{dv}"
 
-        if response == 'OK':
-            return redirect('REGIS_PERSONA')
+        print(rut_completo)
+
+        print(rut_chile.is_valid_rut(rut_completo)) 
+
+        # Valida el rut utilizando la biblioteca rut_chile
+        if rut_chile.is_valid_rut(rut_completo) == True:
+
+            
+            # Continúa con el resto del código
+            nombre = request.POST.get('nombre')
+            apellidopat = request.POST.get('apellidopat')
+            apellidomat = request.POST.get('apellidomat')
+            direccion = request.POST.get('direccion')
+            fechanacimiento = request.POST.get('fechanacimiento')        
+            correoelectronico = request.POST.get('correoelectronico')
+            contrasena = request.POST.get('contrasena')
+            comuna_idcomuna = request.POST.get('comuna')
+
+            response = crear_clienteNormal(
+                rut,
+                dv,
+                nombre,
+                apellidopat,
+                apellidomat,
+                direccion,
+                fechanacimiento,            
+                correoelectronico,
+                contrasena,
+                comuna_idcomuna
+            )
+
+            if response == 'OK':
+                return redirect('REGIS_PERSONA')
+            else:
+                messages.success(request, 'Usted se ha registrado exitosamente :) ')
+                return redirect('REGIS_PERSONA')
         else:
-            messages.success(request, 'Usted se ha registrado exitosamente :) ')
-            return redirect('REGIS_PERSONA')
+            response = HttpResponse("Ingrese un rut válido!")
+            return response
     else:
-        return render(request, "core/Registro_cliente_persona.html",
-                      {'paises': paises_data})
+        return render(request, "core/Registro_cliente_persona.html", {'paises': paises_data})
 
 # Formulario registro PRODUCTOR - USA LA API
 def regis_prod(request):
@@ -505,46 +533,58 @@ def regis_prod(request):
 
 
     if request.method == 'POST':
+
+        #---------------------------
         rut = request.POST.get('rut')
         dv = request.POST.get('dv')
-        nombre = request.POST.get('nombre')
-        apellidopat = request.POST.get('apellidopat')
-        apellidomat = request.POST.get('apellidomat')
-        fechanacimiento = request.POST.get('fechanacimiento')
-        direccion = request.POST.get('direccion')
-        correoelectronico = request.POST.get('correoelectronico')
-        contrasena = request.POST.get('contrasena')
-        comuna_idcomuna = request.POST.get('comuna')
 
-        response = crear_productor(
-            rut,
-            dv,
-            nombre,
-            apellidopat,
-            apellidomat,
-            fechanacimiento,
-            direccion,
-            correoelectronico,
-            contrasena,
-            comuna_idcomuna
-        )
+        # Concatena rut y dv con '-'
+        rut_completo = f"{rut}-{dv}"
 
-        # Procesa la respuesta del servicio SOAP, si es necesario
+        print(rut_completo)
 
-        if response == 'OK':
-            return redirect('REGIS_PROD')
+        print(rut_chile.is_valid_rut(rut_completo)) 
+        #--------------------------------------------
+        # Valida el rut utilizando la biblioteca rut_chile
+        if rut_chile.is_valid_rut(rut_completo) == True:
+            
+            nombre = request.POST.get('nombre')
+            apellidopat = request.POST.get('apellidopat')
+            apellidomat = request.POST.get('apellidomat')
+            fechanacimiento = request.POST.get('fechanacimiento')
+            direccion = request.POST.get('direccion')
+            correoelectronico = request.POST.get('correoelectronico')
+            contrasena = request.POST.get('contrasena')
+            comuna_idcomuna = request.POST.get('comuna')
+
+            response = crear_productor(
+                rut,
+                dv,
+                nombre,
+                apellidopat,
+                apellidomat,
+                fechanacimiento,
+                direccion,
+                correoelectronico,
+                contrasena,
+                comuna_idcomuna
+            )
+
+            # Procesa la respuesta del servicio SOAP, si es necesario
+
+            if response == 'OK':
+                return redirect('REGIS_PROD')
+            else:
+                messages.success(request, 'Usted se ha registrado exitosamente :) ')
+                return redirect('REGIS_PROD')
         else:
-            messages.success(request, 'Usted se ha registrado exitosamente :) ')
-            return redirect('REGIS_PROD')
+            response = HttpResponse("Ingrese un rut válido!")
+            return response
     else:
         # Cualquier otro código que necesites para la vista si no se envió un formulario POST
         return render(request, 'core/Registro_productor.html',
                       {'paises': paises_data})
     
-
-#Mi archivo conexionWebService.py contiene la lógica para el servicio web SOAP,
-# y el archivo views.py se encarga de manejar el formulario y llamar a la función correspondiente 
-# desde el archivo conexionWebService.py. 
 #------------------------------------------------------------------
 
 
@@ -558,36 +598,52 @@ def regis_transp(request):
     paises_data = json.loads(paises_json) 
 
     if request.method == 'POST':
+
+        #---------------------------
         rut = request.POST.get('rut')
         dv = request.POST.get('dv')
-        nombre = request.POST.get('nombre')
-        apellidopat = request.POST.get('apellidopat')
-        apellidomat = request.POST.get('apellidomat')
-        fechanacimiento = request.POST.get('fechanacimiento') 
-        direccion = request.POST.get('direccion')               
-        correoelectronico = request.POST.get('correoelectronico')
-        contrasena = request.POST.get('contrasena')
-        #comuna_idcomuna = request.POST.get('comuna_idcomuna')
-        
-        response = crear_transportista(
-            rut,
-            dv,
-            nombre,
-            apellidopat,
-            apellidomat,
-            fechanacimiento,
-            direccion,                        
-            correoelectronico,
-            contrasena,
-            #comuna_idcomuna
-        )
-         # Procesa la respuesta del servicio SOAP, si es necesario
 
-        if response == 'OK':
-            return redirect('REGIS_TRANSP')
+        # Concatena rut y dv con '-'
+        rut_completo = f"{rut}-{dv}"
+
+        print(rut_completo)
+
+        print(rut_chile.is_valid_rut(rut_completo)) 
+        #--------------------------------------------
+        # Valida el rut utilizando la biblioteca rut_chile
+        if rut_chile.is_valid_rut(rut_completo) == True:
+            
+            nombre = request.POST.get('nombre')
+            apellidopat = request.POST.get('apellidopat')
+            apellidomat = request.POST.get('apellidomat')
+            fechanacimiento = request.POST.get('fechanacimiento') 
+            direccion = request.POST.get('direccion')               
+            correoelectronico = request.POST.get('correoelectronico')
+            contrasena = request.POST.get('contrasena')
+            #comuna_idcomuna = request.POST.get('comuna_idcomuna')
+            
+            response = crear_transportista(
+                rut,
+                dv,
+                nombre,
+                apellidopat,
+                apellidomat,
+                fechanacimiento,
+                direccion,                        
+                correoelectronico,
+                contrasena,
+                #comuna_idcomuna
+            )
+            # Procesa la respuesta del servicio SOAP, si es necesario
+
+            if response == 'OK':
+                return redirect('REGIS_TRANSP')
+            else:
+                messages.success(request, 'La información se ha guardado exitosamente :) ')
+                return redirect('REGIS_TRANSP')
         else:
-            messages.success(request, 'La información se ha guardado exitosamente :) ')
-            return redirect('REGIS_TRANSP')
+            response = HttpResponse("Ingrese un rut válido!")
+            return response
     else:
         
         return render(request, "core/Registro_transportista.html",

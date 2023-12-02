@@ -37,8 +37,12 @@
                             </div>
                             
                             <div class="col-md-6 form-group">
-                                <label for="id_identificadorempresa">Numero de identificación</label>
-                                <input name="identificadorempresa" id="id_identificadorempresa" required class="form-control" type="text" placeholder="sin puntos ni guion" minlength="7" maxlength="9">
+                                <label for="id_identificadorempresa">Número de identificación</label>
+                                <input name="identificadorempresa" id="id_identificadorempresa" required class="form-control" type="text" placeholder="sin puntos ni dígito verificador" minlength="7" maxlength="8">
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label for="dv_empresa">.</label>
+                                <input name="dv_empresa" id="dv_empresa" required class="form-control" type="text" minlength="1" maxlength="1">
                             </div>
                             <!--ACA VA LA FECHA DE CONSTITUCION DE LA EMPRESA-->                            
                             <!--------------------------------------------------->
@@ -52,9 +56,9 @@
                             
                             <!----COMBOBOX---PAIS----->
                             <div class="col-md-6 form-group">       
-                                <label for="pais">Pais</label>                                      
+                                <label for="pais">País</label>                                      
                                 <select class="custom-select" id="pais" name="pais" onchange="cambiarRegion()" required>
-                                    <option value="">Seleccione Pais</option>
+                                    <option value="">Seleccione País</option>
                                     {% for p in paises %}
                                     <option value="{{ p.id_pais }}">{{ p.nombre_pais}}</option>                                                
                                     {% endfor %}
@@ -63,7 +67,7 @@
 
                             <!----COMBOBOX---REGION----->
                             <div class="col-md-6 form-group">       
-                                <label for="region">Region</label>                                      
+                                <label for="region">Región</label>                                      
                                 <select class="custom-select" id="region" name="region" onchange="cambiarComuna()" required>
                                     
                                 </select>
@@ -99,14 +103,7 @@
                                 <button type="submit" class="btn btn-success btn-lg mb-1">
                                     Registrarse
                                 </button>                                
-                            </div>
-                            {% if messages %}
-                                <ul class="messages custom-message">
-                                    {% for message in messages %}
-                                        <li {% if message.tags %} class="{{ message.tags }} custom-message"{% endif %}>{{ message }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            </div>                            
                         </div>
                     </div>              
                 </div>            
