@@ -638,3 +638,13 @@ def desactivarCuentaTransportista(rut):
     response = client.service.desactivarCuentaTransportista(rut=rut)
 
     return response
+
+#-------------------------------------------------------------------
+#ELIMINAR VEHICULOS
+def eliminarVEHICULO(patenteaeliminar):
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.eliminarTransportexPatente(patenteaeliminar=patenteaeliminar)
+
+    return response
+ 

@@ -52,6 +52,13 @@ $(document).ready(function () {
         
     });
 
+    //FORMULARIO PARA ELIMINAR VEHICULO
+    $("#btnElimiVehiculoSI").click(function () {
+                  
+        $('#modal-aceptarELIMINACION').modal('show'); 
+                          
+    });
+
 });
    
 

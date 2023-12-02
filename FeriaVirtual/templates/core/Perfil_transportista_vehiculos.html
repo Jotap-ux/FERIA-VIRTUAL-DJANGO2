@@ -29,7 +29,8 @@
                     {% csrf_token %}
                     <div class="bg-light p-30 mb-2">
                         <div class="row">
-
+                            <!--CAMPO OCULTO-->
+                            <input type="hidden" name="formulario_id" value="miFormularioREGISTRO_TRANSPORTE">
                             <!--PALABRAS DENTRO DEL FORMULARIO PARA SEPARAR-->
                             <div class="col-12">
                                 <h4 class="section-title position-relative text-uppercase mb-3 mt-3 text-left"><span class="bg-light pr-3">VEHÍCULO</span></h4>
@@ -135,7 +136,8 @@
                             <th scope="col">CAPACIDAD DE CARGA</th>
                             <th scope="col" class="d-none d-md-table-cell">¿POSEE FRIGORIFICO?</th>
                             <th scope="col">¿CUENTA CON PERMISO DE CIRCULACIÓN?</th>                      
-                            <th scope="col" class="d-none d-md-table-cell">MODELO VEHÍCULO</th>                      
+                            <th scope="col" class="d-none d-md-table-cell">MODELO VEHÍCULO</th> 
+                            <th scope="col"></th>                       
                         </tr>
                     </thead>
                     <tbody>
@@ -157,7 +159,57 @@
                                     No posee
                                 {% endif %}
                             </td>       
-                            <td class="d-none d-md-table-cell">{{v.modelo_idmodelo}}</td>                                  
+                            <td class="d-none d-md-table-cell">{{v.modelo_idmodelo}}</td> 
+                            <td class="align-middle">
+                                <form id="formulario_eliminarVEHICULO" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <!--CAMPO OCULTO-->
+                                    <input type="hidden" name="formulario_id" value="formulario_eliminarVEHICULO">
+
+                                    <!-- Input oculto con la patente (para eliminar el vehiculo) -->
+                                    <input type="hidden" name="patente_eliminar" value="{{ v.patente }}">
+                                    
+                                    <!-- Botón de submit para desactivar -->
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-eliminar-vehiculo">
+                                        <i class="fa fa-times"></i>
+                                    </button>                                  
+
+                                    <!-------------MODAL PARA PREGUNTAR SI DESEA ELIMINAR UN VEHÍCULO----------->
+                                    <div class="modal fade" id="modal-eliminar-vehiculo" tabindex="-1" aria-labelledby="modal-formu-contactoLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content text-center">
+                                                <div class="modal-header justify-content-center">
+                                                    <h5 class="modal-title" id="modal-avisoLabel">ADVERTENCIA</h5>
+                                                </div>
+                                                <div class="modal-body text-dark">
+                                                    ¿Está seguro que eliminar este vehículo?
+                                                </div>
+                                                <div class="modal-footer justify-content-center">
+                                                    <button type="button" class="btn btn-success" id="btnElimiVehiculoSI">Si</button>
+                                                    <button type="button" class="btn btn-danger" id="btnElimiVehiculoNO" data-bs-dismiss="modal" aria-label="Close">No</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <!--MODAL SU VEHICULO FUE ELIMINADO-->
+                                    <div class="modal fade" id="modal-aceptarELIMINACION" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content text-center">
+                                                <div class="modal-header justify-content-center">
+                                                    <h5 class="modal-title" id="modal-avisoLabel">AVISO</h5>
+                                                </div>
+                                                <div class="modal-body text-dark">
+                                                    Su vehiculo fue eliminado !
+                                                </div>
+                                                <div class="modal-footer justify-content-center">
+                                                    <button type="submit" class="btn btn-danger" id="btnAceptar2" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                                                             
                         </tr> 
                         {% endfor %}                                       
                     </tbody>
@@ -220,41 +272,6 @@
                 </div>
             </div>
             
-        </div>
-    </div>
-
-    <!-------------MODAL PARA PREGUNTAR SI DESEA ELIMINAR UN VEHÍCULO----------->
-    <div class="modal fade" id="modal-eliminar-vehiculo" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content text-center">
-                <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-avisoLabel">ADVERTENCIA</h5>
-                </div>
-                <div class="modal-body">
-                    ¿Está seguro que eliminar este vehículo?
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" id="btnElimiVehiculoSI" data-bs-target="#modal-aviso-eliminacionVehi">Si</button>
-                    <button type="button" class="btn btn-danger" id="btnElimiVehiculoNO" data-bs-dismiss="modal" aria-label="Close">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!------------------MODAL PARA AVISAR QUE SU VEHÍCULO FUE ELIMINADO---------------------->
-    <div class="modal fade" id="modal-aviso-eliminacionVehi" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content text-center">
-                <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="modal-avisoLabel">REGISTRO</h5>
-                </div>
-                <div class="modal-body">
-                    El vehículo ha sido eliminado de su perfil!
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-danger" id="btnCuentaEliminada" data-bs-dismiss="modal" aria-label="Close">Continuar</button>
-                </div>
-            </div>
         </div>
     </div>
 

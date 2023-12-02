@@ -6,6 +6,7 @@ from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, 
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados, actualizar_pedido_recha_cliente, actualizar_pedido_recha_transportista
 from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal, actualizarDireccionDespacho
 from .conexionWebService import desactivarCuentaClienteNormal, desactivarCuentaClienteEmpresa, desactivarCuentaProductor, desactivarCuentaTransportista
+from .conexionWebService import eliminarVEHICULO
 from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais, Direccion
 #from .models import Producto
 from django.http import HttpResponse, JsonResponse
@@ -943,31 +944,47 @@ def perfil_transp_vehi(request):
 
     print(vehiculos_transportista)
     if request.method == 'POST':
-        patente = request.POST.get('patente')
-        capacidadcarga = request.POST.get('capacidad_carga')
-        frigorificotrans = request.POST.get('frigorifico')
-        permisocirculacion = request.POST.get('permiso_circulacion')
-        transportista_rut = user_info['Rut_usuario']
-        modelo_idmodelo = request.POST.get('modelo')
-        
 
-        response = crearTransporte(
-            patente,
-            capacidadcarga,
-            frigorificotrans,
-            permisocirculacion,
-            transportista_rut,
-            modelo_idmodelo
-        )
+        formulario_id = request.POST.get('formulario_id')  # Obtén el valor del campo oculto con el id del formulario
 
-        # Procesa la respuesta del servicio SOAP, si es necesario
+        if formulario_id == 'miFormularioREGISTRO_TRANSPORTE':
 
-        if response == 'OK':
-            #messages.success(request, 'La información se ha guardado exitosamente.')
-            return redirect('TRANSP_VEHI')
-        else:
-            messages.success(request, 'El vehiculo fue registrado con éxito! :) ')
-            return redirect('TRANSP_VEHI')
+            patente = request.POST.get('patente')
+            capacidadcarga = request.POST.get('capacidad_carga')
+            frigorificotrans = request.POST.get('frigorifico')
+            permisocirculacion = request.POST.get('permiso_circulacion')
+            transportista_rut = user_info['Rut_usuario']
+            modelo_idmodelo = request.POST.get('modelo')
+            
+
+            response = crearTransporte(
+                patente,
+                capacidadcarga,
+                frigorificotrans,
+                permisocirculacion,
+                transportista_rut,
+                modelo_idmodelo
+            )            
+
+            if response == 'OK':
+                #messages.success(request, 'La información se ha guardado exitosamente.')
+                return redirect('TRANSP_VEHI')
+            else:
+                messages.success(request, 'El vehiculo fue registrado con éxito! :) ')
+                return redirect('TRANSP_VEHI')
+            
+        elif formulario_id == 'formulario_eliminarVEHICULO':
+
+            patenteaeliminar = request.POST.get('patente_eliminar')
+
+            response = eliminarVEHICULO(patenteaeliminar)
+
+            if response == 'OK':
+                #messages.success(request, 'La información se ha guardado exitosamente.')
+                return redirect('TRANSP_VEHI')
+            else:
+                messages.success(request, 'El vehiculo fue registrado con éxito! :) ')
+                return redirect('TRANSP_VEHI')
     else:
         return render(request, "core/Perfil_transportista_vehiculos.html",{'usuario_autenticado': usuario_autenticado,
                                                                             'user_info': user_info,
