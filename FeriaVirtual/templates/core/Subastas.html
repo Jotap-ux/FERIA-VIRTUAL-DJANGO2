@@ -16,7 +16,13 @@
                             {% if not mensaje_error %}
                                 <h1 class="section-title position-relative text-uppercase mx-xl-5 mb-4 text-left fondo-fruta">
                                     <span class="bg-light text-left">
-                                        Subastas Disponibles
+                                        {% if not subastas %}
+                                            No hay subastas Disponibles
+                                        {% else %}
+                                            Subastas Disponibles
+                                        {% endif %}
+
+                                        
                                     </span>                                
                                 </h1>                       
                             {% else %}
@@ -116,11 +122,9 @@
                     <form method="post" action="{% url 'SUBASTAS' %}">
                         {% csrf_token %}
                         <div class="bg-light p-30 mb-5 border border-dark">
-                            {% if s.monto_oferta %}
-                                <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">USTED YA OFERTÓ</span></h2>
-                            {% else %}
-                                <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">OFERTAR</span></h2>
-                            {% endif %}
+                            
+                            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-light pr-3">OFERTAR</span></h2>
+                        
 
                             
                             <div class="col-md-12 form-group mb-3">
@@ -128,20 +132,19 @@
                                 <input type="hidden" name="id_pedido" value="{{ s.id_pedido }}">
                                 <input type="hidden" name="id_subasta" value="{{ s.id_subasta }}">
                                 <input type="hidden" name="peso_pedido" value="{{ s.peso_pedido }}">
+                                                                
+                                <p>Último monto ofertado : ${{ s.monto_oferta }}</p>
+                            
+                                <input name="monto" id="id_monto" class="form-control" type="number" placeholder="$ 15.990">
                                 
-                                {% if s.monto_oferta %}
-                                    <p>Monto Ofertado : ${{ s.monto_oferta }}</p>
-                                {% else %}
-                                    <input name="monto" id="id_monto" class="form-control" type="number" placeholder="$ 15.990">
-                                {% endif %}
                             </div>
 
                             <div class="col-md-12 form-group text-right">
-                                {% if not s.monto_oferta %}
-                                    <button type="submit" class="btn btn-success btn-lg mb-3 w-100">
-                                    Enviar Oferta
-                                    </button>
-                                {% endif %}
+                                
+                                <button type="submit" class="btn btn-success btn-lg mb-3 w-100">
+                                Enviar Oferta
+                                </button>
+                                
                             </div>
                         </div>
                     </form>

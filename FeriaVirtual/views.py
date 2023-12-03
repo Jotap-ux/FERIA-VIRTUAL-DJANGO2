@@ -1076,20 +1076,25 @@ def subasta(request):
 
     
     #----------------------------------------------------------------------------------
-    # Realiza una consulta para obtener las ofertas del usuario actual
-    ofertas_usuario = OfertarSubasta.objects.filter(transportista_rut=user_info['Rut_usuario'])
+    # Obtén las ofertas mínimas para cada subasta agrupadas por subasta_id_subasta
+    ofertas_minimas = OfertarSubasta.objects.filter(transportista_rut=user_info['Rut_usuario']).values('subasta_id_subasta').annotate(min_oferta=Min('montosubasta'))
 
+    print('YAPEE', ofertas_minimas)
     # Crea un diccionario para almacenar las ofertas del usuario
-    ofertas_dict = {oferta.subasta_id_subasta_id: oferta.montosubasta for oferta in ofertas_usuario}
-
+    
+    # Crea un diccionario para almacenar las ofertas mínimas del usuario
+    ofertas_minimas_dict = {oferta['subasta_id_subasta']: oferta['min_oferta'] for oferta in ofertas_minimas}
+    print(ofertas_minimas_dict)
     # Itera a través de las subastas
     for subasta in lista_de_subastas:
         subasta_id = subasta['id_subasta']
-
+        
+        
         # Verifica si existe una oferta del usuario para esta subasta
-        if subasta_id in ofertas_dict:
-            subasta['monto_oferta'] = ofertas_dict[subasta_id]
-            #subasta['mensaje'] = 'WENA'
+        if subasta_id in ofertas_minimas_dict:
+
+            subasta['monto_oferta'] = ofertas_minimas_dict.get(subasta_id, 0) 
+
         else:
             subasta['monto_oferta'] = 0  # O cualquier valor que desees mostrar si no hay oferta
             #subasta['mensaje'] = 'No hay oferta mi rey'
@@ -1155,8 +1160,6 @@ def subasta(request):
         return render(request, "core/Subastas.html",{"subastas": lista_de_subastas,
                                                 'usuario_autenticado': usuario_autenticado,
                                                 'user_info': user_info})
-
-
 
 #DETALLE DEL PRODUCTO
 def detalle_producto(request, rut_productor, nombre_producto, calibre):
