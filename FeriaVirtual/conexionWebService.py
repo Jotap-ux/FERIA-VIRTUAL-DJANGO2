@@ -647,4 +647,14 @@ def eliminarVEHICULO(patenteaeliminar):
     response = client.service.eliminarTransportexPatente(patenteaeliminar=patenteaeliminar)
 
     return response
+
+#---ULTIMOS CAMBIOS------------------------------------------------
+
+#actualizado OK
+def actualizar_productos(rutabuscar, precio, stock, calibre_idcalibre, producto_idproducto):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.modificarProductosporRutProductor(rutabuscar=rutabuscar, precio=precio, stock=stock, calibre_idcalibre=calibre_idcalibre,
+                                                   producto_idproducto=producto_idproducto)
  

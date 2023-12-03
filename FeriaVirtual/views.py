@@ -6,6 +6,7 @@ from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, 
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados, actualizar_pedido_recha_cliente, actualizar_pedido_recha_transportista
 from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal, actualizarDireccionDespacho
 from .conexionWebService import desactivarCuentaClienteNormal, desactivarCuentaClienteEmpresa, desactivarCuentaProductor, desactivarCuentaTransportista
+from .conexionWebService import actualizar_productos
 from .conexionWebService import eliminarVEHICULO
 from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais, Direccion
 #from .models import Producto
@@ -784,6 +785,7 @@ def perfil_pro_productos(request):
     productos_productor = json.loads(lista_productos_productor)
 
     print(productos_productor)
+
     if request.method == 'POST':        
         precio = request.POST.get('precio')     
         stock = request.POST.get('stock')
@@ -791,20 +793,40 @@ def perfil_pro_productos(request):
         producto_idproducto = request.POST.get('producto_idproducto')
         productor_rut = user_info['Rut_usuario']
         
-        response = agregar_productos(            
-           precio,
-           stock,
-           calibre_idcalibre,
-           producto_idproducto,
-           productor_rut
-        )
-         # Procesa la respuesta del servicio SOAP, si es necesario
+        if 'agregar' in request.POST:
+            response = agregar_productos(            
+            precio,
+            stock,
+            calibre_idcalibre,
+            producto_idproducto,
+            productor_rut
+            )
+            # Procesa la respuesta del servicio SOAP, si es necesario
 
-        if response == 'OK':
-            return redirect('PROD_PRODUC')
-        else:
-            messages.success(request, 'Los productos fueron agregados exitosamente :) ')
-            return redirect('PROD_PRODUC')
+            if response == 'OK':
+                return redirect('PROD_PRODUC')
+            else:
+                #messages.success(request, 'Los productos fueron agregados exitosamente :) ')
+                return redirect('PROD_PRODUC')
+            
+        elif 'modificar' in request.POST:
+
+            rutabuscar = productor_rut
+
+            response = actualizar_productos(       
+            rutabuscar,     
+            precio,
+            stock,
+            calibre_idcalibre,
+            producto_idproducto        
+            )
+            # Procesa la respuesta del servicio SOAP, si es necesario
+
+            if response == 'OK':
+                return redirect('PROD_PRODUC')
+            else:
+                
+                return redirect('PROD_PRODUC')
     else:
         return render(request, "core/Perfil_productor_productos.html",{
             'usuario_autenticado': usuario_autenticado, 
