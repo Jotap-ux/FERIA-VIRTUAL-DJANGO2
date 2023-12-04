@@ -9,7 +9,14 @@
     <div class="container-fluid pt-5 pb-3">
 
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
-            <span class="bg-secondary pr-3">PRODUCTOS DISPONIBLES</span>
+            <span class="bg-secondary pr-3">
+                {% if not productos %}
+                    AÚN NO HAY PRODUCTOS DISPONIBLES
+                {% else %}
+                    PRODUCTOS DISPONIBLES
+                {% endif %}
+                
+            </span>
         </h2>
 
         <div class="col-lg-4 col-6 text-center mb-5 mx-auto">
