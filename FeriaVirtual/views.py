@@ -6,7 +6,7 @@ from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, 
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados, actualizar_pedido_recha_cliente, actualizar_pedido_recha_transportista
 from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal, actualizarDireccionDespacho
 from .conexionWebService import desactivarCuentaClienteNormal, desactivarCuentaClienteEmpresa, desactivarCuentaProductor, desactivarCuentaTransportista
-from .conexionWebService import actualizar_productos, actualizar_clienteNORMAL, actualizar_clienteEMPRESA
+from .conexionWebService import actualizar_productos, actualizar_clienteNORMAL, actualizar_clienteEMPRESA, actualizar_productor, actualizar_transportista
 from .conexionWebService import eliminarVEHICULO
 from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais, Direccion
 #from .models import Producto
@@ -144,6 +144,7 @@ def inicio_sesion(request):
                     'Fecha_nacimiento': productor.fechanacimiento.strftime("%d-%m-%Y"),
                     'Nombre': productor.nombre,
                     'Apellido': productor.apellidopat,
+                    'ApellidoMATERNO': productor.apellidomat,
                     'Direccion': productor.direccion,
                     'comuna_id': id_comuna_str,  # Convertimos el id de la comuna a cadena
                     'comuna' : nombre_comuna,
@@ -319,6 +320,7 @@ def inicio_sesion(request):
                     'Fecha_nacimiento': transportista.fechanacimiento.strftime("%d-%m-%Y"),
                     'Nombre': transportista.nombre,
                     'Apellido': transportista.apellidopat,
+                    'ApellidoMATERNO': transportista.apellidomat,
                     'Direccion': transportista.direccion,
                     #'comuna_id': id_comuna_str,  # Convertimos el id de la comuna a cadena
                     #'comuna' : nombre_comuna,
@@ -679,7 +681,7 @@ def perfil_cli_datos(request):
 
         razonsocial = request.POST.get('razonsocial_EMP')
         identificadorabuscar = request.POST.get('rut_EMP')
-        
+
         #---PARA CAMBIAR DATOS
         if 'modificar-CLIENTE' in request.POST:
 
@@ -770,13 +772,42 @@ def perfil_pro_datos(request):
     if request.method == 'POST':
         rut = request.POST.get('rut_usuario_DesactivarProd')  
 
-        response = desactivarCuentaProductor(rut)
+        #----
+        
+        rutabuscar = request.POST.get('rut_productor')
+        nombre = request.POST.get('nombre_productor')
+        apellidopat = request.POST.get('apellido_productor')
+        apellidomat = request.POST.get('apellidomat_productor')
+        fechanacimiento = request.POST.get('fecha_productor')
+
+        #---PARA CAMBIAR DATOS
+        if 'modificar-PRODUCTOR' in request.POST:
+
+            response = actualizar_productor(            
+            rutabuscar,
+            nombre,
+            apellidopat,
+            apellidomat,
+            fechanacimiento
+            )
+            # Procesa la respuesta del servicio SOAP, si es necesario
+
+            if response == 'OK':
+                return redirect('PROD_DATOS')
+            else:
+                #messages.success(request, 'Los productos fueron agregados exitosamente :) ')
+                return redirect('PROD_DATOS')
+
+        if rut:
+            response = desactivarCuentaProductor(rut)
 
         if response == 'OK':
             return redirect('CERRAR_SESION')
         else:
             #messages.success(request, 'SU CUENTA SE HA DESACTIVADO!! ')
             return redirect('CERRAR_SESION')
+
+        
     else:
         return render(request, "core/Perfil_productor_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 
@@ -894,7 +925,35 @@ def perfil_transp_datos(request):
     if request.method == 'POST':
         rut = request.POST.get('rut_usuario_DesactivarTranspor')  
 
-        response = desactivarCuentaTransportista(rut)
+        #----
+        
+        rutabuscar = request.POST.get('rut_transp')
+        nombre = request.POST.get('nombre_transp')
+        apellidopat = request.POST.get('apellido_transp')
+        apellidomat = request.POST.get('apellidomat_transp')
+        fechanacimiento = request.POST.get('fecha_transp')
+
+        #---PARA CAMBIAR DATOS
+        if 'modificar-TRANSP' in request.POST:
+
+            response = actualizar_transportista(            
+            rutabuscar,
+            nombre,
+            apellidopat,
+            apellidomat,
+            fechanacimiento
+            )
+            # Procesa la respuesta del servicio SOAP, si es necesario
+
+            if response == 'OK':
+                return redirect('TRANSP_DATOS')
+            else:
+                #messages.success(request, 'Los productos fueron agregados exitosamente :) ')
+                return redirect('TRANSP_DATOS')
+            
+        if rut:
+
+            response = desactivarCuentaTransportista(rut)
 
         if response == 'OK':
             return redirect('CERRAR_SESION')

@@ -361,6 +361,32 @@
         });
 
     </script>
+    <!--SCRIPT PARA HABILITAR LOS INPUT DATOS PRODUCTOR-->
+    <script>
+        document.getElementById('modificar-datosPRODUCTOR').addEventListener('click', function () {
+            // Habilitar la edición del input
+            //$("#direccion_despacho_input").prop("readonly", false);
+            $('#modal-cambiar-datosPRODUCTOR').modal('show');
+            $("#nombre_productor").prop("readonly", false);
+            $("#apellido_productor").prop("readonly", false);
+            $("#apellidomat_productor").prop("readonly", false);
+            $("#fecha_productor").prop("readonly", false);
+        });
+
+    </script>
+    <!--SCRIPT PARA HABILITAR LOS INPUT DATOS TRANSPORTISTA-->
+    <script>
+        document.getElementById('modificar-datosTRANSP').addEventListener('click', function () {
+            // Habilitar la edición del input
+            //$("#direccion_despacho_input").prop("readonly", false);
+            $('#modal-cambiar-datosTRANSP').modal('show');
+            $("#nombre_transp").prop("readonly", false);
+            $("#apellido_transp").prop("readonly", false);
+            $("#apellidomat_transp").prop("readonly", false);
+            $("#fecha_transp").prop("readonly", false);
+        });
+
+    </script>
     <!--------------------------------------------------------------------->
     <!-- LIBRERIAS PARA PODER USAR BOOSTRAP -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

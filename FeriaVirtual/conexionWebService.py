@@ -670,3 +670,17 @@ def actualizar_clienteEMPRESA(identificadorabuscar, razonsocial):
     client = Client(URL_WEBSERVICE)
 
     response = client.service.modificarClienteEmpresa(identificadorabuscar=identificadorabuscar, razonsocial=razonsocial)
+
+def actualizar_productor(rutabuscar, nombre, apellidopat, apellidomat, fechanacimiento):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.modificarProductor(rutabuscar=rutabuscar, nombre=nombre, apellidopat=apellidopat,
+                                                apellidomat=apellidomat, fechanacimiento=fechanacimiento)
+    
+def actualizar_transportista(rutabuscar, nombre, apellidopat, apellidomat, fechanacimiento):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.modificarTransportista(rutabuscar=rutabuscar, nombre=nombre, apellidopat=apellidopat,
+                                                apellidomat=apellidomat, fechanacimiento=fechanacimiento)
