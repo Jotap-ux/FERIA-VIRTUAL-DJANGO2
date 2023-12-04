@@ -351,6 +351,16 @@
         });
 
     </script>
+    <!--SCRIPT PARA HABILITAR LOS INPUT DATOS CLIENTE EMPRESA-->
+    <script>
+        document.getElementById('modificar-datosCLIENTE-EMP').addEventListener('click', function () {
+            // Habilitar la edición del input
+            //$("#direccion_despacho_input").prop("readonly", false);
+            $('#modal-cambiar-datosCLIENTE-EMP').modal('show');
+            $("#razonsocial_EMP").prop("readonly", false);                       
+        });
+
+    </script>
     <!--------------------------------------------------------------------->
     <!-- LIBRERIAS PARA PODER USAR BOOSTRAP -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

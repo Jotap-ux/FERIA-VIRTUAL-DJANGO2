@@ -6,7 +6,7 @@ from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, 
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados, actualizar_pedido_recha_cliente, actualizar_pedido_recha_transportista
 from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal, actualizarDireccionDespacho
 from .conexionWebService import desactivarCuentaClienteNormal, desactivarCuentaClienteEmpresa, desactivarCuentaProductor, desactivarCuentaTransportista
-from .conexionWebService import actualizar_productos, actualizar_clienteNORMAL
+from .conexionWebService import actualizar_productos, actualizar_clienteNORMAL, actualizar_clienteEMPRESA
 from .conexionWebService import eliminarVEHICULO
 from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais, Direccion
 #from .models import Producto
@@ -677,9 +677,12 @@ def perfil_cli_datos(request):
         apellidomat = request.POST.get('apellidomat_clientePERSONA')
         fechanacimiento = request.POST.get('fecha_clientePERSONA')
 
+        razonsocial = request.POST.get('razonsocial_EMP')
+        identificadorabuscar = request.POST.get('rut_EMP')
+        
         #---PARA CAMBIAR DATOS
         if 'modificar-CLIENTE' in request.POST:
-            
+
             response = actualizar_clienteNORMAL(            
             rutabuscar,
             nombre,
@@ -694,7 +697,24 @@ def perfil_cli_datos(request):
             else:
                 #messages.success(request, 'Los productos fueron agregados exitosamente :) ')
                 return redirect('CLIENTE_DATOS')
+            
+        #---PARA CAMBIAR DATOS
+        if 'modificar-CLIENTE-EMP' in request.POST:
 
+            response = actualizar_clienteEMPRESA(            
+            identificadorabuscar,
+            razonsocial         
+            )
+            # Procesa la respuesta del servicio SOAP, si es necesario
+
+            if response == 'OK':
+                return redirect('CLIENTE_DATOS')
+            else:
+                #messages.success(request, 'Los productos fueron agregados exitosamente :) ')
+                return redirect('CLIENTE_DATOS')
+
+
+        #-----------------------------------------------
         if rut:
 
             response = desactivarCuentaClienteNormal(rut)

@@ -665,3 +665,8 @@ def actualizar_clienteNORMAL(rutabuscar, nombre, apellidopat, apellidomat, fecha
     response = client.service.modificarClientenormal(rutabuscar=rutabuscar, nombre=nombre, apellidopat=apellidopat,
                                                                 apellidomat=apellidomat, fechanacimiento=fechanacimiento)
  
+def actualizar_clienteEMPRESA(identificadorabuscar, razonsocial):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.modificarClienteEmpresa(identificadorabuscar=identificadorabuscar, razonsocial=razonsocial)
