@@ -658,3 +658,10 @@ def actualizar_productos(rutabuscar, precio, stock, calibre_idcalibre, producto_
     response = client.service.modificarProductosporRutProductor(rutabuscar=rutabuscar, precio=precio, stock=stock, calibre_idcalibre=calibre_idcalibre,
                                                    producto_idproducto=producto_idproducto)
  
+def actualizar_clienteNORMAL(rutabuscar, nombre, apellidopat, apellidomat, fechanacimiento):
+
+    client = Client(URL_WEBSERVICE)
+
+    response = client.service.modificarClientenormal(rutabuscar=rutabuscar, nombre=nombre, apellidopat=apellidopat,
+                                                                apellidomat=apellidomat, fechanacimiento=fechanacimiento)
+ 

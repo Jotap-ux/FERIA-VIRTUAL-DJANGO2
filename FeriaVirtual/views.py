@@ -6,7 +6,7 @@ from .conexionWebService import listar_marca_combobox, listar_modelo_por_marca, 
 from .conexionWebService import actualizar_pedido_Enviado, actualizar_pedido_Recibido, listar_pedidosTransportista_Finalizados, actualizar_pedido_recha_cliente, actualizar_pedido_recha_transportista
 from .conexionWebService import actualizar_IMGinicio, actualizar_IMGfinal, actualizarDireccionDespacho
 from .conexionWebService import desactivarCuentaClienteNormal, desactivarCuentaClienteEmpresa, desactivarCuentaProductor, desactivarCuentaTransportista
-from .conexionWebService import actualizar_productos
+from .conexionWebService import actualizar_productos, actualizar_clienteNORMAL
 from .conexionWebService import eliminarVEHICULO
 from.models import Productor, Cliente, Transportista, OfertarSubasta, Transporte, Comuna, Region, Pais, Direccion
 #from .models import Producto
@@ -217,6 +217,7 @@ def inicio_sesion(request):
                     'Fecha_nacimiento': cliente.fechanacimiento.strftime("%d-%m-%Y"),
                     'Nombre': cliente.nombre,
                     'Apellido': cliente.apellidopat,
+                    'ApellidoMATERNO': cliente.apellidomat, 
                     'Direccion': cliente.direccion,  
                     'id_cliente': cliente.id_cliente,                
                     'comuna_id': id_comuna_str,  # Convertimos el id de la comuna a cadena
@@ -668,6 +669,31 @@ def perfil_cli_datos(request):
     if request.method == 'POST':
         rut = request.POST.get('rut_usuario_Desactivar')        
         identificadorabuscar = request.POST.get('rut_usuario_Desactivar2') 
+        #----
+        
+        rutabuscar = request.POST.get('rut_clientePERSONA')
+        nombre = request.POST.get('nombre_clientePERSONA')
+        apellidopat = request.POST.get('apellido_clientePERSONA')
+        apellidomat = request.POST.get('apellidomat_clientePERSONA')
+        fechanacimiento = request.POST.get('fecha_clientePERSONA')
+
+        #---PARA CAMBIAR DATOS
+        if 'modificar-CLIENTE' in request.POST:
+            
+            response = actualizar_clienteNORMAL(            
+            rutabuscar,
+            nombre,
+            apellidopat,
+            apellidomat,
+            fechanacimiento
+            )
+            # Procesa la respuesta del servicio SOAP, si es necesario
+
+            if response == 'OK':
+                return redirect('CLIENTE_DATOS')
+            else:
+                #messages.success(request, 'Los productos fueron agregados exitosamente :) ')
+                return redirect('CLIENTE_DATOS')
 
         if rut:
 
@@ -679,7 +705,9 @@ def perfil_cli_datos(request):
             return redirect('CERRAR_SESION')
         else:
             #messages.success(request, 'SU CUENTA SE HA DESACTIVADO!! ')
-            return redirect('CERRAR_SESION')     
+            return redirect('CERRAR_SESION')    
+
+        
     else:
         return render(request, "core/Perfil_cliente_datos.html",{'usuario_autenticado': usuario_autenticado, 'user_info': user_info})
 

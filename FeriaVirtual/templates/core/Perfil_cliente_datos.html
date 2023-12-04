@@ -39,23 +39,62 @@
                         <!-------------------SON DE 4 EN 4---------->
                     
                         {% if request.session.user_info.tipo_usuario == 'CLIENTENORMAL' %}
-                            <div class="col-md-6 form-group">
-                                <label>Nombre</label>
-                                <input class="form-control" type="text" placeholder="{{user_info.Nombre}}" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Apellido</label>
-                                <input class="form-control" type="text" placeholder="{{user_info.Apellido}}" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Número de identificación</label>
-                                <input class="form-control" type="text" placeholder="{{user_info.Rut_completo}}" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Fecha de nacimiento </label>
-                                <input class="form-control" type="text" placeholder="{{user_info.Fecha_nacimiento}}" readonly>
-                            </div>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
 
+                            
+                                <div class="col-md-6 form-group">
+                                    <label>Nombre</label>
+                                    <input id="nombre_clientePERSONA" name="nombre_clientePERSONA" class="form-control" type="text" placeholder="{{user_info.Nombre}}" readonly>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Apellido Paterno</label>
+                                    <input id="apellido_clientePERSONA" name="apellido_clientePERSONA" class="form-control" type="text" placeholder="{{user_info.Apellido}}" readonly>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Apellido Materno</label>
+                                    <input id="apellidomat_clientePERSONA" name="apellidomat_clientePERSONA" class="form-control" type="text" placeholder="{{user_info.ApellidoMATERNO}}" readonly>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Número de identificación</label>
+                                    <!-- Input oculto con el valor del rut -->
+                                    <input type="hidden" name="rut_clientePERSONA" value="{{ user_info.Rut_usuario }}">
+                                    <input class="form-control" type="text" placeholder="{{user_info.Rut_completo}}" readonly>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Fecha de nacimiento </label>
+                                    <input id="fecha_clientePERSONA" name="fecha_clientePERSONA" class="form-control" type="text" placeholder="{{user_info.Fecha_nacimiento}}" readonly>
+                                </div>
+
+                                <div class="col-md-6 form-group text-center mt-3">
+                                    <button id="modificar-datosCLIENTE" type="button" class="btn btn-success btn-lg mb-1 w-65 mr-2" data-bs-toggle="modal">
+                                        Modificar datos
+                                    </button>                            
+                                                                                            
+                                    <button name="modificar-CLIENTE" type="submit" class="btn btn-info btn-lg mb-1 w-65" data-bs-toggle="modal">
+                                        Guardar cambios
+                                    </button>
+                                </div>
+
+                                <!-------------MODAL 'YA PUEDE MODIFICAR SUS DATOS'----------->
+                                <div class="modal fade" id="modal-cambiar-datosCLIENTE" tabindex="-1" aria-labelledby="modal-avisoLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content text-center">
+                                            <div class="modal-header justify-content-center">
+                                                <h5 class="modal-title" id="modal-avisoLabel">MENSAJE</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Ya puede modificar sus datos
+                                            </div>
+                                            <div class="modal-footer justify-content-center">                                            
+                                                <button type="button" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                         {% elif request.session.user_info.tipo_usuario == 'CLIENTEEMP' %}
                             <div class="col-md-6 form-group">
                                 <label>Razón Social</label>

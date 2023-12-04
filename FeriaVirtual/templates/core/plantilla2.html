@@ -314,7 +314,7 @@
         document.getElementById('btn-modificar').addEventListener('click', function () {
             // Habilitar la edición del input
             //$("#direccion_despacho_input").prop("readonly", false);
-            alert('Ya puede modificar su dirección de entrega');
+            $('#modal-direccion-entregaOK').modal('show');
             $("#direccion_despacho_input").prop("readonly", false);
         });
 
@@ -337,6 +337,20 @@
         });
     </script>
 
+    <!--------------------------------------------------------------------->
+    <!--SCRIPT PARA HABILITAR LOS INPUT DATOS CLIENTE-->
+    <script>
+        document.getElementById('modificar-datosCLIENTE').addEventListener('click', function () {
+            // Habilitar la edición del input
+            //$("#direccion_despacho_input").prop("readonly", false);
+            $('#modal-cambiar-datosCLIENTE').modal('show');
+            $("#nombre_clientePERSONA").prop("readonly", false);
+            $("#apellido_clientePERSONA").prop("readonly", false);
+            $("#apellidomat_clientePERSONA").prop("readonly", false);
+            $("#fecha_clientePERSONA").prop("readonly", false);
+        });
+
+    </script>
     <!--------------------------------------------------------------------->
     <!-- LIBRERIAS PARA PODER USAR BOOSTRAP -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
